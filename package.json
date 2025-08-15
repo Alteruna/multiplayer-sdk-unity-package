@@ -1,0 +1,41 @@
+{
+  "name": "com.alteruna.multiplayer",
+  "version": "2.0.45",
+  "displayName": "Alterun Multiplayer SDK",
+  "description": "Develop multiplayer applications with Alteruna's mulyiplayer SDK for Unity.",
+  "unity": "2021.3",
+  "unityRelease": "45f1",
+  "documentationUrl": "https://docs.v2.alteruna.com",
+  "changelogUrl": "https://docs.v2.alteruna.com",
+  "licensesUrl": "https://www.alteruna.com/alteruna-multiplayer-sdk-eula",
+  "dependencies": {
+    "com.unity.ugui": "1.0.0",
+    "com.unity.textmeshpro": "3.0.9",
+    "com.unity.inputsystem": "1.7.0",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+ },
+ "keywords": [
+    "alteruna",
+    "multiplayer",
+    "networking",
+    "online",
+    "netcode"
+  ],
+  "author": {
+    "name": "Alteruna AB",
+    "email": "contact@alteruna.com",
+    "url": "https://alteruna.com"
+  },
+  "samples": [
+    {
+      "displayName": "LAN Sample",
+      "description": "Example use of Alteruna Multiplayer SDK with over LAN.",
+      "path": "Samples/LAN-Sample"
+    },
+    {
+      "displayName": "NewInputSystem",
+      "description": "Example use of Alteruna Multiplayer SDK using Unity's new input system.",
+      "path": "Samples/NewInputSystem"
+    }
+  ]
+}
