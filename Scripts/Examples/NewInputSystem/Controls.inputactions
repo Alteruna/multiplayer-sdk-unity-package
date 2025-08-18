@@ -1,5 +1,6 @@
 {
-    "name": "New Controls",
+    "version": 1,
+    "name": "Controls",
     "maps": [
         {
             "name": "Action map",
