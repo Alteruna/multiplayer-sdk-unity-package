@@ -153,7 +153,7 @@ namespace Alteruna
 		{
 			if (DefaultImage == null)
 			{
-				DefaultImage = AssetDatabase.LoadAssetAtPath<Sprite>(Alteruna.UnityEditor.AssetPaths.GetAlterunaPath() + "Media/Alteruna Logo.png");
+				//DefaultImage = AssetDatabase.LoadAssetAtPath<Sprite>(Alteruna.UnityEditor.AssetPaths.GetAlterunaPath() + "Media/Alteruna Logo.png");
 			}
 		}
 #endif
@@ -162,33 +162,41 @@ namespace Alteruna
 		{
 			if (_instance != null) return _instance;
 
-			_instance = Resources.Load<MapDescriptions>(RESOURCE_NAME);
-			if (_instance == null)
+			try
 			{
-				_instance = CreateInstance<MapDescriptions>();
-#if UNITY_EDITOR
-				if (!Directory.Exists(RESOURCE_DIRECTORY))
+				_instance = Resources.Load<MapDescriptions>(RESOURCE_NAME);
+				if (_instance == null)
 				{
-					Directory.CreateDirectory(RESOURCE_DIRECTORY);
-				}
-				AssetDatabase.CreateAsset(_instance, RESOURCE_PATH);
+					_instance = CreateInstance<MapDescriptions>();
+#if UNITY_EDITOR
+					if (!Directory.Exists(RESOURCE_DIRECTORY))
+					{
+						Directory.CreateDirectory(RESOURCE_DIRECTORY);
+					}
+					AssetDatabase.CreateAsset(_instance, RESOURCE_PATH);
 
-				_instance.PopulateScenesIntoList();
+					_instance.PopulateScenesIntoList();
 #endif
-			}
+				}
 
 #if UNITY_EDITOR
-			if (_instance.DescriptionItems.Count <= 0)
-			{
-				_instance.PopulateScenesIntoList();
-			}
-			_instance.HandleDefaultImage();
+				if (_instance.DescriptionItems.Count <= 0)
+				{
+					_instance.PopulateScenesIntoList();
+				}
+				_instance.HandleDefaultImage();
 #else
-			foreach (var item in _instance.DescriptionItems)
-			{
-				item.BuildIndex = SceneUtility.GetBuildIndexByScenePath(item.ScenePath);
-			}
+				foreach (var item in _instance.DescriptionItems)
+				{
+					item.BuildIndex = SceneUtility.GetBuildIndexByScenePath(item.ScenePath);
+				}
 #endif
+
+			}
+			catch (Exception e)
+			{
+				Debug.LogWarning("Failed to load MapDescriptions instance: " + e.Message);
+			}
 
 			return _instance;
 		}
