@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if ALTERUNA
+using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
@@ -32,3 +33,4 @@ namespace Alteruna.TextChatCommands
 		}
 	}
 }
+#endif

@@ -1,4 +1,4 @@
-﻿using System;
+﻿#if ALTERUNA
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -36,3 +36,4 @@ namespace Alteruna.TextChatCommands
 		}
 	}
 }
+#endif

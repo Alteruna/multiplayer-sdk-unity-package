@@ -22,15 +22,14 @@ namespace Alteruna.TextChatCommands
 				return null;
 			}
 
+			Transform t = null;
+#if ALTERUNA
 			if (args.Length == 3)
 			{
-				Transform t = textChat.Multiplayer.GetAvatar().transform;
-				t.position = StringToVector3(t.position, args);
+				t = TextChatCommandHelper.GetPlayerTransform(textChat);
 			}
 			else
 			{
-				Transform t;
-				
 				if (ushort.TryParse(args[0], out ushort id))
 				{
 					t = textChat.Multiplayer.GetAvatar(id).transform;
@@ -39,9 +38,11 @@ namespace Alteruna.TextChatCommands
 				{
 					t = textChat.Multiplayer.GetAvatar(args[0]).transform;
 				}
-
-				t.position = StringToVector3(t.position, args);
 			}
+#else
+			t = TextChatCommandHelper.GetPlayerTransform(textChat);
+#endif
+			t.position = StringToVector3(t.position, args);
 						
 			return null;
 		}

@@ -1,6 +1,4 @@
-﻿using Alteruna.Multiplayer;
-using UnityEngine;
-using Avatar = Alteruna.Multiplayer.Avatar;
+﻿using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
@@ -17,30 +15,24 @@ namespace Alteruna.TextChatCommands
 
 		public string Execute(TextChatSynchronizable textChat, string[] args)
 		{
-
-			if (textChat.Multiplayer == null)
+			var t = TextChatCommandHelper.GetPlayerTransform(textChat);
+			if (t != null)
 			{
-				textChat.LogError("No valid Multiplayer component.");
-				return null;
-			}
-
-			if (textChat.Multiplayer.Me == null)
-			{
-				textChat.LogError("No user information available.");
-				return null;
-			}
-			
-			Avatar avatar = textChat.Multiplayer.GetAvatar();
-			if (avatar != null)
-			{
-				TextChatCommandHelper.LastTransformTarget = avatar.transform;
-				Vector3 pos = avatar.transform.position;
+				TextChatCommandHelper.LastTransformTarget = t;
+				Vector3 pos = t.position;
+				
+#if ALTERUNA
 				return $"{textChat.Multiplayer.Me}\n x:{pos.x} y:{pos.y} z:{pos.z}";
+#else
+				return $"x:{pos.x} y:{pos.y} z:{pos.z}";
+#endif
 			}
-			else
-			{
-				return textChat.Multiplayer.Me;
-			}
+
+#if ALTERUNA
+			return textChat.Multiplayer.Me;
+#else
+			return null;
+#endif
 		}
 	}
 }

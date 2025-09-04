@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ALTERUNA
+using System;
 using Alteruna.Multiplayer;
 using UnityEngine;
 
@@ -123,3 +124,4 @@ namespace Alteruna.TextChatCommands
 		}
 	}
 }
+#endif

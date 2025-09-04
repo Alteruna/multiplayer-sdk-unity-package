@@ -73,6 +73,7 @@ namespace Alteruna
 
 		private static readonly Color c = new Color(1f, .2f, 0, 1);
 
+#if ALTERUNA
 		/// <summary>
 		/// Function to get user color.
 		/// </summary>
@@ -82,6 +83,7 @@ namespace Alteruna
 		/// </code>
 		/// </example>
 		public static Func<ushort, Color> GetUserColor = id => UniqueAvatarColor.HueFromId(c, id);
+#endif
 
 		/// <summary>
 		/// Change max number of buffered chat lines
@@ -625,6 +627,7 @@ namespace Alteruna
 				}
 			}
 
+#if ALTERUNA
 			public ChatEvent(Reader reader)
 			{
 				_compiled = false;
@@ -667,6 +670,7 @@ namespace Alteruna
 
 				writer.Write(Msg);
 			}
+#endif
 
 			public string ToString(TextChatSynchronizable textChat)
 			{
@@ -693,17 +697,25 @@ namespace Alteruna
 					if (textChat.BoldNames)
 					{
 						textChat._sb.Append("<b>");
+						AppendName(textChat, name, SenderId);
+						textChat._sb.Append("</b>");
+					}
+					else
+					{
+						AppendName(textChat, name, SenderId);
 					}
 
-					textChat._sb.Append("<color=#");
-					textChat._sb.Append(ColorUtility.ToHtmlStringRGB(GetUserColor(SenderId)));
-					textChat._sb.Append('>');
-					textChat._sb.Append(name);
-					textChat._sb.Append("</color>");
-
-					if (textChat.BoldNames)
+					static void AppendName(TextChatSynchronizable tc, string n, ushort senderId)
 					{
-						textChat._sb.Append("</b>");
+#if ALTERUNA
+						tc._sb.Append("<color=#");
+						tc._sb.Append(ColorUtility.ToHtmlStringRGB(GetUserColor(senderId)));
+						tc._sb.Append('>');
+						tc._sb.Append(n);
+						tc._sb.Append("</color>");
+#else
+						tc._sb.Append(n);
+#endif
 					}
 				}
 				else

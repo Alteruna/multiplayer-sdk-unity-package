@@ -62,5 +62,42 @@ namespace Alteruna.TextChatCommands
 
 			return false;
 		}
+		
+		public static Transform GetPlayerTransform(TextChatSynchronizable textChat)
+		{
+#if ALTERUNA
+			if (textChat.Multiplayer != null)
+			{
+				if (textChat.Multiplayer.Me == null)
+				{
+					textChat.LogError("No user information available.");
+					return null;
+				}
+
+				var avatar = textChat.Multiplayer.GetAvatar();
+				if (avatar == null)
+				{
+					textChat.LogError("No avatar found for local user.");
+					return null;
+				}
+				return avatar.transform;
+			}
+			else
+#endif
+			{
+				if (Camera.main == null)
+				{
+					textChat.LogError("No camera found.");
+					return null;
+				}
+				Transform t = Camera.main.transform;
+				while (t.parent != null)
+				{
+					t = t.parent;
+				}
+
+				return t;
+			}
+		}
 	}
 }

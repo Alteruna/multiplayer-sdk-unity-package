@@ -1,4 +1,5 @@
-﻿using Alteruna.Multiplayer.Core.MethodArguments;
+﻿#if ALTERUNA
+using Alteruna.Multiplayer.Core.MethodArguments;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
@@ -113,3 +114,4 @@ namespace Alteruna.TextChatCommands
 		}
 	}
 }
+#endif
