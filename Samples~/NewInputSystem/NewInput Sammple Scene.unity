@@ -206,7 +206,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 853702867}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Alteruna.Multiplayer.MultiplayerManager, Alteruna
         m_MethodName: JoinLan
         m_Mode: 1
@@ -400,10 +400,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 430403525}
-  - component: {fileID: 430403526}
-  - component: {fileID: 430403524}
-  - component: {fileID: 430403527}
+  - component: {fileID: 430403530}
+  - component: {fileID: 430403529}
   - component: {fileID: 430403528}
+  - component: {fileID: 430403527}
   m_Layer: 0
   m_Name: AvatarNewInputSync
   m_TagString: Untagged
@@ -411,38 +411,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &430403524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430403523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1249091971, guid: 0ae8d181602a00248a82f64a684a1c88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Multiplayer: {fileID: 0}
-  _uidString: 1247d485-625a-434b-90e4-651e91fbf0f3
-  BucketBehaviors:
-  - Name: Min
-    NetLOD: 0
-    Frequency: -1
-  - Name: Low
-    NetLOD: 1
-    Frequency: 10
-  - Name: Mid
-    NetLOD: 2
-    Frequency: 30
-  - Name: High
-    NetLOD: 3
-    Frequency: 50
-  - Name: Max
-    NetLOD: 4
-    Frequency: 120
-  Reliability: 2
-  inputActions: {fileID: -944628639613478452, guid: c4b9a4a0cb7e64f46b9c780aa4e8de72, type: 3}
 --- !u!4 &430403525
 Transform:
   m_ObjectHideFlags: 0
@@ -459,27 +427,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &430403526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430403523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -2141718255, guid: 0ae8d181602a00248a82f64a684a1c88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Multiplayer: {fileID: 0}
-  IsPossessor: 0
-  IsPossessed: 0
-  OnPossessed:
-    m_PersistentCalls:
-      m_Calls: []
-  OnUnpossessed:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &430403527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -489,24 +436,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 430403523}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d2a237a740d4229b900a475be2a3b75, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d0700b1066e4a87bd9fb534b0ffff01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 5
---- !u!114 &430403528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430403523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1312809854, guid: 0ae8d181602a00248a82f64a684a1c88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Multiplayer: {fileID: 853702867}
-  _uidString: 17800011-129f-48ac-874b-b435569a6ddb
+  Multiplayer: {fileID: 0}
+  _uidString: a7c3025c-4e23-4d08-8bec-bfabc763ddbb
   BucketBehaviors:
   - Name: Min
     NetLOD: 0
@@ -528,6 +462,72 @@ MonoBehaviour:
   OnlySyncFromRoomOwner: 0
   refreshRate: 0.1
   SyncedAxes: 511
+--- !u!114 &430403528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430403523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 242e0935e7b0ae24db2d77580d1c8a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Multiplayer: {fileID: 0}
+  _uidString: 363f12d3-ad3f-464d-8661-fbdfb12d0526
+  BucketBehaviors:
+  - Name: Min
+    NetLOD: 0
+    Frequency: -1
+  - Name: Low
+    NetLOD: 1
+    Frequency: 0
+  - Name: Mid
+    NetLOD: 2
+    Frequency: 0
+  - Name: High
+    NetLOD: 3
+    Frequency: 0
+  - Name: Max
+    NetLOD: 4
+    Frequency: 120
+  Reliability: 2
+  inputActions: {fileID: -944628639613478452, guid: 6c332775c25c91442a8e1b68fb877aa0, type: 3}
+--- !u!114 &430403529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430403523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3329e298f76e16a4d80715b72a4b02bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 5
+--- !u!114 &430403530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430403523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c7b1bdd0a94feba5a5f3e28f3e8de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Multiplayer: {fileID: 853702867}
+  IsPossessor: 0
+  IsPossessed: 0
+  OnPossessed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnpossessed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &448992549
 GameObject:
   m_ObjectHideFlags: 0
@@ -809,10 +809,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 853702864}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 731237287, guid: 0ae8d181602a00248a82f64a684a1c88, type: 3}
+  m_Script: {fileID: 11500000, guid: 1caa0a7c0ebcac543968a2fd0d4dbb11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LogLevel: 1
+  LogLevel: 2
   Buckets:
   - Name: Min
     NetLOD: 0
@@ -832,7 +832,7 @@ MonoBehaviour:
   _maxPlayers: 20
   ConnectOnStart: 0
   AvatarSpawning: 1
-  AvatarPrefab: {fileID: 430403526}
+  AvatarPrefab: {fileID: 0}
   AvatarSpawnLocation: {fileID: 0}
   SpawnAvatarPerIndex: 0
   AvatarSpawnLocations: []
@@ -1102,6 +1102,7 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!1 &1034975000
 GameObject:
   m_ObjectHideFlags: 0
@@ -1251,7 +1252,7 @@ GameObject:
   - component: {fileID: 1134436720}
   - component: {fileID: 1134436719}
   - component: {fileID: 1134436718}
-  - component: {fileID: 1134436717}
+  - component: {fileID: 1134436721}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1274,23 +1275,6 @@ Transform:
   m_Father: {fileID: 430403525}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1134436717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1134436715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1639771573, guid: 0ae8d181602a00248a82f64a684a1c88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Multiplayer: {fileID: 853702867}
-  Saturation: 0.6
-  Sprites: []
-  Renderers:
-  - {fileID: 1134436719}
 --- !u!65 &1134436718
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1354,6 +1338,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134436715}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1134436721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134436715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64108ab79b6e8154b87d7dd3a0624493, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Multiplayer: {fileID: 0}
+  Saturation: 0.6
+  Sprites: []
+  Renderers:
+  - {fileID: 1134436719}
 --- !u!1 &1242583203
 GameObject:
   m_ObjectHideFlags: 0
@@ -1626,7 +1627,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 853702867}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Alteruna.Multiplayer.MultiplayerManager, Alteruna
         m_MethodName: Connect
         m_Mode: 1
@@ -1901,7 +1902,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 853702867}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Alteruna.Multiplayer.MultiplayerManager, Alteruna
         m_MethodName: Host
         m_Mode: 1

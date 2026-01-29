@@ -4,57 +4,15 @@
         <name>Alteruna</name>
     </assembly>
     <members>
-        <member name="T:Alteruna.API.GameClientApi.SingleRoomServer">
+        <member name="M:Alteruna.API.GameClientApi.Client.RegisterProject(Alteruna.API.GameClientApi.RegisterInput,System.Threading.CancellationToken)">
+            <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
             <summary>
-            Server for a project which is in Single Room mode.
+            Register project and get public project info
             </summary>
+            <returns>The project object.</returns>
+            <exception cref="T:Alteruna.API.GameClientApi.ApiException">A server side error occurred.</exception>
         </member>
-        <member name="P:Alteruna.API.GameClientApi.SingleRoomServer.MaxUsers">
-            <summary>
-            The maximum number of users in the main room of the server.
-            <br/>
-            </summary>
-        </member>
-        <member name="P:Alteruna.API.GameClientApi.SingleRoomServer.HasPinCode">
-            <summary>
-            Whether or not a pin code is required to join the server.
-            <br/>
-            </summary>
-        </member>
-        <member name="P:Alteruna.API.GameClientApi.SingleRoomServer.CurrentUsers">
-            <summary>
-            The number of users in the main room of the server.
-            </summary>
-        </member>
-        <member name="P:Alteruna.API.GameClientApi.StartManagedSingleRoomServerInput.PreferredRegion">
-            <summary>
-            Preferred region for the new server. Depending on availability and the project plan, this region may or may not be chosen.
-            <br/>
-            </summary>
-        </member>
-        <member name="P:Alteruna.API.GameClientApi.StartManagedSingleRoomServerInput.State">
-            <summary>
-            Defaults to `0`.
-            </summary>
-        </member>
-        <member name="P:Alteruna.API.GameClientApi.StartManagedSingleRoomServerInput.SceneId">
-            <summary>
-            Defaults to `-1`.
-            </summary>
-        </member>
-        <member name="P:Alteruna.API.GameClientApi.SingleRoomServerRoomSettingsInput.MaxUsers">
-            <summary>
-            The maximum number of users in the main room of the server.
-            <br/>
-            </summary>
-        </member>
-        <member name="P:Alteruna.API.GameClientApi.SingleRoomServerRoomSettingsInput.PinCode">
-            <summary>
-            Use `0` to indicate no PIN code. Any other number sets a pin code for the room.
-            <br/>
-            </summary>
-        </member>
-        <member name="M:Alteruna.API.GameClientApi.Client.GetProject(System.Threading.CancellationToken)">
+        <member name="M:Alteruna.API.GameClientApi.Client.GetProject(System.Nullable{System.Guid},System.Threading.CancellationToken)">
             <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
             <summary>
             Get public project info
@@ -78,7 +36,7 @@
             <returns>Checkout link created</returns>
             <exception cref="T:Alteruna.API.GameClientApi.ApiException">A server side error occurred.</exception>
         </member>
-        <member name="M:Alteruna.API.GameClientApi.Client.GetSingleRoomServers(Alteruna.API.GameClientApi.Body,System.Threading.CancellationToken)">
+        <member name="M:Alteruna.API.GameClientApi.Client.GetSingleRoomServers(Alteruna.API.GameClientApi.GetSingleRoomServersInput,System.Threading.CancellationToken)">
             <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
             <summary>
             Get Single Room Game Servers
@@ -152,6 +110,56 @@
             <returns>Server started.</returns>
             <exception cref="T:Alteruna.API.GameClientApi.ApiException">A server side error occurred.</exception>
         </member>
+        <member name="T:Alteruna.API.GameClientApi.SingleRoomServer">
+            <summary>
+            Server for a project which is in Single Room mode.
+            </summary>
+        </member>
+        <member name="P:Alteruna.API.GameClientApi.SingleRoomServer.MaxUsers">
+            <summary>
+            The maximum number of users in the main room of the server.
+            <br/>
+            </summary>
+        </member>
+        <member name="P:Alteruna.API.GameClientApi.SingleRoomServer.HasPinCode">
+            <summary>
+            Whether or not a pin code is required to join the server.
+            <br/>
+            </summary>
+        </member>
+        <member name="P:Alteruna.API.GameClientApi.SingleRoomServer.CurrentUsers">
+            <summary>
+            The number of users in the main room of the server.
+            </summary>
+        </member>
+        <member name="P:Alteruna.API.GameClientApi.StartManagedSingleRoomServerInput.PreferredRegion">
+            <summary>
+            Preferred region for the new server. Depending on availability and the project plan, this region may or may not be chosen.
+            <br/>
+            </summary>
+        </member>
+        <member name="P:Alteruna.API.GameClientApi.StartManagedSingleRoomServerInput.State">
+            <summary>
+            Defaults to `0`.
+            </summary>
+        </member>
+        <member name="P:Alteruna.API.GameClientApi.StartManagedSingleRoomServerInput.SceneId">
+            <summary>
+            Defaults to `-1`.
+            </summary>
+        </member>
+        <member name="P:Alteruna.API.GameClientApi.SingleRoomServerRoomSettingsInput.MaxUsers">
+            <summary>
+            The maximum number of users in the main room of the server.
+            <br/>
+            </summary>
+        </member>
+        <member name="P:Alteruna.API.GameClientApi.SingleRoomServerRoomSettingsInput.PinCode">
+            <summary>
+            Use `0` to indicate no PIN code. Any other number sets a pin code for the room.
+            <br/>
+            </summary>
+        </member>
         <member name="T:Alteruna.API.GameClientApi.ProjectServerMode">
             <summary>
             The server mode of a project. Single Server mode means there is a single server to connect to. Single Room mode means there are multiple servers, each with a single main room, and this API can be used to list them.
@@ -208,100 +216,6 @@
             **Secret** key used to update and deregister the registered server.
             <br/>
             </summary>
-        </member>
-        <member name="T:Alteruna.API.ApiException">
-            <summary>
-            Represents an exception that occurs during API calls.
-            </summary>
-        </member>
-        <member name="P:Alteruna.API.ApiException.StatusCode">
-            <summary>
-            Gets the HTTP status code associated with the exception.
-            </summary>
-        </member>
-        <member name="P:Alteruna.API.ApiException.Response">
-            <summary>
-            Gets the response content associated with the exception.
-            </summary>
-        </member>
-        <member name="P:Alteruna.API.ApiException.Headers">
-            <summary>
-            Gets the headers associated with the exception.
-            </summary>
-        </member>
-        <member name="M:Alteruna.API.ApiException.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Collections.Generic.IEnumerable{System.String}},System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Alteruna.API.ApiException"/> class.
-            </summary>
-            <param name="message">The error message.</param>
-            <param name="statusCode">The HTTP status code.</param>
-            <param name="response">The response content.</param>
-            <param name="headers">The headers associated with the response.</param>
-            <param name="innerException">The inner exception.</param>
-        </member>
-        <member name="M:Alteruna.API.ApiException.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Alteruna.API.ApiException"/> class.
-            </summary>
-            <param name="message">The error message.</param>
-            <param name="statusCode">The HTTP status code.</param>
-            <param name="response">The response content.</param>
-            <param name="headers">The headers associated with the response in a simplified format.</param>
-            <param name="innerException">The inner exception.</param>
-        </member>
-        <member name="M:Alteruna.API.ApiException.#ctor(System.String,System.Int32,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Alteruna.API.ApiException"/> class.
-            </summary>
-            <param name="message">The error message.</param>
-            <param name="statusCode">The HTTP status code.</param>
-            <param name="response">The response content.</param>
-        </member>
-        <member name="M:Alteruna.API.ApiException.HeaderConversion(System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
-            <summary>
-            Converts headers from a dictionary of strings to a dictionary of string lists.
-            </summary>
-            <param name="headers">The headers to convert.</param>
-            <returns>A dictionary with headers as lists of strings.</returns>
-        </member>
-        <member name="M:Alteruna.API.ApiException.ToString">
-            <summary>
-            Creates and returns a string representation of the current exception.
-            </summary>
-            <returns>A string representation of the current exception.</returns>
-        </member>
-        <member name="T:Alteruna.API.ApiException`1">
-            <summary>
-            Represents an API exception that includes a result object.
-            </summary>
-            <typeparam name="TResult">The type of the result object.</typeparam>
-        </member>
-        <member name="P:Alteruna.API.ApiException`1.Result">
-            <summary>
-            Gets the result object associated with the exception.
-            </summary>
-        </member>
-        <member name="M:Alteruna.API.ApiException`1.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Collections.Generic.IEnumerable{System.String}},`0,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Alteruna.API.ApiException`1"/> class.
-            </summary>
-            <param name="message">The error message.</param>
-            <param name="statusCode">The HTTP status code.</param>
-            <param name="response">The response content.</param>
-            <param name="headers">The headers associated with the response.</param>
-            <param name="result">The result object associated with the exception.</param>
-            <param name="innerException">The inner exception.</param>
-        </member>
-        <member name="M:Alteruna.API.ApiException`1.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},`0,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Alteruna.API.ApiException`1"/> class.
-            </summary>
-            <param name="message">The error message.</param>
-            <param name="statusCode">The HTTP status code.</param>
-            <param name="response">The response content.</param>
-            <param name="headers">The headers associated with the response in a simplified format.</param>
-            <param name="result">The result object associated with the exception.</param>
-            <param name="innerException">The inner exception.</param>
         </member>
         <member name="M:Alteruna.API.PlayerApi.Client.GetProject(System.Threading.CancellationToken)">
             <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -507,6 +421,109 @@
             **Secret** key used to update and deregister the registered server.
             <br/>
             </summary>
+        </member>
+        <member name="T:Alteruna.API.ApiException">
+            <summary>
+            Represents an exception that occurs during API calls.
+            </summary>
+        </member>
+        <member name="P:Alteruna.API.ApiException.StatusCode">
+            <summary>
+            Gets the HTTP status code associated with the exception.
+            </summary>
+        </member>
+        <member name="P:Alteruna.API.ApiException.Response">
+            <summary>
+            Gets the response content associated with the exception.
+            </summary>
+        </member>
+        <member name="P:Alteruna.API.ApiException.Headers">
+            <summary>
+            Gets the headers associated with the exception.
+            </summary>
+        </member>
+        <member name="M:Alteruna.API.ApiException.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Collections.Generic.IEnumerable{System.String}},System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Alteruna.API.ApiException"/> class.
+            </summary>
+            <param name="message">The error message.</param>
+            <param name="statusCode">The HTTP status code.</param>
+            <param name="response">The response content.</param>
+            <param name="headers">The headers associated with the response.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="M:Alteruna.API.ApiException.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Alteruna.API.ApiException"/> class.
+            </summary>
+            <param name="message">The error message.</param>
+            <param name="statusCode">The HTTP status code.</param>
+            <param name="response">The response content.</param>
+            <param name="headers">The headers associated with the response in a simplified format.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="M:Alteruna.API.ApiException.#ctor(System.String,System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Alteruna.API.ApiException"/> class.
+            </summary>
+            <param name="message">The error message.</param>
+            <param name="statusCode">The HTTP status code.</param>
+            <param name="response">The response content.</param>
+        </member>
+        <member name="M:Alteruna.API.ApiException.#ctor(System.String,System.Int32,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Alteruna.API.ApiException"/> class.
+            </summary>
+            <param name="message">The error message.</param>
+            <param name="statusCode">The HTTP status code.</param>
+            <param name="response">The response content.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="M:Alteruna.API.ApiException.HeaderConversion(System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
+            <summary>
+            Converts headers from a dictionary of strings to a dictionary of string lists.
+            </summary>
+            <param name="headers">The headers to convert.</param>
+            <returns>A dictionary with headers as lists of strings.</returns>
+        </member>
+        <member name="M:Alteruna.API.ApiException.ToString">
+            <summary>
+            Creates and returns a string representation of the current exception.
+            </summary>
+            <returns>A string representation of the current exception.</returns>
+        </member>
+        <member name="T:Alteruna.API.ApiException`1">
+            <summary>
+            Represents an API exception that includes a result object.
+            </summary>
+            <typeparam name="TResult">The type of the result object.</typeparam>
+        </member>
+        <member name="P:Alteruna.API.ApiException`1.Result">
+            <summary>
+            Gets the result object associated with the exception.
+            </summary>
+        </member>
+        <member name="M:Alteruna.API.ApiException`1.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Collections.Generic.IEnumerable{System.String}},`0,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Alteruna.API.ApiException`1"/> class.
+            </summary>
+            <param name="message">The error message.</param>
+            <param name="statusCode">The HTTP status code.</param>
+            <param name="response">The response content.</param>
+            <param name="headers">The headers associated with the response.</param>
+            <param name="result">The result object associated with the exception.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="M:Alteruna.API.ApiException`1.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},`0,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Alteruna.API.ApiException`1"/> class.
+            </summary>
+            <param name="message">The error message.</param>
+            <param name="statusCode">The HTTP status code.</param>
+            <param name="response">The response content.</param>
+            <param name="headers">The headers associated with the response in a simplified format.</param>
+            <param name="result">The result object associated with the exception.</param>
+            <param name="innerException">The inner exception.</param>
         </member>
         <member name="T:Alteruna.Exceptions.AlterunaException">
             <summary>
@@ -1883,6 +1900,16 @@
             session.
             </summary>
         </member>
+        <member name="F:Alteruna.Multiplayer.Core.MethodCall.Called">
+            <summary>
+            True if the method was called since last write.
+            </summary>
+        </member>
+        <member name="F:Alteruna.Multiplayer.Core.MethodCall.InvokedAtLeastOnce">
+            <summary>
+            True if the method has ever been invoked.
+            </summary>
+        </member>
         <member name="T:Alteruna.Multiplayer.Core.ConnectionStatus">
             <summary>
             Type <c>ConnectionStatus</c> defines the state of a connection
@@ -2013,7 +2040,7 @@
             <param name="type">Device type.</param>
             <param name="user">Username.</param>
         </member>
-        <member name="M:Alteruna.Multiplayer.Core.DeviceManager.Start(System.Int32,System.Int32,System.Boolean,Alteruna.Multiplayer.Core.Transport.TransportType,System.Int32,Alteruna.Multiplayer.Core.Transport.TransportType)">
+        <member name="M:Alteruna.Multiplayer.Core.DeviceManager.Start(System.Int32,System.Int32,System.Boolean,Alteruna.Multiplayer.Core.Transport.TransportType,System.Int32,Alteruna.Multiplayer.Core.Transport.TransportType,System.Nullable{System.Guid})">
             <summary>
             Start device manager
             </summary>
@@ -2059,12 +2086,12 @@
             Attempt to find a device in list of available devices by its IP and port
             </summary>
         </member>
-        <member name="M:Alteruna.Multiplayer.Core.DeviceManager.SendProjectQuarry">
+        <member name="M:Alteruna.Multiplayer.Core.DeviceManager.SendProjectQuarry(System.Nullable{System.Guid})">
             <summary>
             Sends Project Quarry. When complete, <see cref="!:IDeviceListener.LicenseQueryResponse"/> is called for all CompositeListeners.
             </summary>
         </member>
-        <member name="M:Alteruna.Multiplayer.Core.DeviceManager.SendProjectQuarry(System.Action{Alteruna.API.GameClientApi.Project})">
+        <member name="M:Alteruna.Multiplayer.Core.DeviceManager.SendProjectQuarry(System.Action{Alteruna.API.GameClientApi.Project},System.Nullable{System.Guid})">
             <summary>
             Sends Project Quarry. When complete, <see cref="!:IDeviceListener.LicenseQueryResponse"/> is called for all CompositeListeners and then callback is invoked.
             </summary>
@@ -4261,6 +4288,37 @@
             The value will loop on 16777215 milliseconds in order to avoid losing precision.
             </summary>
         </member>
+        <member name="M:Alteruna.Multiplayer.AssetPaths.GetAlterunaAbsolutePath">
+            <summary>
+            Gets the absolute path to the Alteruna folder from which the Alteruna binary runs from.
+            </summary>
+            <returns>The absolute path to the Alteruna execution directory.</returns>
+        </member>
+        <member name="M:Alteruna.Multiplayer.AssetPaths.GetAlterunaPath">
+            <summary>
+            Gets the path to the Alteruna folder.
+            </summary>
+            <returns>"Assets/Alteruna/" or similar.</returns>
+        </member>
+        <member name="M:Alteruna.Multiplayer.AssetPaths.GetAlterunaRootPath(System.String)">
+            <summary>
+            Returns the path up to and including the first directory that starts with
+            "Alteruna" or "com.alteruna".
+            Works on Windows, macOS, and Linux.
+            </summary>
+        </member>
+        <member name="M:Alteruna.Multiplayer.AssetPaths.GetMediaPath">
+            <summary>
+            Gets the path to the media folder inside the Alteruna directory.
+            </summary>
+            <returns>"Assets/Alteruna/Media/" or similar.</returns>
+        </member>
+        <member name="M:Alteruna.Multiplayer.AssetPaths.ImportMedia">
+            <summary>
+            Imports media assets to the media folder inside the Alteruna directory.
+            Copies files from the source media location to the project's media folder, creating directories if they do not exist.
+            </summary>
+        </member>
         <member name="T:Alteruna.Multiplayer.AttributesSync">
              <summary>
              Synchronize methods and fields using attributes.
@@ -4389,7 +4447,7 @@
         </member>
         <member name="M:Alteruna.Multiplayer.AttributesSync.ForceSync">
             <summary>
-            Force all fields to be synced as if they where changed.
+            Force all fields to be synced as if they were changed.
             </summary>
         </member>
         <member name="M:Alteruna.Multiplayer.AttributesSync.Commit">
@@ -5352,6 +5410,20 @@
             Join a LAN server on a specific port.
             </summary>
             <param name="port">The port to connect to.</param>
+        </member>
+        <member name="M:Alteruna.Multiplayer.MultiplayerManager.DirectConnect(System.String)">
+            <summary>
+            Connect using ip.
+            If no port is specified, it will use the default port.
+            </summary>
+            <param name="ip">ip address with or without port</param>
+        </member>
+        <member name="M:Alteruna.Multiplayer.MultiplayerManager.DirectConnect(System.String,System.UInt16)">
+            <summary>
+            Connect using ip and port.
+            </summary>
+            <param name="ip">Ip address without port</param>
+            <param name="port">Port. (pass 0 to use the default port)</param>
         </member>
         <member name="M:Alteruna.Multiplayer.MultiplayerManager.SoftReset">
             <summary>
@@ -6458,6 +6530,22 @@
             <summary>
             If true, only commit new states in SetBool, SetInteger, and SetFloat methods.
             </summary>
+        </member>
+        <member name="M:Alteruna.Multiplayer.AnimationSynchronizable.SetLayerWeight(System.Int32,System.Single)">
+            <summary>
+              <para>Sets the weight of the layer at the given index.</para>
+            </summary>
+            <param name="layerIndex">The layer index.</param>
+            <param name="weight">The new layer weight.</param>
+        </member>
+        <member name="M:Alteruna.Multiplayer.AnimationSynchronizable.SetLayerWeight(System.Int32,System.Single,System.Single)">
+            <summary>
+              <para>Sets the weight of the layer at the given index but only if equal or above the required delta.</para>
+            </summary>
+            <param name="layerIndex">The layer index.</param>
+            <param name="weight">The new layer weight.</param>
+            <param name="requiredDelta">The minimum weight required to set the layer weight.</param>
+            <returns>true if the layer weight was updated, false otherwise.</returns>
         </member>
         <member name="T:Alteruna.Multiplayer.EnableSynchronizable">
             <summary>
@@ -8110,7 +8198,7 @@
         </member>
         <member name="M:Alteruna.Multiplayer.Spawner.Despawn(UnityEngine.GameObject)">
             <summary>
-            Invoked when a <c>GameObject</c> has been spawned by a <c>User</c> in the Room.
+            Invoked when a <c>GameObject</c> has been despawned by a <c>User</c> in the Room.
             </summary>
             <param name="spawnedObject">The spawned <c>GameObject</c> to despawn.</param>
         </member>
