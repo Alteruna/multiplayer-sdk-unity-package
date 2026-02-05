@@ -206,7 +206,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 853702867}
         m_TargetAssemblyTypeName: Alteruna.Multiplayer.MultiplayerManager, Alteruna
         m_MethodName: JoinLan
         m_Mode: 1
@@ -2508,7 +2508,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 853702867}
         m_TargetAssemblyTypeName: Alteruna.Multiplayer.MultiplayerManager, Alteruna
         m_MethodName: Connect
         m_Mode: 1
@@ -3213,7 +3213,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 853702867}
         m_TargetAssemblyTypeName: Alteruna.Multiplayer.MultiplayerManager, Alteruna
         m_MethodName: Host
         m_Mode: 1

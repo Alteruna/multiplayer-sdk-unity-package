@@ -183,7 +183,7 @@ namespace Alteruna
 		
 		void HandleLog(string logString, string stackTrace, LogType type) {
 			if (LogErrors && type == LogType.Error) {
-				AddChatEventToBuffer(new ChatEvent(logString, UseTimeStamps));
+				AddChatEventToBuffer(new ChatEvent(logString, UseTimeStamps), false);
 			}
 		}
 
@@ -194,10 +194,10 @@ namespace Alteruna
 			Array.Copy(temp, _chat, Math.Min(temp.Length, _chat.Length));
 		}
 		
-		public void LogError(string msg) => 
-			AddChatEventToBuffer(new ChatEvent(UseRichText ? "<color=#ED4337>" + msg + "</color>" : msg, UseTimeStamps));
+		public void LogError(string msg, bool allowConsoleLog = true) => 
+			AddChatEventToBuffer(new ChatEvent(UseRichText ? "<color=#ED4337>" + msg + "</color>" : msg, UseTimeStamps), allowConsoleLog);
 
-		private void AddChatEventToBuffer(ChatEvent chatEvent)
+		private void AddChatEventToBuffer(ChatEvent chatEvent, bool allowConsoleLog = true)
 		{
 			//shift array
 			for (int i = chatBuffer - 2; i >= 0; i--)
@@ -219,7 +219,7 @@ namespace Alteruna
 			}
 
 			var msg = chatEvent.ToString(this);
-			if (LogChatInDebugLog)
+			if (LogChatInDebugLog && allowConsoleLog)
 				Debug.Log(msg);
 			TextMsgAdded.Invoke(msg);
 			TextChatUpdate.Invoke(ToString());
@@ -242,6 +242,11 @@ namespace Alteruna
 				return;
 			}
 
+			SendChatMessageRaw(msg);
+		}
+
+		private void SendChatMessageRaw(string msg)
+		{
 #if ALTERUNA
 			ChatEvent chatEvent = new ChatEvent(msg, UseTimeStamps, Multiplayer.Me);
 #else
@@ -301,6 +306,7 @@ namespace Alteruna
 				_sb.AppendLine("/logOnSend <bool> : When true, show message for sender when sending the message. Otherwise it shows when the message in created.");
 				_sb.AppendLine("/logSystemMessages <bool> : Enable/disable logging of system messages");
 				_sb.AppendLine("/useRichText <bool> : Enable/disable rich names");
+				_sb.AppendLine("/say <string> : Same as typing in chat but will not execute any command");
 				if (AllowHostToToggleCheats)
 					_sb.AppendLine("/testingCheats <bool>: Enable/disable cheats");
 				if (AllowCheats) 
@@ -347,7 +353,20 @@ namespace Alteruna
 					}
 				}
 			}
-			else if (commandCi == "CHATBUFFER") { }
+			else if (commandCi == "SAY") { SendChatMessageRaw(string.Join(" ", args)); }
+			// ReSharper disable once StringLiteralTypo
+			else if (ConfigCommand(commandCi == "CHATBUFFER", ref chatBuffer, args))
+			{
+				if (_chat.Length == chatBuffer) return;
+				if (chatBuffer < 0)
+				{
+					chatBuffer = _chat.Length;
+					LogError("Invalid argument");
+					return;
+				}
+
+				Array.Resize(ref _chat, chatBuffer);
+			}
 			// ReSharper disable once StringLiteralTypo
 			else if (ConfigCommand(commandCi == "BOLDNAMES", ref BoldNames, args)) { }
 			// ReSharper disable once StringLiteralTypo
@@ -390,7 +409,7 @@ namespace Alteruna
 				{
 					i++;
 					string s = args[i].ToUpperInvariant();
-					if (s == "ALL")
+					if (s == "ALL" || s == "ALLE" || s == "ALLEXCLUSIVE")
 					{
 						if (targets.Count == 1)
 						{
@@ -450,13 +469,23 @@ namespace Alteruna
 				}
 
 #if ALTERUNA
-				if (targets[0] == (ushort)UserId.AllInclusive || targets.Any(id => id == Multiplayer.Me))
+				
+				if (targets[0] == (ushort)UserId.AllInclusive)
 				{
 					ExecuteCommand(c);
+					targets[0] = (ushort)UserId.All;
+				}
+				else
+				{
+					ushort myId = Multiplayer.Me.Index;
+					if (targets.Any(id => id == myId))
+					{
+						targets.Remove(myId);
+						ExecuteCommand(c);
+					}
 				}
 #endif
 
-				if (!invoker) return;
 				// remote execute
 				_outgoingMessages.Add(new ChatEvent('/' + c));
 
@@ -505,10 +534,14 @@ namespace Alteruna
 						}
 						catch (Exception e)
 						{
-							LogError("Failed to execute command.");
 							if (LogFullCommandErrors)
 							{
-								LogError(e.ToString());
+								LogError("Failed to execute command.\n" + e);
+							}
+							else
+							{
+								LogError("Failed to execute command.", false);
+								Debug.LogError("Failed to execute command.\n" + e);
 							}
 						}
 					}
@@ -540,6 +573,37 @@ namespace Alteruna
 
 			// Set new value.
 			return TextChatCommandHelper.TrySetBoolArg(args[0], ref config);
+		}
+		
+		private bool ConfigCommand(bool condition, ref int config, string[] args)
+		{
+			if (condition)
+			{
+				ConfigCommand(ref config, args);
+				return true;
+			}
+
+			return false;
+		}
+		
+		private bool ConfigCommand(ref int config, string[] args)
+		{
+			if (args.Length == 0)
+			{
+				// Get current value.
+				AddChatEventToBuffer(new ChatEvent(config.ToString(), UseTimeStamps));
+				return true;
+			}
+
+			// Set new value.
+			if (Int32.TryParse(args[0], out int v))
+			{
+				config = v;
+				return true;
+			}
+
+			LogError("Unable to parse argument");
+			return false;
 		}
 
 #if ALTERUNA
