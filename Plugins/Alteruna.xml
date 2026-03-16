@@ -463,7 +463,7 @@
     <member name="M:Alteruna.Multiplayer.CommunicationBridge.SetMultiplayerComponent(System.Boolean)">
       <summary>
             If the <c>Multiplayer</c> reference is null, set it to active <c>Multiplayer</c> component.
-            <example><code language="cs">
+            <example><code>
             void OnEnable() =&gt; SetMultiplayerComponent();
             </code><c>SetMultiplayerComponent</c> call it in <c>OnEnable</c> unless hidden.
             </example></summary>
@@ -478,7 +478,7 @@
     <member name="T:Alteruna.Multiplayer.CommunicationBridgeUID">
       <summary>
             Holds references and methods for communications with active <c>Multiplayer</c> and <c>UID</c> components.
-            Can be used to as object reference when sending packages to other clients.
+            Can be used as an object reference when sending packages to other clients.
             </summary>
     </member>
     <member name="M:Alteruna.Multiplayer.CommunicationBridgeUID.#ctor"></member>
@@ -497,7 +497,11 @@
             Initialize UID.
             </summary>
     </member>
-    <member name="M:Alteruna.Multiplayer.CommunicationBridgeUID.OnDestroy"></member>
+    <member name="M:Alteruna.Multiplayer.CommunicationBridgeUID.OnDestroy">
+      <summary>
+            Deregister on destruction.
+            </summary>
+    </member>
     <member name="M:Alteruna.Multiplayer.CommunicationBridgeUID.OnEnable">
       <summary>
             Register the object to the multiplayer component.
@@ -733,6 +737,53 @@
             </summary>
       <param name="userID">The user ID for which to generate the string representation.</param>
     </member>
+    <member name="T:Alteruna.Multiplayer.ITextChatCommand">
+      <summary>
+             Can be implemented to create custom commands.
+             </summary>
+      <remarks>
+        <c>ITextChatCommand</c> is used to create slash commands that can be used with <see cref="T:Alteruna.Multiplayer.TextChatSynchronizable" />.<br /><br />
+             
+             There are several built-in commands in Alteruna.
+             One of them is <c>"/execute"</c>.
+             It can be used to run command as a different user.<br /><c>/execute as allInclusive say Hello everyone!</c><br />
+             This would make all players say "Hello everyone!" in the chat.
+             Note that <c>allInclusive</c> can be replaced by the shorthand <c>alli</c>.
+             </remarks>
+    </member>
+    <member name="P:Alteruna.Multiplayer.ITextChatCommand.Command">
+      <summary>
+            The written command name. Inputting a slash following with the command name runs the command.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.ITextChatCommand.Description">
+      <summary>
+            The description that is displayed when running /help.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.ITextChatCommand.Execute(Alteruna.Multiplayer.TextChatSynchronizable,System.String[])">
+      <summary>
+            Called when command is executed by a user.
+            </summary>
+      <param name="textChat"></param>
+      <param name="args">Arguments that the user has input after the slash command.</param>
+      <returns>The message that will be sent to Unity console as well as the text chat.</returns>
+    </member>
+    <member name="P:Alteruna.Multiplayer.ITextChatCommand.IgnoreCase">
+      <summary>
+            Determines whether capital letters are taken into consideration or not.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.ITextChatCommand.IsCheat">
+      <summary>
+            Determines whether the command is a cheat or not. A cheat can be considered a developer shortcut.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.ITextChatCommand.Usage">
+      <summary>
+            Displays how the command is written to run properly.
+            </summary>
+    </member>
     <member name="T:Alteruna.Multiplayer.IUniqueID">
       <summary>
             Class <c>UniqueID</c> defines an application-wide unique ID for identifying objects deciding where to rout data in a Room.
@@ -758,11 +809,14 @@
     <member name="M:Alteruna.Multiplayer.Multiplayer.CreateNewMultiplayerManager"></member>
     <member name="T:Alteruna.Multiplayer.MultiplayerManager">
       <summary>
-            The component <c>Multiplayer</c> gives access to all functionality and communication for Alteruna Multiplayer.
-            </summary>
+             The component <c>MultiplayerManager</c> gives access to all functionality and communication for Alteruna Multiplayer.
+             </summary>
       <remarks>
-        <img src="../images/Alteruna.Multiplayer.png" />
-      </remarks>
+             When a reference for <c>MultiplayerManager</c> is needed, it is recommended to inherit from
+             <see cref="T:Alteruna.Multiplayer.CommunicationBridge" /> or one of its many inheritors, such as <see cref="T:Alteruna.Multiplayer.AttributesSync" />.
+            
+             Other methods, such as using <c>MultiplayerManager.Instance</c> or creating a serialized property in the scene
+             will not work with the <see href="https://docs.v2.alteruna.com/html/T_Alteruna_Multiplayer_Tools_MultiClientSimulation.htm">MultiClientSimulation</see> tool.<br /><br /><img src="../images/Alteruna.Multiplayer.png" /></remarks>
     </member>
     <member name="M:Alteruna.Multiplayer.MultiplayerManager.#ctor"></member>
     <member name="P:Alteruna.Multiplayer.MultiplayerManager.ApplicationData"></member>
@@ -793,7 +847,7 @@
     </member>
     <member name="F:Alteruna.Multiplayer.MultiplayerManager.Buckets">
       <summary>
-            A list containing all of the existing Buckets in the application.
+            A list containing all the existing Buckets in the application.
             </summary>
     </member>
     <member name="M:Alteruna.Multiplayer.MultiplayerManager.Connect">
@@ -960,14 +1014,14 @@
     </member>
     <member name="M:Alteruna.Multiplayer.MultiplayerManager.GetObjectById``1(Alteruna.Multiplayer.IUniqueID)">
       <summary>
-            Get a object inheriting from IAdaptiveSerializableUniqueID through its UID.
+            Get an object inheriting from IAdaptiveSerializableUniqueID through its UID.
             </summary>
       <param name="id">Specified UID.</param>
       <returns>GameObject or null.</returns>
     </member>
     <member name="M:Alteruna.Multiplayer.MultiplayerManager.GetObjectById``1(System.Guid)">
       <summary>
-            Get a object inheriting from IAdaptiveSerializableUniqueID through its UID.
+            Get an object inheriting from IAdaptiveSerializableUniqueID through its UID.
             </summary>
       <param name="id">Specified UID.</param>
       <returns>GameObject or null.</returns>
@@ -1141,7 +1195,7 @@
     </member>
     <member name="M:Alteruna.Multiplayer.MultiplayerManager.JoinWithInviteCode(System.String)">
       <summary>
-            Join a room using an invite code.
+            Join a room using the invite code.
             </summary>
       <param name="code">Invite code.</param>
     </member>
@@ -1250,7 +1304,7 @@
     </member>
     <member name="F:Alteruna.Multiplayer.MultiplayerManager.OnLockDenied">
       <summary>
-            Event invoked when an attempt to gain ownership over a object is denied.
+            Event invoked when an attempt to gain ownership over an object is denied.
             </summary>
     </member>
     <member name="F:Alteruna.Multiplayer.MultiplayerManager.OnLockRequested">
@@ -1260,7 +1314,7 @@
     </member>
     <member name="F:Alteruna.Multiplayer.MultiplayerManager.OnLockUnlocked">
       <summary>
-            Event invoked when a object releases its ownership.
+            Event invoked when an object releases its ownership.
             </summary>
     </member>
     <member name="F:Alteruna.Multiplayer.MultiplayerManager.OnNetworkError">
@@ -2691,6 +2745,148 @@
             </summary>
     </member>
     <member name="M:Alteruna.Multiplayer.Synchronizable.SynchronizableMethod.#ctor"></member>
+    <member name="T:Alteruna.Multiplayer.TextChatCommandHelper"></member>
+    <member name="M:Alteruna.Multiplayer.TextChatCommandHelper.GetPlayerTransform(Alteruna.Multiplayer.TextChatSynchronizable)"></member>
+    <member name="F:Alteruna.Multiplayer.TextChatCommandHelper.LastTransformTarget"></member>
+    <member name="F:Alteruna.Multiplayer.TextChatCommandHelper.LastUidTarget"></member>
+    <member name="M:Alteruna.Multiplayer.TextChatCommandHelper.TryGetBoolArg(System.String,System.Boolean@,System.Boolean)"></member>
+    <member name="M:Alteruna.Multiplayer.TextChatCommandHelper.TryGetBoolArg(System.String[],System.Boolean@,System.Boolean)"></member>
+    <member name="M:Alteruna.Multiplayer.TextChatCommandHelper.TrySetBoolArg(System.String,System.Boolean@)"></member>
+    <member name="M:Alteruna.Multiplayer.TextChatCommandHelper.TrySetBoolArg(System.String[],System.Boolean@)"></member>
+    <member name="T:Alteruna.Multiplayer.TextChatSynchronizable">
+      <summary>
+            Synchronizes text chat messages for all clients.
+            Can also be used to run commands and cheats.
+            </summary>
+      <remarks>
+        <c>TextChatSynchronizable</c> is a chat system that synchronizes with all clients in the room.
+            It is also used with slash commands using the
+            <see href="https://docs.unity3d.com/Packages/com.unity.textmeshpro@3.0/api/TMPro.html">TMP_InputField</see> for
+            input and creating a class that implements <see cref="T:Alteruna.Multiplayer.ITextChatCommand" />.<br /><br /><img src="../images/Doc.Prefabs.TextChat.png" /></remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.TextChatSynchronizable.#ctor"></member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.AllowCheats">
+      <summary>
+            Allow commands that are considered cheats to run.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.AllowCommands">
+      <summary>
+            Allow commands to be run in text chat.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.AllowHostToToggleCheats">
+      <summary>
+            Allows a room owner to enable cheats.
+            </summary>
+      <remarks>
+            Always true in development builds and editor.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.TextChatSynchronizable.AssembleData(Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer,Alteruna.Multiplayer.Core.MethodArguments.SerializeInfo)"></member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.BoldNames">
+      <summary>
+            Make names in chat bold.
+            </summary>
+      <remarks>
+            Requires <see cref="F:Alteruna.Multiplayer.TextChatSynchronizable.UseRichText" /> to be enabled.
+            </remarks>
+    </member>
+    <member name="P:Alteruna.Multiplayer.TextChatSynchronizable.ChatBuffer">
+      <summary>
+            Get or change the max number of buffered chat lines.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.Commands">
+      <summary>
+            Commands registry.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.TextChatSynchronizable.DisassembleData(Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader,Alteruna.Multiplayer.Core.MethodArguments.UnserializeInfo)"></member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.EnableCheatsInDevEnvironments">
+      <summary>
+            Default <see cref="F:Alteruna.Multiplayer.TextChatSynchronizable.AllowCheats" /> in development environments.
+            </summary>
+      <remarks>
+            development environments refers to editor and development builds.
+            </remarks>
+    </member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.GetUserColor">
+      <summary>
+            Function to get user color.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.InputField">
+      <summary>
+            Text input field for chat messages.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.LogChatInDebugLog">
+      <summary>
+            Log chat messages to the console debug log.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.TextChatSynchronizable.LogError(System.String,System.Boolean)"></member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.LogErrors">
+      <summary>
+            Write Unity errors in chat.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.LogFullCommandErrors">
+      <summary>
+            When true, Show error when the command fails.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.LogLocalOnSend">
+      <summary>
+            When true, show a message for the sender when sending the message.
+            Otherwise, it shows when the message is created.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.LogSystemMessages">
+      <summary>
+            Writes events to text chat. Like user joined.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.TextChatSynchronizable.OnDestroy">
+      <summary>
+            Deregister and unsubscribe from evets.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.TextChatSynchronizable.Reset"></member>
+    <member name="M:Alteruna.Multiplayer.TextChatSynchronizable.SendChatMessage(System.String)"></member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.SetInputActiveAction">
+      <summary>
+            Input action to select chat input field.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.TextChatSynchronizable.Start">
+      <summary>
+            Initializing buffer and subscribe events.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.TextChatUpdate">
+      <summary>
+            Event triggered when the buffer needs to be updated.
+            The whole buffer is sent as a argument.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.TextMsgAdded">
+      <summary>
+            Event triggered when a text message is added to the chat with the new message.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.TextChatSynchronizable.ToString"></member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.UseRichText">
+      <summary>
+            Use rich text formatting.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.TextChatSynchronizable.UseTimeStamps">
+      <summary>
+            Sort messages based on senders timestamp.
+            </summary>
+    </member>
     <member name="T:Alteruna.Multiplayer.TransformSynchronizable">
       <summary>
             Class <c>TransformSynchronizable</c> defines a component which synchronizes its game objects transform with other clients in the Playroom.
