@@ -294,7 +294,6 @@ namespace Alteruna
 
 			RemoveExtraRooms(multiplayer);
 
-			Debug.Log("RoomListUpdated: " + multiplayer.AvailableRooms.Count);
 			for (int i = 0; i < multiplayer.AvailableRooms.Count; i++)
 			{
 				Room room = multiplayer.AvailableRooms[i];
