@@ -20,6 +20,8 @@ namespace Alteruna
 		private const string TEXT_RECONNECTING = "Reconnecting";
 		private const string TEXT_ROOMS = "Rooms";
 		private const string TEXT_STARTED = "Started";
+		private const string TEXT_BTN_START = "Start";
+		private const string TEXT_BTN_HOST = "Host";
 
 		[SerializeField] private TMP_Text TitleText;
 		[SerializeField] private GameObject LANEntryPrefab;
@@ -42,6 +44,13 @@ namespace Alteruna
 		private float _statusTextTime;
 		private int _roomI = -1;
 
+		private TMP_Text StartButtonText;
+
+		private void Awake()
+		{
+			StartButtonText = StartButton.GetComponentInChildren<TMP_Text>();
+			StartButtonText.text = TEXT_BTN_HOST;
+		}
 
 		private void Start()
 		{
@@ -65,17 +74,9 @@ namespace Alteruna
 				Multiplayer.OnRoomJoined.AddListener(RoomJoined);
 				Multiplayer.OnRoomLeft.AddListener(RoomLeft);
 
-				StartButton.onClick.AddListener(() =>
-				{
-					Multiplayer.CreateRoom();
-					_refreshTime = RefreshInterval;
-				});
+				StartButton.onClick.AddListener(StartButtonOnClick);
 
-				LeaveButton.onClick.AddListener(() =>
-				{
-					Multiplayer.CurrentRoom?.Leave();
-					_refreshTime = RefreshInterval;
-				});
+				LeaveButton.onClick.AddListener(LeaveButtonOnClick);
 
 				if (TitleText != null)
 				{
@@ -100,13 +101,32 @@ namespace Alteruna
 				}
 			}
 
-			StartButton.interactable = false;
 			LeaveButton.interactable = false;
+		}
+
+		private void StartButtonOnClick()
+		{
+			if (Multiplayer.IsConnected)
+			{
+				Multiplayer.CreateRoom();
+			}
+			else
+			{
+				Multiplayer.Host();
+			}
+
+			_refreshTime = RefreshInterval;
+		}
+		
+		private void LeaveButtonOnClick()
+		{
+			Multiplayer.CurrentRoom?.Leave();
+			_refreshTime = RefreshInterval;
 		}
 
 		private void FixedUpdate()
 		{
-			if (!Multiplayer.enabled)
+			if (!Multiplayer.Started)
 			{
 				TitleText.text = TEXT_OFFLINE;
 			}
@@ -129,7 +149,7 @@ namespace Alteruna
 			}
 			else if (!Multiplayer.IsConnecting)
 			{
-				TitleText.text = TEXT_NOT_CONNECTED;
+				//TitleText.text = TEXT_NOT_CONNECTED;
 				
 				if (!AutomaticallyRefresh || (_refreshTime += Time.fixedDeltaTime) < RefreshInterval) return;
 				_refreshTime -= RefreshInterval;
@@ -193,12 +213,15 @@ namespace Alteruna
 			else if (TitleText != null && TitleText.text == TEXT_OFFLINE)
 			{
 				TitleText.text = TEXT_STARTED;
+				StartButtonText.text = TEXT_BTN_START;
 			}
 		}
 
 		private void Connected(ConnectedEvent args) => Connected(args.Controller);
 		private void Connected(Multiplayer.MultiplayerManager controller)
 		{
+			StartButtonText.text = TEXT_BTN_START;
+			
 			// if already connected to room
 			if (controller.InRoom)
 			{
@@ -217,7 +240,8 @@ namespace Alteruna
 
 		private void Disconnected(DisconnectedEvent args)
 		{
-			StartButton.interactable = false;
+			StartButtonText.text = TEXT_BTN_HOST;
+			StartButton.interactable = true;
 			LeaveButton.interactable = false;
 
 			_connectionMessage = TEXT_RECONNECTING;
@@ -234,6 +258,7 @@ namespace Alteruna
 		
 		private void RoomJoined(Room room)
 		{
+			StartButtonText.text = TEXT_BTN_START;
 			StartButton.interactable = false;
 			LeaveButton.interactable = true;
 
@@ -264,10 +289,12 @@ namespace Alteruna
 		private void RoomListUpdated(Multiplayer.MultiplayerManager multiplayer)
 		{
 			if (ContentContainer == null) return;
-			TitleText.text = TEXT_ROOMS;
+			if (multiplayer.IsConnected)
+				TitleText.text = TEXT_ROOMS;
 
 			RemoveExtraRooms(multiplayer);
 
+			Debug.Log("RoomListUpdated: " + multiplayer.AvailableRooms.Count);
 			for (int i = 0; i < multiplayer.AvailableRooms.Count; i++)
 			{
 				Room room = multiplayer.AvailableRooms[i];
