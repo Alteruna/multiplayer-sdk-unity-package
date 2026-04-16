@@ -1744,10 +1744,15 @@
     <member name="M:Alteruna.Multiplayer.Rigidbody2DSynchronizable.AssembleData(Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer,Alteruna.Multiplayer.Core.MethodArguments.SerializeInfo)"></member>
     <member name="M:Alteruna.Multiplayer.Rigidbody2DSynchronizable.Awake"></member>
     <member name="M:Alteruna.Multiplayer.Rigidbody2DSynchronizable.DisassembleData(Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader,Alteruna.Multiplayer.Core.MethodArguments.UnserializeInfo)"></member>
+    <member name="P:Alteruna.Multiplayer.Rigidbody2DSynchronizable.gravityScale">
+      <summary>
+            The degree to which this object is affected by gravity.
+            </summary>
+    </member>
     <member name="P:Alteruna.Multiplayer.Rigidbody2DSynchronizable.isKinematic">
       <summary>
-        <para>Controls whether physics affects the rigidbody.</para>
-      </summary>
+            Controls whether physics affects the rigidbody.
+            </summary>
     </member>
     <member name="M:Alteruna.Multiplayer.Rigidbody2DSynchronizable.IsSleeping">
       <summary>
@@ -1793,6 +1798,11 @@
     <member name="M:Alteruna.Multiplayer.Rigidbody2DSynchronizable.Sleep">
       <summary>
             Forces a rigidbody to sleep at least one frame.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Rigidbody2DSynchronizable.useGravity">
+      <summary>
+            Controls whether gravity affects this rigidbody.
             </summary>
     </member>
     <member name="P:Alteruna.Multiplayer.Rigidbody2DSynchronizable.velocity">
@@ -1848,8 +1858,8 @@
     </member>
     <member name="P:Alteruna.Multiplayer.RigidbodySynchronizable.angularVelocity">
       <summary>
-        <para>The angular velocity vector of the rigidbody measured in radians per second.</para>
-      </summary>
+            The angular velocity vector of the rigidbody measured in radians per second.
+            </summary>
     </member>
     <member name="M:Alteruna.Multiplayer.RigidbodySynchronizable.AssembleData(Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer,Alteruna.Multiplayer.Core.MethodArguments.SerializeInfo)"></member>
     <member name="M:Alteruna.Multiplayer.RigidbodySynchronizable.Awake"></member>
@@ -1880,8 +1890,8 @@
     <member name="M:Alteruna.Multiplayer.RigidbodySynchronizable.OnCollisionEnter(UnityEngine.Collision)"></member>
     <member name="P:Alteruna.Multiplayer.RigidbodySynchronizable.position">
       <summary>
-        <para>The position of the rigidbody.</para>
-      </summary>
+            	The position of the rigidbody.
+             </summary>
     </member>
     <member name="M:Alteruna.Multiplayer.RigidbodySynchronizable.Reset"></member>
     <member name="F:Alteruna.Multiplayer.RigidbodySynchronizable.Rigidbody">
@@ -1911,10 +1921,15 @@
             Forces a rigidbody to sleep at least one frame.
             </summary>
     </member>
+    <member name="P:Alteruna.Multiplayer.RigidbodySynchronizable.useGravity">
+      <summary>
+            Controls whether gravity affects this rigidbody.
+            </summary>
+    </member>
     <member name="P:Alteruna.Multiplayer.RigidbodySynchronizable.velocity">
       <summary>
-        <para>The velocity vector of the rigidbody. It represents the rate of change of Rigidbody position.</para>
-      </summary>
+            The velocity vector of the rigidbody. It represents the rate of change of Rigidbody position.
+            </summary>
     </member>
     <member name="M:Alteruna.Multiplayer.RigidbodySynchronizable.WakeUp">
       <summary>
@@ -1999,6 +2014,11 @@
       <summary>
             Syncs settings to all clients.
             Required for changing settings during runtime.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.RigidbodySynchronizableCommon.useGravity">
+      <summary>
+            Controls whether gravity affects this rigidbody.
             </summary>
     </member>
     <member name="M:Alteruna.Multiplayer.RigidbodySynchronizableCommon.WakeUp">
@@ -2340,7 +2360,7 @@
     </member>
     <member name="T:Alteruna.Multiplayer.SingleClientEvent">
       <summary>
-            Event used for when you want a something to only apply for a single client.
+            Event used for when you want something to only apply for a single client.
             </summary>
       <remarks>
             When on an avatar, the controller will be the avatar owner.
@@ -2989,8 +3009,8 @@
     </member>
     <member name="T:Alteruna.Multiplayer.UniqueAvatarChild">
       <summary>
-            Instantiate a prefab as a child from a array.
-            If avatar index goes beyond the length of the array, it will loop.
+            Instantiate a prefab as a child from an array.
+            If the avatar index goes beyond the length of the array, it will loop.
             </summary>
       <remarks>
         <img src="../images/Alteruna.UniqueAvatarChild.png" />
@@ -3028,7 +3048,7 @@
             Set child prefab to target id. Wraps around if <c>Prefabs</c> is less than id.
             If child prefab already is set, replace it.
             </summary>
-      <param name="id"></param>
+      <param name="id">User index</param>
     </member>
     <member name="M:Alteruna.Multiplayer.UniqueAvatarChild.TryGetAvatarChild(UnityEngine.GameObject@)">
       <summary>

@@ -832,7 +832,7 @@ MonoBehaviour:
   _maxPlayers: 20
   ConnectOnStart: 0
   AvatarSpawning: 1
-  AvatarPrefab: {fileID: 0}
+  AvatarPrefab: {fileID: 430403530}
   AvatarSpawnLocation: {fileID: 0}
   SpawnAvatarPerIndex: 0
   AvatarSpawnLocations: []
