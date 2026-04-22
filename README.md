@@ -1,5 +1,5 @@
 <p align="center">
-<img height="200" src="Media~/Alteruna Splash.png" />
+<img height="200" src="Media/Alteruna Splash.png" />
 </p>
 
 ---
