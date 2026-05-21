@@ -29,10 +29,10 @@ namespace Alteruna
 		private static extern void WebSocketClose();
 
 		[MonoPInvokeCallback(typeof(Action<byte[], int, int>))]
-		public static void ReceiveMsg([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] data, int lenght, int opcode)
+		public static void ReceiveMsg([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] data, int length, int opcode)
 		{
 			//Debug.Log("ReceiveMsg of type " + opcode);
-			OnMessage(data, lenght, opcode);
+			OnMessage(data, length, opcode);
 		}
 
 		[MonoPInvokeCallback(typeof(Action))]

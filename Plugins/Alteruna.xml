@@ -3638,15 +3638,6 @@
             Allow the usage of singleton for location the multiplayer reference.
             </summary>
     </member>
-    <member name="P:Alteruna.Multiplayer.Configs.AlterunaConfig.ClientPort">
-      <summary>
-            Port used by non-hosting clients.
-            </summary>
-      <remarks>
-            If set to 0, it will auto-assign a free port.
-            Used for lan network discovery.
-            </remarks>
-    </member>
     <member name="P:Alteruna.Multiplayer.Configs.AlterunaConfig.DefaultPort">
       <summary>
             Default hosting port.
@@ -3656,6 +3647,15 @@
       <summary>
             When true, cameras and audio listeners will be automatically disabled on avatars that are not owned by the local client.
             </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Configs.AlterunaConfig.DiscoveryPort">
+      <summary>
+            Port used by non-hosting clients.
+            </summary>
+      <remarks>
+            If set to 0, it will auto-assign a free port.
+            Used for lan network discovery.
+            </remarks>
     </member>
     <member name="P:Alteruna.Multiplayer.Configs.AlterunaConfig.EnableLOD">
       <summary>
@@ -3694,9 +3694,27 @@
             Simple attribute usage option.
             </summary>
     </member>
-    <member name="T:Alteruna.Multiplayer.Configs.IAlterunaApplicationData"></member>
-    <member name="P:Alteruna.Multiplayer.Configs.IAlterunaApplicationData.ProjectName"></member>
-    <member name="P:Alteruna.Multiplayer.Configs.IAlterunaApplicationData.ServerMode"></member>
+    <member name="T:Alteruna.Multiplayer.Configs.IAlterunaApplicationData">
+      <summary>
+            Provides project-level configuration data consumed by the Alteruna multiplayer service.
+            </summary>
+      <remarks>
+            Implement this interface on a <c>ScriptableObject</c> or plain class and pass it to the
+            service during initialization. The service reads <see cref="P:Alteruna.Multiplayer.Configs.IAlterunaApplicationData.ServerMode" /> to determine
+            whether to connect to a managed cloud server or a self-hosted unmanaged server, and uses
+            <see cref="P:Alteruna.Multiplayer.Configs.IAlterunaApplicationData.ProjectName" /> to identify the application on the server.
+            </remarks>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Configs.IAlterunaApplicationData.ProjectName">
+      <summary>
+            The unique project name used to identify this application on the Alteruna backend.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Configs.IAlterunaApplicationData.ServerMode">
+      <summary>
+            The server hosting mode for this project.
+            </summary>
+    </member>
     <member name="T:Alteruna.Multiplayer.Core.ConnectionStatus">
       <summary>
             Type <c>ConnectionStatus</c> defines the state of a connection
@@ -3956,9 +3974,20 @@
     <member name="M:Alteruna.Multiplayer.Core.IServiceListener.OnLatencyUpdate(System.UInt16,System.Single)"></member>
     <member name="M:Alteruna.Multiplayer.Core.IServiceListener.OnLicenseQueryResponse(Alteruna.API.GameClientApi.Project)"></member>
     <member name="M:Alteruna.Multiplayer.Core.IServiceListener.OnNetworkError(Alteruna.Multiplayer.Core.Endpoint)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.IServiceListener.OnOtherUserJoined(Alteruna.Multiplayer.Core.User)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.IServiceListener.OnOtherUserLeft(Alteruna.Multiplayer.Core.User)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.IServiceListener.OnRoomCreated(System.Boolean,Alteruna.Multiplayer.Core.Room,System.UInt16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceListener.OnOtherUserJoined(Alteruna.Multiplayer.Core.User,System.Boolean)">
+      <summary>
+            Called when a user is added to room.
+            </summary>
+      <param name="user">New user.</param>
+      <param name="existingUser">True if a user joined before you joined.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceListener.OnOtherUserLeft(Alteruna.Multiplayer.Core.User)">
+      <summary>
+            Called when a user leaves room.
+            </summary>
+      <param name="user">Leaving user.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceListener.OnRoomCreated(System.Boolean,Alteruna.Multiplayer.Core.Room,System.Int32)"></member>
     <member name="M:Alteruna.Multiplayer.Core.IServiceListener.OnRoomJoined(Alteruna.Multiplayer.Core.Room,Alteruna.Multiplayer.Core.User)"></member>
     <member name="M:Alteruna.Multiplayer.Core.IServiceListener.OnRoomJoinRejected(System.UInt32,System.String,System.String)"></member>
     <member name="M:Alteruna.Multiplayer.Core.IServiceListener.OnRoomLeft(Alteruna.Multiplayer.Core.Service)"></member>
@@ -4020,6 +4049,8 @@
       <param name="synchronizable">The Synchronizable or null.</param>
       <returns>True if the Synchronizable was found, else false.</returns>
     </member>
+    <member name="T:Alteruna.Multiplayer.Core.ITransportStream"></member>
+    <member name="P:Alteruna.Multiplayer.Core.ITransportStream.ShemaVersion"></member>
     <member name="T:Alteruna.Multiplayer.Core.ITransportStreamReader">
       <summary>
             Interface <c>ITransportStreamReader</c> defines a generic interface for reading 
@@ -4091,7 +4122,15 @@
             </summary>
       <param name="value">Byte array.</param>
     </member>
-    <member name="T:Alteruna.Multiplayer.Core.LicenseRegisteredDel"></member>
+    <member name="T:Alteruna.Multiplayer.Core.LicenseRegisteredDel">
+      <summary>
+            Callback invoked when the Alteruna license has been validated and registered with the service.
+            </summary>
+      <remarks>
+            Subscribe to this delegate via <see cref="F:Alteruna.Multiplayer.MultiplayerManager.LicenseRegistered" /> to perform
+            actions that require a valid license, such as connecting to a server or enabling premium features.
+            </remarks>
+    </member>
     <member name="T:Alteruna.Multiplayer.Core.LogBase">
       <summary>
             Abstract class <c>LogBase</c> defines a generic interface for all
@@ -4470,7 +4509,7 @@
             Lock current room. 
             </summary>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.Service.OnSessionCreated(System.Boolean,Alteruna.Multiplayer.Core.Room,System.UInt16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.OnSessionCreated(System.Boolean,Alteruna.Multiplayer.Core.Room,System.Int32)"></member>
     <member name="M:Alteruna.Multiplayer.Core.Service.OpenPort(System.UInt16,System.UInt16,System.Boolean,Alteruna.Multiplayer.Core.Transport.TransportType)">
       <summary>
             Opens the communication port and initializes the device manager with the specified settings.
@@ -4683,6 +4722,7 @@
             Whether to join the room after creating it.
             </summary>
     </member>
+    <member name="M:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.MatchMake(System.UInt16,System.UInt16)"></member>
     <member name="P:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.MaxUsers">
       <summary>
             Maximum number of users allowed in the room.
@@ -4959,79 +4999,596 @@
             Only Works in browser.
             </summary>
     </member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.ConnectedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.ConnectedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Endpoint)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.DisconnectedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.DisconnectedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Endpoint)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.EndpointEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.EndpointEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Endpoint)"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.EndpointEvent.Endpoint"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.ForceSyncedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.ForceSyncedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.UInt16)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.ForceSyncEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.ForceSyncEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.UInt16)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.ForceSyncReplyEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.ForceSyncReplyEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.UInt16)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.JoinRejectedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.JoinRejectedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.String)"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.JoinRejectedEvent.Reason"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.LockAcquiredEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.LockAcquiredEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.LockDeniedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.LockDeniedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.LockRequestedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.LockRequestedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.LockUnlockedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.LockUnlockedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.MultiplayerEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.MultiplayerEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager)"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.MultiplayerEvent.Controller"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.NetworkErrorEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.NetworkErrorEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Endpoint)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.OtherUserJoinedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.OtherUserJoinedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.User)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.OtherUserLeftEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.OtherUserLeftEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.User)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.PacketEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.PacketEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.PacketEvent.UniqueID"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.PacketReceivedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.PacketReceivedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.PacketSentEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.PacketSentEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.RoomCreatedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.RoomCreatedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Room,System.Boolean,System.String)"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.RoomCreatedEvent.InviteCode"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.RoomCreatedEvent.Success"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.RoomEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.RoomEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Room)"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.RoomEvent.Room"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.RoomJoinedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.RoomJoinedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Room,Alteruna.Multiplayer.Core.User)"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.RoomJoinedEvent.User"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.RoomLeftEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.RoomLeftEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.RoomListUpdatedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.RoomListUpdatedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.RpcReceivedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.RpcReceivedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.UInt16,System.String)"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.RpcReceivedEvent.RpcName"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.RpcRegisteredEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.RpcRegisteredEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.String)"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.RpcRegisteredEvent.RpcName"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.RpcSentEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.RpcSentEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.UInt16,System.String,System.Boolean)"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.RpcSentEvent.Multicast"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.RpcSentEvent.RpcName"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.StartedEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.StartedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager)"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.UserEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.UserEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.User)"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.UserEvent.User"></member>
-    <member name="T:Alteruna.Multiplayer.EventArgument.UserIdEvent"></member>
-    <member name="M:Alteruna.Multiplayer.EventArgument.UserIdEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.UInt16)"></member>
-    <member name="P:Alteruna.Multiplayer.EventArgument.UserIdEvent.User"></member>
-    <member name="F:Alteruna.Multiplayer.EventArgument.UserIdEvent.UserIndex"></member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.ConnectedEvent">
+      <summary>
+            Event raised when the local client successfully connects to the server.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.Connected" /> to receive this event.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.ConnectedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Endpoint)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.ConnectedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="endpoint">The server endpoint that the client connected to.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.DisconnectedEvent">
+      <summary>
+            Event raised when the local client disconnects from the server.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.Disconnected" /> to receive this event.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.DisconnectedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Endpoint)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.DisconnectedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="endpoint">The server endpoint that the client disconnected from.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.EndpointEvent">
+      <summary>
+            Base class for multiplayer events that carry network endpoint information.
+            </summary>
+      <remarks>
+            Derives from <see cref="T:Alteruna.Multiplayer.EventArgument.MultiplayerEvent" /> and adds the <see cref="F:Alteruna.Multiplayer.EventArgument.EndpointEvent.Endpoint" /> that is
+            associated with the event, such as the server endpoint on connect or disconnect.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.EndpointEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Endpoint)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.EndpointEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="endpoint">The network endpoint associated with the event.</param>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.EndpointEvent.Endpoint">
+      <summary>
+            The network endpoint associated with this event.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.ForceSyncedEvent">
+      <summary>
+            Event raised on the requesting user after a force-sync state snapshot has been received.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.ForceSynced" /> to receive this event.
+            This event fires after the local client's outstanding force-sync request is fulfilled,
+            indicating that all <see cref="T:Alteruna.Multiplayer.Synchronizable" /> state from the target user has been applied.
+            <see cref="F:Alteruna.Multiplayer.EventArgument.UserIdEvent.UserIndex" /> identifies the user who sent the snapshot.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.ForceSyncedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.UInt16)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.ForceSyncedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="userIndex">The session-local index of the user whose state was received.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.ForceSyncEvent">
+      <summary>
+            Event raised when a remote user requests a forced state synchronization from the local client.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.ForceSync" /> to receive this event.
+            When received, the local client should immediately broadcast the current state of all its
+            <see cref="T:Alteruna.Multiplayer.Synchronizable" /> components so that the requesting user has an up-to-date snapshot.
+            <see cref="F:Alteruna.Multiplayer.EventArgument.UserIdEvent.UserIndex" /> identifies the user who made the request.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.ForceSyncEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.UInt16)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.ForceSyncEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="userIndex">The session-local index of the user who requested the sync.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.ForceSyncReplyEvent">
+      <summary>
+            Event raised when the local client has finished sending its state snapshot in reply to a force-sync request.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.ForceSyncReply" /> to receive this event.
+            This event fires after the local client broadcasts all <see cref="T:Alteruna.Multiplayer.Synchronizable" /> state in
+            response to a <see cref="T:Alteruna.Multiplayer.EventArgument.ForceSyncEvent" />. <see cref="F:Alteruna.Multiplayer.EventArgument.UserIdEvent.UserIndex" /> identifies
+            the remote user that made the original request.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.ForceSyncReplyEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.UInt16)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.ForceSyncReplyEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="userIndex">The session-local index of the user that requested the sync.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.JoinRejectedEvent">
+      <summary>
+            Event raised when the server rejects a room join attempt.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.JoinRejected" /> to receive this event.
+            Common reasons for rejection include a full room, a mismatched password, or a closed session.
+            Display <see cref="F:Alteruna.Multiplayer.EventArgument.JoinRejectedEvent.Reason" /> to the player to explain why they could not join.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.JoinRejectedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.String)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.JoinRejectedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="reason">The reason the join was rejected.</param>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.JoinRejectedEvent.Reason">
+      <summary>
+            A human-readable explanation of why the join attempt was rejected.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.LockAcquiredEvent">
+      <summary>
+            Event raised when the local client successfully acquires a lock on a synchronized object.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.LockAcquired" /> to receive this event.
+            Once this event fires the local client has exclusive write authority over the object identified
+            by <see cref="F:Alteruna.Multiplayer.EventArgument.PacketEvent.UniqueID" /> until the lock is explicitly released.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.LockAcquiredEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.LockAcquiredEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="uid">The unique identifier of the synchronized object that was locked.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.LockDeniedEvent">
+      <summary>
+            Event raised when a lock request on a synchronized object is denied.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.LockDenied" /> to receive this event.
+            A denial typically means another client currently holds the lock on the object identified by
+            <see cref="F:Alteruna.Multiplayer.EventArgument.PacketEvent.UniqueID" />. The local client should wait for a <see cref="T:Alteruna.Multiplayer.EventArgument.LockUnlockedEvent" />
+            before retrying.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.LockDeniedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.LockDeniedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="uid">The unique identifier of the synchronized object whose lock was denied.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.LockRequestedEvent">
+      <summary>
+            Event raised when a lock is requested on a synchronized object.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.LockRequested" /> to receive this event.
+            A lock prevents other clients from modifying the object while it is held.
+            <see cref="F:Alteruna.Multiplayer.EventArgument.PacketEvent.UniqueID" /> identifies the synchronized object for which the lock was requested.
+            The request may still be denied; listen for <see cref="T:Alteruna.Multiplayer.EventArgument.LockAcquiredEvent" /> or <see cref="T:Alteruna.Multiplayer.EventArgument.LockDeniedEvent" />
+            to determine the outcome.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.LockRequestedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.LockRequestedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="uid">The unique identifier of the synchronized object for which the lock was requested.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.LockUnlockedEvent">
+      <summary>
+            Event raised when a lock on a synchronized object is released.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.LockUnlocked" /> to receive this event.
+            After this event fires the object identified by <see cref="F:Alteruna.Multiplayer.EventArgument.PacketEvent.UniqueID" /> is no longer
+            locked by any client and a new lock request may be submitted.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.LockUnlockedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.LockUnlockedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="uid">The unique identifier of the synchronized object that was unlocked.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.MultiplayerEvent">
+      <summary>
+            Base class for all Alteruna multiplayer event arguments.
+            </summary>
+      <remarks>
+            All event argument types raised by <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> derive from this class.
+            It provides access to the <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> instance that raised the event,
+            allowing event handlers to interact with the multiplayer session without needing a separate reference.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.MultiplayerEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.MultiplayerEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.MultiplayerEvent.Controller">
+      <summary>
+            The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised this event.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.NetworkErrorEvent">
+      <summary>
+            Event raised when a network error occurs during communication with the server.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.NetworkError" /> to receive this event.
+            A network error does not necessarily mean the session has ended; check the connection
+            state on <see cref="F:Alteruna.Multiplayer.EventArgument.MultiplayerEvent.Controller" /> after handling this event.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.NetworkErrorEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Endpoint)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.NetworkErrorEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="endpoint">The endpoint at which the network error occurred.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.OtherUserJoinedEvent">
+      <summary>
+            Event raised when another user joins the room the local client is in.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.OtherUserJoined" /> to receive this event.
+            This event also fires for every user already in the room when the local client first joins,
+            with <see cref="F:Alteruna.Multiplayer.EventArgument.OtherUserJoinedEvent.ExistingUser" /> set to <see langword="true" /> in those cases.
+            Use <see cref="F:Alteruna.Multiplayer.EventArgument.UserEvent.User" /> to access the joining user's details.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.OtherUserJoinedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.User,System.Boolean)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.OtherUserJoinedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="user">The user who joined.</param>
+      <param name="existingUser">
+        <see langword="true" /> if the user was already in the room when the local client joined.
+            </param>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.OtherUserJoinedEvent.ExistingUser">
+      <summary>
+            Whether the user was already present in the room when the local client joined.
+            </summary>
+      <remarks>
+        <see langword="true" /> when the event represents a pre-existing session participant encountered
+            upon joining; <see langword="false" /> when the user joined the room after the local client.
+            </remarks>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.OtherUserLeftEvent">
+      <summary>
+            Event raised when another user leaves the room the local client is in.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.OtherUserLeft" /> to receive this event.
+            Use <see cref="F:Alteruna.Multiplayer.EventArgument.UserEvent.User" /> to identify who left. This event fires both for voluntary
+            disconnects and for connection losses.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.OtherUserLeftEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.User)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.OtherUserLeftEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="user">The user who left the room.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.PacketEvent">
+      <summary>
+            Base class for multiplayer events associated with a specific synchronized object packet.
+            </summary>
+      <remarks>
+            Carries the <see cref="T:Alteruna.Multiplayer.IAdaptiveSerializableUniqueID" /> of the object whose packet triggered
+            the event. Used by lock and packet-lifecycle events to identify which <see cref="T:Alteruna.Multiplayer.Synchronizable" />
+            component the event concerns.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.PacketEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.PacketEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="uid">The unique identifier of the synchronized object.</param>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.PacketEvent.UniqueID">
+      <summary>
+            The unique identifier of the synchronized object associated with this event.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.PacketReceivedEvent">
+      <summary>
+            Event raised when a synchronization packet is received from the server.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.PacketReceived" /> to receive this event.
+            <see cref="F:Alteruna.Multiplayer.EventArgument.PacketEvent.UniqueID" /> identifies the <see cref="T:Alteruna.Multiplayer.Synchronizable" /> component whose
+            state was updated. By the time this event fires the component's state has already been applied.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.PacketReceivedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.PacketReceivedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="uid">The unique identifier of the synchronized object whose packet was received.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.PacketSentEvent">
+      <summary>
+            Event raised after a synchronization packet has been sent to the server.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.PacketSent" /> to receive this event.
+            <see cref="F:Alteruna.Multiplayer.EventArgument.PacketEvent.UniqueID" /> identifies the <see cref="T:Alteruna.Multiplayer.Synchronizable" /> component whose
+            data was transmitted. Use this event for diagnostics or to track outbound bandwidth usage.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.PacketSentEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.IAdaptiveSerializableUniqueID)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.PacketSentEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="uid">The unique identifier of the synchronized object whose packet was sent.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.RoomCreatedEvent">
+      <summary>
+            Event raised when a room creation attempt completes.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.RoomCreated" /> to receive this event.
+            Always check <see cref="F:Alteruna.Multiplayer.EventArgument.RoomCreatedEvent.Success" /> before using <see cref="F:Alteruna.Multiplayer.EventArgument.RoomEvent.Room" />; when
+            <see cref="F:Alteruna.Multiplayer.EventArgument.RoomCreatedEvent.Success" /> is <see langword="false" /> the room object may be in an invalid state.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.RoomCreatedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Room,System.Boolean,System.String)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.RoomCreatedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="room">The newly created room.</param>
+      <param name="success">Whether the room was created successfully.</param>
+      <param name="inviteCode">The invite code for the room.</param>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.RoomCreatedEvent.InviteCode">
+      <summary>
+            The invite code that other players can use to join the newly created room.
+            </summary>
+      <remarks>
+            Only valid when <see cref="F:Alteruna.Multiplayer.EventArgument.RoomCreatedEvent.Success" /> is <see langword="true" />.
+            Pass this code to <see cref="M:Alteruna.Multiplayer.MultiplayerManager.JoinRoom(Alteruna.Multiplayer.Core.Room)" /> on another client to connect them directly.
+            </remarks>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.RoomCreatedEvent.Success">
+      <summary>
+            Whether the room was created successfully.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.RoomEvent">
+      <summary>
+            Base class for multiplayer events that concern a specific room.
+            </summary>
+      <remarks>
+            Derives from <see cref="T:Alteruna.Multiplayer.EventArgument.MultiplayerEvent" /> and exposes the <see cref="F:Alteruna.Multiplayer.EventArgument.RoomEvent.Room" /> that the event
+            relates to. Used as the base for room lifecycle events such as creation and joining.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.RoomEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Room)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.RoomEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="room">The room associated with the event.</param>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.RoomEvent.Room">
+      <summary>
+            The room associated with this event.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.RoomJoinedEvent">
+      <summary>
+            Event raised when the local client successfully joins a room.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.RoomJoined" /> to receive this event.
+            <see cref="F:Alteruna.Multiplayer.EventArgument.RoomJoinedEvent.User" /> is the local client's <see cref="T:Alteruna.Multiplayer.Core.User" /> representation within the room.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.RoomJoinedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.Room,Alteruna.Multiplayer.Core.User)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.RoomJoinedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="room">The room that was joined.</param>
+      <param name="user">The local client's user object within the room.</param>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.RoomJoinedEvent.User">
+      <summary>
+            The local client's user representation in the joined room.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.RoomLeftEvent">
+      <summary>
+            Event raised when the local client leaves a room.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.RoomLeft" /> to receive this event.
+            This event fires both for voluntary leaves and for server-initiated removals.
+            After this event the client is no longer part of any room and may join or create a new one.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.RoomLeftEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.RoomLeftEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.RoomListUpdatedEvent">
+      <summary>
+            Event raised when the list of available rooms has been refreshed from the server.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.RoomListUpdated" /> to receive this event.
+            After this event fires, read <see cref="P:Alteruna.Multiplayer.MultiplayerManager.AvailableRooms" /> to obtain the
+            updated list. The list is refreshed automatically or on demand via
+            <see cref="!:MultiplayerManager.RefreshAvailableRooms" />.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.RoomListUpdatedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.RoomListUpdatedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.RpcReceivedEvent">
+      <summary>
+            Event raised when the local client receives a remote procedure call from another user.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.RpcReceived" /> to receive this event.
+            <see cref="F:Alteruna.Multiplayer.EventArgument.UserIdEvent.UserIndex" /> identifies the sender. The actual RPC handler registered
+            via <see cref="M:Alteruna.Multiplayer.MultiplayerManager.RegisterRemoteProcedure(System.String,Alteruna.Multiplayer.Core.RemoteProcedure)" /> will have already executed before
+            this event fires.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.RpcReceivedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.UInt16,System.String)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.RpcReceivedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="userIndex">The session-local index of the user who sent the RPC.</param>
+      <param name="rpcName">The name of the remote procedure that was called.</param>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.RpcReceivedEvent.RpcName">
+      <summary>
+            The name of the remote procedure that was called.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.RpcRegisteredEvent">
+      <summary>
+            Event raised when a remote procedure has been successfully registered with the multiplayer service.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.RpcRegistered" /> to receive this event.
+            A registered procedure can subsequently be invoked on remote clients via
+            <see cref="!:MultiplayerManager.RemoteProcedure" /> or <see cref="M:Alteruna.Multiplayer.MultiplayerManager.MulticastRemoteProcedure(System.String,System.Collections.Generic.List{System.UInt16},Alteruna.Multiplayer.Core.ProcedureParameters,Alteruna.Multiplayer.Core.ISerializable,Alteruna.Multiplayer.Core.Reliability,Alteruna.Multiplayer.Core.RemoteProcedureReply,Alteruna.Multiplayer.Core.RemoteProcedureAck)" />.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.RpcRegisteredEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.String)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.RpcRegisteredEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="rpcName">The name of the newly registered remote procedure.</param>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.RpcRegisteredEvent.RpcName">
+      <summary>
+            The name used to identify the registered remote procedure.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.RpcSentEvent">
+      <summary>
+            Event raised when a remote procedure call has been sent by the local client.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="!:MultiplayerManager.RpcSent" /> to receive this event.
+            When <see cref="F:Alteruna.Multiplayer.EventArgument.RpcSentEvent.Multicast" /> is <see langword="true" /> the call was sent to multiple users
+            and <see cref="F:Alteruna.Multiplayer.EventArgument.UserIdEvent.UserIndex" /> represents the first recipient; when
+            <see langword="false" /> it was sent to a single user identified by <see cref="F:Alteruna.Multiplayer.EventArgument.UserIdEvent.UserIndex" />.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.RpcSentEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.UInt16,System.String,System.Boolean)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.RpcSentEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="userIndex">The session-local index of the (first) recipient.</param>
+      <param name="rpcName">The name of the remote procedure that was called.</param>
+      <param name="multicast">Whether the call targeted multiple users.</param>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.RpcSentEvent.Multicast">
+      <summary>
+            Whether the call was sent to multiple users simultaneously.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.RpcSentEvent.RpcName">
+      <summary>
+            The name of the remote procedure that was called.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.StartedEvent">
+      <summary>
+            Event raised when the <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> has finished initializing and is ready to use.
+            </summary>
+      <remarks>
+            Subscribe to <see cref="P:Alteruna.Multiplayer.MultiplayerManager.Started" /> to receive this event.
+            After this event fires the multiplayer service is active and the client may attempt to connect
+            to a server and join or create rooms.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.StartedEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.StartedEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.UserEvent">
+      <summary>
+            Base class for multiplayer events that concern a specific user.
+            </summary>
+      <remarks>
+            Derives from <see cref="T:Alteruna.Multiplayer.EventArgument.MultiplayerEvent" /> and exposes the full <see cref="F:Alteruna.Multiplayer.EventArgument.UserEvent.User" /> object
+            associated with the event. Use this when the event handler needs access to user properties
+            such as the display name or index.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.UserEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,Alteruna.Multiplayer.Core.User)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.UserEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="user">The user associated with the event.</param>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.UserEvent.User">
+      <summary>
+            The user associated with this event.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.EventArgument.UserIdEvent">
+      <summary>
+            Base class for multiplayer events that identify a user by index rather than by object reference.
+            </summary>
+      <remarks>
+            Stores the user's session index instead of a direct <see cref="P:Alteruna.Multiplayer.EventArgument.UserIdEvent.User" /> reference.
+            The <see cref="P:Alteruna.Multiplayer.EventArgument.UserIdEvent.User" /> property performs a lazy lookup via <see cref="M:Alteruna.Multiplayer.MultiplayerManager.GetUser" />
+            each time it is accessed. Use <see cref="F:Alteruna.Multiplayer.EventArgument.UserIdEvent.UserIndex" /> for performance-sensitive code where the
+            full <see cref="P:Alteruna.Multiplayer.EventArgument.UserIdEvent.User" /> object is not required.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.EventArgument.UserIdEvent.#ctor(Alteruna.Multiplayer.MultiplayerManager,System.UInt16)">
+      <summary>
+            Initializes a new instance of <see cref="T:Alteruna.Multiplayer.EventArgument.UserIdEvent" />.
+            </summary>
+      <param name="controller">The <see cref="T:Alteruna.Multiplayer.MultiplayerManager" /> that raised the event.</param>
+      <param name="userIndex">The session-local index of the user.</param>
+    </member>
+    <member name="P:Alteruna.Multiplayer.EventArgument.UserIdEvent.User">
+      <summary>
+            The user associated with this event, resolved from <see cref="F:Alteruna.Multiplayer.EventArgument.UserIdEvent.UserIndex" /> on each access.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.EventArgument.UserIdEvent.UserIndex">
+      <summary>
+            The session-local index of the user associated with this event.
+            </summary>
+    </member>
     <member name="T:Alteruna.Multiplayer.InputSynchronizable.IInput">
       <summary>
             Alteruna Input interface.
