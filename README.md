@@ -7,7 +7,8 @@
 # How to add a package to Unity.
 
 > [!IMPORTANT]
-> Unity's package manager depends on [Git](https://git-scm.com/install/) in order to install packages from a git url.
+> Unity's package manager depends on Git to install packages from a git url.\
+> Install Git Bash [here](https://git-scm.com/install/) before proceeding.
 
 1. In Unity, open `Window → Package Manager`
 2. In the top left corner, in the `+` dropdown, press "Add package from git URL..."
