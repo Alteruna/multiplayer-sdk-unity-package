@@ -7,5 +7,5 @@ namespace AlterunaComponents
 	[AddComponentMenu("Alteruna/Avatar/Avatar", 0)]
 	[DisallowMultipleComponent]
 	[MovedFrom(true, "Alteruna.Multiplayer", "Alteruna")]
-	public sealed class Avatar : Alteruna.Multiplayer.Avatar { }
+	public sealed class Avatar : Alteruna.Multiplayer.Unity.Avatar { }
 }

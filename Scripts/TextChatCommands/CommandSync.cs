@@ -1,12 +1,12 @@
 ﻿#if ALTERUNA
-using Alteruna.Multiplayer;
 using System;
 using Alteruna.Multiplayer.Core;
+using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandSync : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandSync : Multiplayer.Unity.ITextChatCommand
 	{
 		public string Command { get; } = "sync";
 		public string Description { get; } = "Sync ether a last target from /uid or the object in front of the main camera.";

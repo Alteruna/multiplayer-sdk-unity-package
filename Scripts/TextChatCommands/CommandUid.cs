@@ -1,11 +1,11 @@
 ﻿#if ALTERUNA
-using Alteruna.Multiplayer;
 using System;
+using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandUid : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandUid : Multiplayer.Unity.ITextChatCommand
 	{
 
 		public string Command { get; } = "uid";

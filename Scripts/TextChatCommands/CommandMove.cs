@@ -1,9 +1,9 @@
-﻿using Alteruna.Multiplayer;
+﻿using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandMove : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandMove : Multiplayer.Unity.ITextChatCommand
 	{
 		public string Command { get; } = "move";
 		public string Description { get; } = "move target (get target using /target) currently looking at (use ~ for relative coordinates)";

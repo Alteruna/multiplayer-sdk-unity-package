@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-using Alteruna.Multiplayer;
 using Alteruna.Multiplayer.Core;
-using Alteruna.Multiplayer.EventArgument;
+using Alteruna.Multiplayer.Unity;
+using Alteruna.Multiplayer.Unity.EventArgument;
 using TMPro;
 
 namespace Alteruna
@@ -56,7 +56,7 @@ namespace Alteruna
 		{
 			if (Multiplayer == null)
 			{
-				Multiplayer = FindObjectOfType<Multiplayer.MultiplayerManager>();
+				Multiplayer = FindObjectOfType<MultiplayerManager>();
 			}
 
 			if (Multiplayer == null)
@@ -206,7 +206,7 @@ namespace Alteruna
 
 		private void Started(StartedEvent args)
 		{
-			if (Multiplayer.ApplicationData.ServerMode == API.GameClientApi.ProjectServerMode.Single_room)
+			if (Multiplayer.ApplicationData.ServerMode == Alteruna.API.GameClientApi.ProjectServerMode.Single_room)
 			{
 				Connected(args.Controller);
 			}
@@ -218,7 +218,7 @@ namespace Alteruna
 		}
 
 		private void Connected(ConnectedEvent args) => Connected(args.Controller);
-		private void Connected(Multiplayer.MultiplayerManager controller)
+		private void Connected(MultiplayerManager controller)
 		{
 			StartButtonText.text = TEXT_BTN_START;
 			
@@ -286,7 +286,7 @@ namespace Alteruna
 			RoomListUpdated(args.Controller);
 		}
 
-		private void RoomListUpdated(Multiplayer.MultiplayerManager multiplayer)
+		private void RoomListUpdated(MultiplayerManager multiplayer)
 		{
 			if (ContentContainer == null) return;
 			if (multiplayer.IsConnected)
@@ -325,7 +325,7 @@ namespace Alteruna
 					// Hide locked rooms.
 					room.IsLocked ||
 					// Hide full rooms.
-					room.CurrentUsers > room.MaxUsers
+					(room.CurrentUsers > room.MaxUsers && room.MaxUsers > 0)
 				)
 				{
 					entry.GameObject.SetActive(false);
@@ -334,7 +334,7 @@ namespace Alteruna
 				}
 
 				string newName = room.DisplayName;
-				if (ShowUserCount)
+				if (ShowUserCount && room.MaxUsers > 0)
 				{
 					newName += string.Format(FORMAT_USER_COUNT, room.CurrentUsers, room.MaxUsers);
 				}
@@ -363,7 +363,7 @@ namespace Alteruna
 			}
 		}
 
-		private void RemoveExtraRooms(Multiplayer.MultiplayerManager multiplayer)
+		private void RemoveExtraRooms(MultiplayerManager multiplayer)
 		{
 			int l = _roomObjects.Count;
 			if (multiplayer.AvailableRooms.Count < l)

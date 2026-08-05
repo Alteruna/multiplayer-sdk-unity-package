@@ -8,14 +8,14 @@ namespace AlterunaComponents
 	[DefaultExecutionOrder(-10)]
 	[AddComponentMenu("Alteruna/​Multiplayer Manager", 0)]
 	[MovedFrom(true, "Alteruna.Multiplayer", "Alteruna")]
-	public sealed class MultiplayerManager : Alteruna.Multiplayer.MultiplayerManager { }
+	public sealed class MultiplayerManager : Alteruna.Multiplayer.Unity.MultiplayerManager { }
 
 	/// <inheritdoc/>
 	[Obsolete("Use MultiplayerManager instead of Multiplayer.\nOne can be created in the right-click menu.")]
 	[DefaultExecutionOrder(-10)]
 	[AddComponentMenu("")]
 	[MovedFrom(true, "Alteruna", "Alteruna.Trinity")]
-	public sealed class Multiplayer : Alteruna.Multiplayer.MultiplayerManager
+	public sealed class Multiplayer : Alteruna.Multiplayer.Unity.MultiplayerManager
 	{
 		[ContextMenu("Create New Multiplayer Manager", false, 1_000_000)]
 		public void CreateNewMultiplayerManager()

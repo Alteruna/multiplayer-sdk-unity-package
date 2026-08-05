@@ -1,0 +1,1983 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Alteruna.Multiplayer</name>
+  </assembly>
+  <members>
+    <member name="T:Alteruna.VersionControl">
+      <summary>
+            Version control.
+            </summary>
+    </member>
+    <member name="F:Alteruna.VersionControl.CompatibilityVersion">
+      <summary>
+            Version Management.
+            Only clients with the same CompatibilityVersion as a room can join target room.
+            </summary>
+      <remarks>
+            By default, this is the hash of application and Unity version.
+            </remarks>
+    </member>
+    <member name="F:Alteruna.VersionControl.SCHEMA_VERSION">
+      <summary>
+            Manageable compability version. (Kick if another client has a newer SchemaVersion)
+            </summary>
+    </member>
+    <member name="F:Alteruna.VersionControl.SERVER_COMPATIBILITY_VERSION">
+      <summary>
+            Unmanageable compability version. (Kick if server and client don't have the same ServerCompatibilityVersion)
+            </summary>
+    </member>
+    <member name="P:Alteruna.VersionControl.Version">
+      <summary>
+            Get SDK version.
+            </summary>
+    </member>
+    <member name="P:Alteruna.VersionControl.VersionCharacter">
+      <summary>
+            Version character identifier.
+            </summary>
+      <remarks>
+            replaces last separator in the 4 part version
+            </remarks>
+    </member>
+    <member name="T:Alteruna.Exceptions.AlterunaException">
+      <summary>
+            Represents exceptions that occur within the Alteruna framework.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Exceptions.AlterunaException.#ctor"></member>
+    <member name="M:Alteruna.Exceptions.AlterunaException.#ctor(System.String)"></member>
+    <member name="M:Alteruna.Exceptions.AlterunaException.#ctor(System.String,System.Exception)"></member>
+    <member name="T:Alteruna.Exceptions.AlterunaServiceNotStartedException">
+      <summary>
+            The exception that is thrown when an operation is attempted within the Alteruna framework
+            but the required Alteruna service has not been started.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Exceptions.AlterunaServiceNotStartedException.#ctor"></member>
+    <member name="T:Alteruna.Exceptions.IAlterunaException"></member>
+    <member name="P:Alteruna.Exceptions.IAlterunaException.Message"></member>
+    <member name="T:Alteruna.Multiplayer.UtcTime">
+      <summary>
+            Useful time related fields using global time.
+            Note that its its common for the system time to be inaccurate, expect a difference by 5 seconds.
+            If the machine time is not automatically updated, it can be up to much more.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.UtcTime.Milliseconds">
+      <summary>
+            Get the number of milliseconds that have elapsed since 1970-01-01T00:00:00.000Z in Coordinated Universal Time.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.UtcTime.MillisecondsFloat">
+      <summary>
+            Get Coordinated Universal Time in milliseconds casted to float with modulus to avoid losing precision.
+            The value will loop on 16777215 milliseconds in order to avoid losing precision.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.UtcTime.Now">
+      <summary>Gets a <see cref="T:System.DateTime" /> object that is set to the current date and time on this computer, expressed as the Coordinated Universal Time (UTC).</summary>
+      <returns>An object whose value is the current UTC date and time.</returns>
+    </member>
+    <member name="P:Alteruna.Multiplayer.UtcTime.Seconds">
+      <summary>
+            Get the number of seconds that have elapsed since 1970-01-01T00:00:00.000Z in Coordinated Universal Time.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.UtcTime.SecondsFloat"></member>
+    <member name="T:Alteruna.Multiplayer.Core.ConnectionStatus">
+      <summary>
+            Type <c>ConnectionStatus</c> defines the state of a connection
+            between two devices.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.DataType">
+      <summary>
+            Identifies the primitive data type of a value stored in a <see cref="T:Alteruna.Multiplayer.Core.ProcedureParameters" /> container
+            or used within the framework's serialization pipeline.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DataType.Int">
+      <summary>32-bit signed integer.</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DataType.Float">
+      <summary>32-bit floating-point number.</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DataType.Bool">
+      <summary>Boolean value.</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DataType.String">
+      <summary>UTF-16 string.</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DataType.UInt">
+      <summary>32-bit unsigned integer.</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DataType.UShort">
+      <summary>16-bit unsigned integer.</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DataType.Byte">
+      <summary>8-bit unsigned integer.</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DataType.Vector3">
+      <summary>Three-component float vector.</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DataType.Vector2">
+      <summary>Two-component float vector.</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DataType.Matrix4x4">
+      <summary>4×4 float matrix.</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DataType.Blob">
+      <summary>Arbitrary binary blob (byte array).</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DataType.Struct">
+      <summary>Structured/composite data.</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DataType.Short">
+      <summary>16-bit signed integer.</summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.DeviceStatistics">
+      <summary>
+            Class <c>DeviceStatistics</c> defines a container of 
+            statistics attributes for a given device.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.DeviceStatistics.#ctor">
+      <summary>
+            Default constructor
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.DeviceStatistics.BlockedConnections">
+      <summary>
+            Number of blocked connections since server application started
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.DeviceStatistics.CycleProcessingTime"></member>
+    <member name="P:Alteruna.Multiplayer.Core.DeviceStatistics.DataReceivedHistory"></member>
+    <member name="P:Alteruna.Multiplayer.Core.DeviceStatistics.DataSentHistory"></member>
+    <member name="P:Alteruna.Multiplayer.Core.DeviceStatistics.HistoryOffset">
+      <summary>
+            Offset to first history mark, in seconds
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.DeviceStatistics.MemoryConsumption">
+      <summary>
+            Host memory consumption in percent (0-100)
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.DeviceStatistics.NetworkStatistics">
+      <summary>
+            Network statistics for given host
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.DeviceStatistics.NumberOfConnections">
+      <summary>
+            Current number of active connections
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.DeviceStatistics.PeakConnectionsHistory">
+      <summary>
+            Hourly history of traffic and connections
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.DeviceStatistics.ProcessorUsage">
+      <summary>
+            CPU usage in percent (0-100)
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.DeviceStatistics.Serialize(Alteruna.Multiplayer.Core.ITransportStreamWriter)">
+      <summary>
+            Serialize to processor
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.DeviceStatistics.TargetCycleTime"></member>
+    <member name="P:Alteruna.Multiplayer.Core.DeviceStatistics.TimeStamp">
+      <summary>
+            Timestamp in epoch/unix time. Seconds since 1970/1/1
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.DeviceStatistics.Unserialize(Alteruna.Multiplayer.Core.ITransportStreamReader)">
+      <summary>
+            Unserialize from given processor
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.DeviceStatistics.UptimeSeconds">
+      <summary>
+            Device uptime in seconds since start
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.DeviceType">
+      <summary>
+            Hardware of a device.
+            </summary>
+      <remarks>
+            when <see cref="F:Alteruna.Multiplayer.Core.DeviceType.Other" /> is set, other flags might have different meanings.
+            </remarks>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DeviceType.Linux">
+      <summary>
+            In the player on Linux.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DeviceType.Windows">
+      <summary>
+            In the player on Windows.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DeviceType.OSX">
+      <summary>
+            In the player on macOS.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DeviceType.OSXEditor">
+      <summary>
+            In the Unity editor on macOS.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DeviceType.WindowsEditor">
+      <summary>
+            In the Unity editor on Windows.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DeviceType.IPhone">
+      <summary>
+            In the player on the iPhone.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DeviceType.Android">
+      <summary>
+            In the player on Android devices.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DeviceType.LinuxEditor">
+      <summary>
+            In the Unity editor on Linux.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DeviceType.WebGL">
+      <summary>
+            In the player on WebGL.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DeviceType.PlayStation">
+      <summary>
+            In the player on the Playstation.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DeviceType.Xbox">
+      <summary>
+            In the player on Xbox.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DeviceType.Switch">
+      <summary>
+            In the player on Nintendo Switch.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.DeviceType.CloudRendering">
+      <summary>
+            In the player on CloudRendering.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.Endpoint">
+      <summary>
+            Device endpoint.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Endpoint.DeviceType"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Endpoint.Equals(System.Object)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Endpoint.GetHashCode"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Endpoint.Known"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Endpoint.Local"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Endpoint.Name"></member>
+    <member name="T:Alteruna.Multiplayer.Core.HistoryBuffer`1">
+      <summary>
+            Generic circular buffer
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.HistoryBuffer`1.#ctor(System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.HistoryBuffer`1.Clear"></member>
+    <member name="M:Alteruna.Multiplayer.Core.HistoryBuffer`1.ConsumeElements(System.Int32)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.HistoryBuffer`1.Item(System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.HistoryBuffer`1.Last"></member>
+    <member name="M:Alteruna.Multiplayer.Core.HistoryBuffer`1.PushFront(`0)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.HistoryBuffer`1.Size"></member>
+    <member name="M:Alteruna.Multiplayer.Core.HistoryBuffer`1.ToArray"></member>
+    <member name="T:Alteruna.Multiplayer.Core.IAdaptiveSerializable">
+      <summary>
+            Interface <c>ISerializable</c> defines a generic interface for packing and
+            unpacking a stream of bytes. Subclasses implementing this interface
+            will be able to orderly read and write primitive types from the processor
+            to assemble needed information to reconstruct an instance of data it exchange. 
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IAdaptiveSerializable.Serialize(Alteruna.Multiplayer.Core.ITransportStreamWriter,Alteruna.Multiplayer.Core.MethodArguments.SerializeInfo)">
+      <summary>
+            Serialize data to a stream.
+            </summary>
+      <param name="processor">Writer stream.</param>
+      <param name="info">Serialize info.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IAdaptiveSerializable.Unserialize(Alteruna.Multiplayer.Core.ITransportStreamReader,Alteruna.Multiplayer.Core.MethodArguments.UnserializeInfo)">
+      <summary>
+            Unserialize data from a stream.
+            </summary>
+      <param name="processor">Reader stream.</param>
+      <param name="info">Unserialize info.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.IHostRelayer">
+      <summary>
+            Interface <c>IHostRelayer</c> defines a generic interface for host relaying.
+            Host relaying is the process of seemlessy relay a connection attempt to
+            another host and is part of Trinity's connection establishment process.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IHostRelayer.HasRelay(System.UInt32,System.UInt32,System.String@,System.Int32@)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.InviteCode"></member>
+    <member name="M:Alteruna.Multiplayer.Core.InviteCode.DecodeInviteCode(System.String)">
+      <summary>
+            Join a room using an invite code.
+            </summary>
+      <param name="code">Invite code.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.InviteCode.EncodeInviteCode(System.UInt32,System.UInt16)">
+      <summary>
+            Encode a room id and pin code into an invite code.
+            If the room have a pin code, it have to be provided for a valid link.
+            </summary>
+      <param name="roomID">Room id.</param>
+      <param name="pin">pincode / password for the room.</param>
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.NotInRoomException">Thrown when not in a room.</exception>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.InviteCode.Salt"></member>
+    <member name="T:Alteruna.Multiplayer.Core.IPackageOrderValidator">
+      <summary>
+            Used to validate the order of packages.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IPackageOrderValidator.Append(Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IPackageOrderValidator.Validate(Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.ISerializable">
+      <summary>
+            Interface <c>ISerializable</c> defines a generic interface for packing and
+            unpacking a stream of bytes. Subclasses implementing this interface
+            will be able to orderly read and write primitive types from the processor
+            to assemble needed information to reconstruct an instance of data it exchange. 
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.ISerializable.Serialize(Alteruna.Multiplayer.Core.ITransportStreamWriter)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ISerializable.Unserialize(Alteruna.Multiplayer.Core.ITransportStreamReader)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.IServiceEventListener">
+      <summary>
+            Service event listener interface.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnEndpointConnected(Alteruna.Multiplayer.Core.Endpoint)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnEndpointDisconnected(Alteruna.Multiplayer.Core.Endpoint,Alteruna.Multiplayer.Core.ConnectionStatus)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnLatencyUpdate(System.UInt16,System.Single)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnLicenseQueryResponse(Alteruna.API.GameClientApi.Project)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnNetworkError(Alteruna.Multiplayer.Core.Endpoint)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnOtherUserJoined(Alteruna.Multiplayer.Core.User,System.Boolean)">
+      <summary>
+            Called when a user is added to room.
+            </summary>
+      <param name="user">New user.</param>
+      <param name="existingUser">True if a user joined before you joined.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnOtherUserLeft(Alteruna.Multiplayer.Core.User)">
+      <summary>
+            Called when a user leaves room.
+            </summary>
+      <param name="user">Leaving user.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnRoomCreated(System.Boolean,Alteruna.Multiplayer.Core.Room,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnRoomJoined(Alteruna.Multiplayer.Core.Room,Alteruna.Multiplayer.Core.User)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnRoomJoinRejected(System.UInt32,System.String,System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnRoomLeft(Alteruna.Multiplayer.Core.Service)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnRoomListUpdated(Alteruna.Multiplayer.Core.Service)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnSessionsReply(Alteruna.Multiplayer.Core.Service)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.IServiceListener">
+      <summary>
+            Defines a listener interface that provides mechanisms for receiving and handling
+            events related to service activities and state changes in a multiplayer context.
+            </summary>
+      <remarks>
+            This interface combines the functionalities of <see cref="T:Alteruna.Multiplayer.Core.IServiceEventListener" /> and
+            <see cref="T:Alteruna.Multiplayer.Core.IServiceStateListener" /> to provide a comprehensive event-driven abstraction for
+            monitoring and responding to service events (e.g., connection status, user activities, room updates)
+            and state changes (e.g., packet synchronization, locking mechanisms).
+            </remarks>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.IServiceState">
+      <summary>
+            Unused.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.IServiceStateListener">
+      <summary>
+            Service state event listener interface.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.GetAllSynchronizables">
+      <summary>
+            Get a list of all currently registered Synchronizables.
+            </summary>
+      <param name="synchronizables">The list to be appended with all Synchronizables.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.GetSynchronizable(System.Guid)">
+      <summary>
+            Get a Synchronizable through its UniqueID.
+            </summary>
+      <param name="id">The UniqueID of the Synchronizable to get.</param>
+      <returns>The Synchronizable or null.</returns>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.HasSynchronizable(System.Guid)">
+      <summary>
+            Whether Alteruna Multiplayer currently has a Synchronizable with the specified UniqueID registered.
+            </summary>
+      <param name="id">The UniqueID of the Synchronizable to look up.</param>
+      <returns>True if the Synchronizable exists, else false.</returns>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.OnForceSync(Alteruna.Multiplayer.Core.IServiceState,System.UInt16)">
+      <summary>
+            Called before data is synced for a force sync packet.
+            </summary>
+      <remarks>
+            If hosting from a client (like p2p), only the host will receive force sync request.
+            Otherwise, force sync is handled by every client</remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.OnForceSynced(Alteruna.Multiplayer.Core.IServiceState,System.UInt16)">
+      <summary>
+            Called after data is serialized for a force sync packet.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.OnForceSyncReply(System.UInt16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.OnLockAcquired(Alteruna.Multiplayer.Core.IServiceState,System.Guid)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.OnLockDenied(Alteruna.Multiplayer.Core.IServiceState,System.Guid)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.OnLockRequested(Alteruna.Multiplayer.Core.IServiceState,System.Guid)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.OnPacketRouted(Alteruna.Multiplayer.Core.IServiceState,System.Guid)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.OnPacketSent(Alteruna.Multiplayer.Core.IServiceState,System.Guid)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.OnRpcReceived(System.String,System.UInt16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.OnUnlocked(Alteruna.Multiplayer.Core.IServiceState,System.Guid)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceStateListener.TryGetSynchronizable(System.Guid,Alteruna.Multiplayer.Core.IAdaptiveSerializable@)">
+      <summary>
+            Get a IAdaptiveSerializable through its UniqueID.
+            </summary>
+      <param name="id">The UniqueID of the Synchronizable to get.</param>
+      <param name="synchronizable">The Synchronizable or null.</param>
+      <returns>True if the Synchronizable was found, else false.</returns>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.ITransportStream"></member>
+    <member name="P:Alteruna.Multiplayer.Core.ITransportStream.ShemaVersion"></member>
+    <member name="T:Alteruna.Multiplayer.Core.ITransportStreamReader">
+      <summary>
+            Interface <c>ITransportStreamReader</c> defines a generic interface for reading 
+            from a generic transport stream
+            
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetBool"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetByte"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetByteArray"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetBytes(System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetDouble"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetFloat"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetGuid"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetInt"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetLong"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetShort"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetString"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetUInt"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetULong"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.GetUShort"></member>
+    <member name="P:Alteruna.Multiplayer.Core.ITransportStreamReader.InData"></member>
+    <member name="P:Alteruna.Multiplayer.Core.ITransportStreamReader.InDataLength"></member>
+    <member name="P:Alteruna.Multiplayer.Core.ITransportStreamReader.InDataOffset"></member>
+    <member name="P:Alteruna.Multiplayer.Core.ITransportStreamReader.InDataRemainingBytes"></member>
+    <member name="P:Alteruna.Multiplayer.Core.ITransportStreamReader.InPosition"></member>
+    <member name="P:Alteruna.Multiplayer.Core.ITransportStreamReader.InRemainingLength"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.PeekBool"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.PeekByte"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.PeekDouble"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.PeekFloat"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.PeekInt"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.PeekShort"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.PeekString"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.PeekUInt"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.PeekUShort"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.SeekAhead(System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamReader.SetBytes(System.Byte[],System.Int32,System.Int32)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.ITransportStreamWriter">
+      <summary>
+            Interface <c>ITransportStreamReader</c> defines a generic interface for wrtiting 
+            to a generic transport stream
+            
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.ITransportStreamWriter.BlockPacketReset"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.CopyData(System.Int32,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.NewPacket"></member>
+    <member name="P:Alteruna.Multiplayer.Core.ITransportStreamWriter.OutData"></member>
+    <member name="P:Alteruna.Multiplayer.Core.ITransportStreamWriter.OutDataLength"></member>
+    <member name="P:Alteruna.Multiplayer.Core.ITransportStreamWriter.OutPosition"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.Boolean)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.Byte)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.Byte[])"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.Byte[],System.Int32,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.Double)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.Guid)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.Int16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.Int64)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.Single)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.UInt16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.UInt32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.Put(System.UInt64)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ITransportStreamWriter.PutRaw(System.Byte[])">
+      <summary>
+            Write byte array to packet stream without length prefix.
+            </summary>
+      <param name="value">Byte array.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.LicenseRegisteredDel">
+      <summary>
+            Callback invoked when the Alteruna license has been validated and registered with the service.
+            </summary>
+      <remarks>
+            Subscribe to this delegate via <see cref="!:MultiplayerManager.LicenseRegistered" /> to perform
+            actions that require a valid license, such as connecting to a server or enabling premium features.
+            </remarks>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.NameGenerator">
+      <summary>
+            Class <c>NameGenerator</c> generates names from a random animal and adjective.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.NameGenerator.Generate">
+      <summary>
+            Generate a name using default values.
+            </summary>
+      <returns>New random name.</returns>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.NameGenerator.Generate(System.String[],System.String[])">
+      <summary>
+            Generate a name using given adjectives and nouns.
+            </summary>
+      <returns>New random name.</returns>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.NetworkStatistics">
+      <summary>
+            Class <c>NetworkStatistics</c> is responible for measuring network traffic on 
+            a device running software built with Trinity.
+            Keeps track of peek load, momentary load and ackumulated traffic on both transmitting
+            and receiving channels.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.NetworkStatistics.#ctor">
+      <summary>
+            Default Constructor
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.NetworkStatistics.AddBytesReceived(System.UInt32,System.Single)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.NetworkStatistics.AddBytesSent(System.UInt32,System.Single)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.NetworkStatistics.BytesPerSecondReceived"></member>
+    <member name="P:Alteruna.Multiplayer.Core.NetworkStatistics.BytesPerSecondSent"></member>
+    <member name="P:Alteruna.Multiplayer.Core.NetworkStatistics.PeekLoadReceived"></member>
+    <member name="P:Alteruna.Multiplayer.Core.NetworkStatistics.PeekLoadSent"></member>
+    <member name="M:Alteruna.Multiplayer.Core.NetworkStatistics.Reset"></member>
+    <member name="M:Alteruna.Multiplayer.Core.NetworkStatistics.Serialize(Alteruna.Multiplayer.Core.ITransportStreamWriter)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.NetworkStatistics.TotalKilobytesReceived"></member>
+    <member name="P:Alteruna.Multiplayer.Core.NetworkStatistics.TotalKilobytesSent"></member>
+    <member name="M:Alteruna.Multiplayer.Core.NetworkStatistics.Unserialize(Alteruna.Multiplayer.Core.ITransportStreamReader)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.OpenedPorts">
+      <summary>
+            Return object for when opening ports.
+            </summary>
+      <remarks>
+            Defaults to 0.
+            </remarks>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.OpenedPorts.DiscoveryPort">
+      <summary>
+            Broadcast discovery port.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.OpenedPorts.Port">
+      <summary>
+            Network port.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.PackageOrderValidator">
+      <summary>
+             Used to validate the order of packages.
+             </summary>
+      <remarks>
+             Tracks order and can be used to verify that new data is newer than the last.
+             this can acure when a pacgage is delayed and anothe pacgage arrives before the delayed one.
+             </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidator.Append">
+      <summary>
+            Append the package id and return it.
+            </summary>
+      <returns>Appended package id.</returns>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidator.Append(Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer)">
+      <summary>
+            Append the package id and write it to the writer.
+            </summary>
+      <param name="writer">Data writer</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidator.Validate(Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader)">
+      <summary>
+            Validate that given package id is not a recent previous package id.
+            </summary>
+      <param name="reader">Data reader.</param>
+      <returns>True when the package id is newer than last.</returns>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidator.Validate(System.Byte)">
+      <summary>
+            Validate that given package id is not a recent previous package id.
+            </summary>
+      <param name="incoming">Incoming package id.</param>
+      <returns>True when the package id is newer than last.</returns>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.PackageOrderValidatorNone">
+      <summary>
+            Used instead of PackageOrderValidator when order validation is not needed and should always should be valid.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidatorNone.Append(Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidatorNone.Validate(Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.PacketBase">
+      <summary>
+            Class <c>PacketBase</c> is the base class for all packet types
+            representing the underlaying functional primitives as well as
+            classes for synchronizing application states.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketBase.#ctor(Alteruna.Multiplayer.Core.PacketType)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketBase.ClearFlag(Alteruna.Multiplayer.Core.PacketFlags)">
+      <summary>
+            Clear flags with mask.
+            </summary>
+      <param name="flag">mask on with flags should be cleared.</param>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.PacketBase.Flags"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketBase.IsSet(Alteruna.Multiplayer.Core.PacketFlags)">
+      <summary>
+            Check if flag is set
+            </summary>
+      <param name="flag"></param>
+      <returns>True when target flag is set to true.</returns>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.PacketBase.RequestID"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketBase.Serialize(Alteruna.Multiplayer.Core.ITransportStreamWriter)">
+      <summary>
+            Serialize packet with packet processor
+            </summary>
+      <param name="processor">StreamWriter</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketBase.SetFlag(Alteruna.Multiplayer.Core.PacketFlags)">
+      <summary>
+            Set flags with OR operation.
+            </summary>
+      <param name="flag"></param>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.PacketBase.Type"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketBase.Unserialize(Alteruna.Multiplayer.Core.ITransportStreamReader)">
+      <summary>
+            Unserialize packet from packet processor
+            </summary>
+      <param name="processor">StreamReader</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.PacketFlags"></member>
+    <member name="T:Alteruna.Multiplayer.Core.PacketType">
+      <summary>
+            Class <c>Playroom</c> abstracts an available playroom with
+            a host and alphanumeric ID/name.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.ProcedureParameters">
+      <summary>
+            Parameters containing data to be sent together with Remote Procedure Calls.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.Boolean)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.Boolean@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.Byte)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.Byte@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.Byte[])"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.Byte[]@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.Int16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.Int16@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.Int32@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.Single)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.Single@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.String@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.UInt16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.UInt16@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.UInt32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Get(System.String,System.UInt32@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Serialize(Alteruna.Multiplayer.Core.ITransportStreamWriter)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Set(System.String,System.Boolean)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Set(System.String,System.Byte)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Set(System.String,System.Byte[])"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Set(System.String,System.Int16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Set(System.String,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Set(System.String,System.Single)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Set(System.String,System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Set(System.String,System.UInt16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Set(System.String,System.UInt32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.ProcedureParameters.Unserialize(Alteruna.Multiplayer.Core.ITransportStreamReader)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Reliability">
+      <summary>
+            Type <c>Reliability</c> defines modes of reliability
+            for messages sent using Trinity Network Protocol 
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.RemoteProcedure">
+      <summary>
+            RPC delegate.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.RemoteProcedureAck">
+      <summary>
+            RPC ack delegate.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.RemoteProcedureReply">
+      <summary>
+            RPC reply delegate.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.ResponseCode">
+      <summary>
+        <c>ResponsoCodes</c> enumation of all valid return codes
+            that may be reported from operations in Trinity Network Protocol.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.Room">
+      <summary>
+            The <c>Room</c> class defines a room in the network.
+            Users can join and leave rooms and send data to all other users in the same room.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.CurrentUsers">
+      <summary>
+            Amount of users in this <c>Room</c>.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.CustomData">
+      <summary>
+            Custom data for a room.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Room.Destroy">
+      <summary>
+            Destroy room from server.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.DisplayName">
+      <summary>
+            The name of this <c>Room</c>.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Room.Equals(System.Object)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Room.GetHashCode"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Room.GetUserCount">
+      <summary>
+            Amount of users in this <c>Room</c>.
+            </summary>
+      <returns>User count.</returns>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.ID"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.InviteOnly"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.IsLocked">
+      <summary>
+            Get if this <c>Room</c> is locked.
+            True when the room state is busy.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.IsPasswordProtected">
+      <summary>
+            Defines if this <c>Room</c> requires a pin to enter.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Room.Join">
+      <summary>
+            Attempt to join this <c>Room</c>.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Room.Join(System.UInt16)">
+      <summary>
+            Attempt to join this <c>Room</c> using a pin.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Room.KickUser(System.UInt16)">
+      <summary>
+            Kick user from current room.
+            </summary>
+      <param name="userId">User index.</param>
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.UserIndexArgumentOutOfRangeException">Thrown when given user index was not found.</exception>
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.NotInRoomException">Thrown when not in room.</exception>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Room.Leave">
+      <summary>
+            Send to leave request to current <c>Room</c>.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.Local">
+      <summary>
+            Defines if this <c>Room</c> is hosted locally.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.MaxUsers">
+      <summary>
+            The maximum allowed number of Users within this <c>Room</c></summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.Name"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.OnDemand">
+      <summary>
+            Defines if this <c>Room</c> will automatically close when empty.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Room.op_Equality(Alteruna.Multiplayer.Core.Room,Alteruna.Multiplayer.Core.Room)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Room.op_Inequality(Alteruna.Multiplayer.Core.Room,Alteruna.Multiplayer.Core.Room)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.Pincode"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.Private">
+      <summary>
+            Defines if this <c>Room</c> should appear in room lists.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.SceneId">
+      <summary>
+            Base room scene id.
+            -1 means no specified scene.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.SessionID">
+      <summary>
+            The ID of this <c>Room</c>.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.State"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Room.Users">
+      <summary>
+            The Users currently in this <c>Room</c>.
+            Only gets populated if in the same <c>Room</c>.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.Service">
+      <summary>
+            Alteruna service class.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.#ctor(Alteruna.Multiplayer.Core.DeviceType)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.AddKnownDevice(System.String,System.UInt16)">
+      <summary>
+            Adds a known device to the service for connection purposes.
+            </summary>
+      <param name="ip">The IP address of the device to add. If null or empty, the operation will proceed with default behavior for IP handling.</param>
+      <param name="port">The port number associated with the device to add.</param>
+      <exception cref="T:Alteruna.Exceptions.AlterunaServiceNotStartedException">
+            Thrown if the service has not been initialized prior to calling this method.
+            </exception>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.AvailableRooms">
+      <summary>
+            Known available rooms.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.BroadcastReceiveEnabled">
+      <summary>
+            Get or set of broadcast are received. Used for descending room in local network.
+            </summary>
+      <remarks>
+            Does not force the set.
+            If the port was started without broadcast, it cannot be enabled without reopening the port with it enabled.
+            Defaults to false if not started or unsupported by current transport.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.ClosePort">
+      <summary>
+            Closes the communication port and stops the device manager.
+            </summary>
+      <exception cref="T:Alteruna.Exceptions.AlterunaServiceNotStartedException">
+            Thrown if the Alteruna service has not properly been initialized and started.
+            </exception>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.CreateRoom(Alteruna.Multiplayer.Core.MethodArguments.RoomArgs)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.CreateRoom(System.String,System.UInt16,System.Boolean,System.UInt16,System.Boolean,System.Boolean)">
+      <summary>
+            Create a new room.
+            </summary>
+      <param name="displayName">name of the room.</param>
+      <param name="maxUsers">Maximum number of users in the room.</param>
+      <param name="privateRoom">Prevent room from appearing in room lists.</param>
+      <param name="pin">Pin code. Zero mens no pin code.</param>
+      <param name="joinRoom">Join room when creating it.</param>
+      <param name="onDemand">Close room when lats client leaves.</param>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.CurrentRoom">
+      <summary>
+            Get room you are in.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.Service.DefaultUseSecureWebSocket"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.DestroyRoom"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.DestroyRoom(Alteruna.Multiplayer.Core.Room)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.DestroyRoom(System.UInt32)"></member>
+    <member name="F:Alteruna.Multiplayer.Core.Service.DEV_PORT"></member>
+    <member name="F:Alteruna.Multiplayer.Core.Service.DeviceType"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.GetLastBlockResponse"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.Host">
+      <summary>
+            Indicates whether the current service instance is hosting a session.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.Initialized">
+      <summary>
+            Indicates whether the service has been initialized.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.InRoom">
+      <summary>
+            Get if you are currently in a room.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.InRoomOrJoining">
+      <summary>
+            Get if you are currently or soon in a room
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.InvokeRemoteProcedure(System.String,System.UInt16,Alteruna.Multiplayer.Core.ProcedureParameters,Alteruna.Multiplayer.Core.ISerializable,Alteruna.Multiplayer.Core.Reliability,Alteruna.Multiplayer.Core.RemoteProcedureReply,Alteruna.Multiplayer.Core.RemoteProcedureAck)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.IsAuthenticated">
+      <summary>
+            Get if the project is authenticated.
+            </summary>
+      <remarks>
+            If authorization is in progress, the call will wait for its completion.
+            </remarks>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.IsConnected">
+      <summary>
+            Get if connected to an endpoint.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.IsConnecting">
+      <summary>
+            Get if currently connecting to an endpoint.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.JoinMatchmaking(System.UInt16)">
+      <summary>
+            Join a Room through matchmaking using a pin.
+            </summary>
+      <param name="pin">The pin to join the Room with.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.JoinOnDemandRoom">
+      <summary>
+            Create and Join a Room.
+            The Room will close when the last player leaves the room.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.JoinOnDemandRoom(System.UInt32,System.Int32)">
+      <summary>
+            Join Room by id.
+            The Room will close when the last player leaves the room.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.JoinOwnRoom(Alteruna.Multiplayer.Core.MethodArguments.RoomArgs)">
+      <summary>
+            Join local room.
+            </summary>
+      <param name="createRoomArgs">Args for a new room.</param>
+      <remarks>
+            Can create a room if it does not exist and room args are given.
+            </remarks>
+      <exception cref="T:Alteruna.Exceptions.AlterunaServiceNotStartedException">
+            Thrown if the Alteruna service has not properly been initialized and started.
+            </exception>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.JoinRoom(Alteruna.Multiplayer.Core.Room,System.Int32)">
+      <summary>
+            Joins the specified room using the provided PIN for authentication.
+            </summary>
+      <param name="room">The room to join. Must not be null.</param>
+      <param name="pin">The PIN code required to access the room.</param>
+      <exception cref="T:Alteruna.Exceptions.AlterunaException">
+            Thrown if the given room session id is the same as the current room session id.
+            </exception>
+      <exception cref="T:Alteruna.Exceptions.AlterunaServiceNotStartedException">
+            Thrown if the Alteruna service has not properly been initialized and started.
+            </exception>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.KickUser(System.UInt16)">
+      <summary>
+            Kick user from current room.
+            </summary>
+      <param name="userId">User index.</param>
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.UserIndexArgumentOutOfRangeException">Thrown when given user index was not found.</exception>
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.NotInRoomException">Thrown when not in room.</exception>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.LeaveCurrentRoom">
+      <summary>
+            Send to leave request to current room.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.LockRoom">
+      <summary>
+            Lock current room. 
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.Log">
+      <summary>
+            Set the logging system to capture and manage log events for multiplayer services.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.MulticastRemoteProcedure(System.String,System.Collections.Generic.List{System.UInt16},Alteruna.Multiplayer.Core.ProcedureParameters,Alteruna.Multiplayer.Core.ISerializable,Alteruna.Multiplayer.Core.Reliability,Alteruna.Multiplayer.Core.RemoteProcedureReply,Alteruna.Multiplayer.Core.RemoteProcedureAck)">
+      <summary>
+            Invoke a Remote Procedure Call (RPC) for multiple Users.
+            </summary>
+      <param name="name">The name of the RPC to invoke.</param>
+      <param name="toUsers">The UserIDs of the Users on which to call the procedure.</param>
+      <param name="parameters">The parameters to be sent to the RPC.</param>
+      <param name="userData">The user data to be sent to the RPC.</param>
+      <param name="reliability">The reliability at which to invoke the RPC.</param>
+      <param name="replyCallback">RPC replay callback.</param>
+      <returns>The callID of the RPC.</returns>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.OnSessionCreated(System.Boolean,Alteruna.Multiplayer.Core.Room,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.OpenPort(Alteruna.Multiplayer.Core.Service.OpenPortArgs)">
+      <summary>
+            Opens the communication port and initializes the device manager with the specified settings.
+            </summary>
+      <param name="port">The port number to open. If set to 0, defaults to the system-assigned port.</param>
+      <param name="transportType">The transport protocol to be used for communication.</param>
+      <returns>The port that was opened.</returns>
+      <exception cref="T:Alteruna.Exceptions.AlterunaServiceNotStartedException">
+            Thrown if the Alteruna service has not properly been initialized and started.
+            </exception>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.ProjectID"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.PublishAvailabilityPort">
+      <summary>
+            Port used to broadcast land discoverability
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.RefreshAvailableRooms">
+      <summary>
+            Refresh Available Rooms using
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.RefreshAvailableRooms(Alteruna.Multiplayer.Core.Service.RefreshAvailableRoomsMode,Alteruna.Multiplayer.Core.Service.RefreshAvailableRoomsArgs)">
+      <summary>
+            Refresh the AvailableRooms list containing the currently available Rooms on the server.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.RegisterRemoteProcedure(System.String,Alteruna.Multiplayer.Core.RemoteProcedure)">
+      <summary>
+            Register a Remote Procedure.
+            </summary>
+      <param name="procedureName">The name of the procedure.</param>
+      <param name="callback">The function to call through the procedure.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.ReplyRemoteProcedure(System.UInt32,System.UInt16,Alteruna.Multiplayer.Core.ProcedureParameters,Alteruna.Multiplayer.Core.ISerializable)">
+      <summary>
+            Reply to a Remote Procedure Called by another User.
+            </summary>
+      <param name="callID">The callID of the RPC to reply to.</param>
+      <param name="result">The result of the procedure.</param>
+      <param name="parameters">The parameters to be sent with the reply.</param>
+      <param name="userData">Alternative to parameters.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.SetRoomName(System.String)">
+      <summary>
+            Rename currently joined room.
+            </summary>
+      <param name="name">New room name.</param>
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.NotInRoomException">Thrown when not in room.</exception>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.SetUsername(System.String)">
+      <summary>
+            Sets the username for the current user in the multiplayer system.
+            </summary>
+      <param name="name">The desired username. This must be a valid string and comply with the maximum length and formatting requirements.</param>
+      <exception cref="T:System.InvalidOperationException">
+            Thrown if the username is being set after the device manager has started or if there are restrictions due to active connections.
+            </exception>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.Start(Alteruna.Multiplayer.Core.IServiceEventListener,Alteruna.Multiplayer.Core.IServiceStateListener,Alteruna.Multiplayer.Core.Log.LogBase)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.Start(Alteruna.Multiplayer.Core.IServiceEventListener,Alteruna.Multiplayer.Core.IServiceStateListener,Alteruna.Multiplayer.Core.Service.ServiceArgs)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.Start(Alteruna.Multiplayer.Core.IServiceListener,Alteruna.Multiplayer.Core.Log.LogBase)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.Start(Alteruna.Multiplayer.Core.IServiceListener,Alteruna.Multiplayer.Core.Service.ServiceArgs)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.StartRemoteServer(System.String,Alteruna.Multiplayer.Core.MethodArguments.RoomArgs)"></member>
+    <member name="F:Alteruna.Multiplayer.Core.Service.Statistics"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.Stop">
+      <summary>
+            Stop service.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.Sync(Alteruna.Multiplayer.Core.Packets.ISynchronizableElement)">
+      <summary>
+            Serialize and route a package.
+            </summary>
+      <param name="synchronizableElement">Content.</param>
+      <remarks>Sync to all other users using reliable transport</remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.Sync(Alteruna.Multiplayer.Core.Packets.ISynchronizableElement,Alteruna.Multiplayer.Core.User,Alteruna.Multiplayer.Core.Reliability)">
+      <summary>
+            Serialize and route a package.
+            </summary>
+      <param name="synchronizableElement">Content.</param>
+      <param name="user">Target user.</param>
+      <param name="reliability">Reliability used for routing.</param>
+      <remarks>Sync to one or more users.</remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.Sync(Alteruna.Multiplayer.Core.Packets.ISynchronizableElement,Alteruna.Multiplayer.Core.UserId,Alteruna.Multiplayer.Core.Reliability)">
+      <summary>
+            Serialize and route a package.
+            </summary>
+      <param name="synchronizableElement">Content.</param>
+      <param name="users">Target userId group.</param>
+      <param name="reliability">Reliability used for routing.</param>
+      <remarks>Sync to one or more users.</remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.Sync(Alteruna.Multiplayer.Core.Packets.ISynchronizableElement,System.Collections.Generic.List{System.UInt16},Alteruna.Multiplayer.Core.Reliability)">
+      <summary>
+            Serialize and route a package.
+            </summary>
+      <param name="synchronizableElement">Content.</param>
+      <param name="users">Target users.</param>
+      <param name="reliability">Reliability used for routing.</param>
+      <remarks>Sync to one or more users. If users is null, it is equivalent to syncing to <see cref="F:Alteruna.Multiplayer.Core.UserId.All" />.</remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.Sync(Alteruna.Multiplayer.Core.Packets.ISynchronizableElement,System.UInt16,Alteruna.Multiplayer.Core.Reliability)">
+      <summary>
+            Serialize and route a package.
+            </summary>
+      <param name="synchronizableElement">Content.</param>
+      <param name="user">Target user.</param>
+      <param name="reliability">Reliability used for routing.</param>
+      <remarks>Sync to one or more users.</remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.TryLockResource(System.Guid)">
+      <summary>
+            Attempt to gain ownership of a Synchronizable with the specified UniqueID.
+            </summary>
+      <param name="id">The UniqueID of the Synchronizable.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.UnlockResource(System.Guid)">
+      <summary>
+            Release ownership of the Synchronizable with the specified UniqueID.
+            </summary>
+      <param name="id">The UniqueID of the Synchronizable.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.UnlockRoom(System.Boolean)">
+      <summary>
+            Unlock current room.
+            </summary>
+      <param name="matchmaking">Set state for matchmaking.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.Update"></member>
+    <member name="F:Alteruna.Multiplayer.Core.Service.UseKnownDevDevice"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.UserInfo">
+      <summary>
+            Local user's name and id.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.VerifyProjectID(System.Guid,System.Nullable{System.Guid},System.Boolean)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.VerifyProjectID(System.String,System.String,System.Boolean)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.WaitLockResource(System.Guid)">
+      <summary>
+            Wait until the Synchronizable with the specified UniqueID becomes available for ownership.
+            </summary>
+      <param name="id">The UniqueID of the Synchronizable.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.Service.OpenPortArgs"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.OpenPortArgs.#ctor"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.OpenPortArgs.Discovery"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.OpenPortArgs.Port"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.OpenPortArgs.PublishPort"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.OpenPortArgs.TransportType"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Service.OpenPortArgs.DiscoveryMode"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Service.RefreshAvailableRoomsArgs"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.RefreshAvailableRoomsArgs.#ctor"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.RefreshAvailableRoomsArgs.DisplayName"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Service.RefreshAvailableRoomsMode">
+      <summary>Flag for what to check</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.Service.RefreshAvailableRoomsMode.FromConnection">
+      <summary>Get Rooms from current active connection.</summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.Service.RefreshAvailableRoomsMode.FromRemote">
+      <summary>
+            Get Room info from all servers.
+            Only for Single Room Mode
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.Service.ServiceArgs">
+      <summary>
+            Represents the arguments for configuring and initializing an Alteruna service.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Service.ServiceArgs.#ctor"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.ServiceArgs.Log"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.ServiceArgs.MaxPlayers"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.ServiceArgs.OpenPortArgs"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.ServiceArgs.SubId"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.ServiceArgs.Username"></member>
+    <member name="T:Alteruna.Multiplayer.Core.SessionID">
+      <summary>
+            Type <c>Session</c> defines constant for
+            <value>Any</value> session. Used for filtering purposes to allow any
+            organization to connect and use the provided functionality.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.SessionState">
+      <summary>
+            Enum <c>SessionState</c> models attributes of a session, such as its ID,
+            maximum number of users and current quota.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.SessionState.Open">
+      <summary>
+            Session is open, connections are allowed.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.SessionState.MatchMaking">
+      <summary>
+            Accepting matchmaking joins.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.SessionState.Busy">
+      <summary>
+            Session is currently not accepting more participants.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.SystemMonitor"></member>
+    <member name="T:Alteruna.Multiplayer.Core.User">
+      <summary>
+            User class containing index and name.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.User.#ctor(System.UInt16,System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.User.Equals(System.Object)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.User.GetHashCode"></member>
+    <member name="P:Alteruna.Multiplayer.Core.User.Index">
+      <summary>
+            Index of user
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.User.IsHost">
+      <summary>
+            Get if user is considered being the host.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.User.MAX_NAME_LENGTH"></member>
+    <member name="P:Alteruna.Multiplayer.Core.User.Name">
+      <summary>
+            Name of user
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.User.op_Equality(Alteruna.Multiplayer.Core.User,Alteruna.Multiplayer.Core.User)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.User.op_Implicit(Alteruna.Multiplayer.Core.User)~System.UInt16"></member>
+    <member name="M:Alteruna.Multiplayer.Core.User.op_Implicit(Alteruna.Multiplayer.Core.User)~System.Int32"></member>
+    <member name="M:Alteruna.Multiplayer.Core.User.op_Implicit(Alteruna.Multiplayer.Core.User)~System.String"></member>
+    <member name="M:Alteruna.Multiplayer.Core.User.op_Inequality(Alteruna.Multiplayer.Core.User,Alteruna.Multiplayer.Core.User)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.User.ToString"></member>
+    <member name="T:Alteruna.Multiplayer.Core.UserId">
+      <summary>
+            User Indexes to target multiple users.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.UserId.All">
+      <summary>
+            Use to target all except self.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.UserId.AllInclusive">
+      <summary>
+            Use to target all users, including self.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.Exceptions.LicenseException">
+      <summary>
+            Represents errors that occur during license operations.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.LicenseException.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.LicenseException.#ctor(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.LicenseException.#ctor(System.String,System.Exception)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Exceptions.LicenseException.Message"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Exceptions.NoControllerException">
+      <summary>
+            Represents errors that occur from missing multiplayer controller.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.NoControllerException.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.NoControllerException.#ctor(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.NoControllerException.#ctor(System.String,System.Exception)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Exceptions.NotInRoomException">
+      <summary>
+            The exception that is thrown when a user is not in a room.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.NotInRoomException.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.NotInRoomException.#ctor(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.NotInRoomException.#ctor(System.String,System.Exception)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Exceptions.RoomException">
+      <summary>
+            Represents errors that occur during room operations.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.RoomException.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.RoomException.#ctor(Alteruna.Multiplayer.Core.Room)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.RoomException.#ctor(Alteruna.Multiplayer.Core.Room,System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.RoomException.#ctor(Alteruna.Multiplayer.Core.Room,System.String,System.Exception)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.RoomException.#ctor(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.RoomException.#ctor(System.String,System.Exception)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Exceptions.RoomException.Message"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Exceptions.RoomException.Room"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Exceptions.UserException">
+      <summary>
+            Represents errors that occur during user operations.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.UserException.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.UserException.#ctor(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.UserException.#ctor(System.String,System.Exception)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Exceptions.UserIndexArgumentOutOfRangeException">
+      <summary>
+            The exception that is thrown when a user index from a argument is not a valid user.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.UserIndexArgumentOutOfRangeException.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.UserIndexArgumentOutOfRangeException.#ctor(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.UserIndexArgumentOutOfRangeException.#ctor(System.String,System.Exception)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.UserIndexArgumentOutOfRangeException.#ctor(System.String,System.Object,System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.UserIndexArgumentOutOfRangeException.#ctor(System.String,System.String)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Exceptions.UserIndexOutOfRangeException">
+      <summary>
+            The exception that is thrown when a user index is not a valid user.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.UserIndexOutOfRangeException.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.UserIndexOutOfRangeException.#ctor(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.UserIndexOutOfRangeException.#ctor(System.String,System.Exception)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.ISession.ISessionCustomDataRO"></member>
+    <member name="P:Alteruna.Multiplayer.Core.ISession.ISessionCustomDataRO.CustomData">
+      <summary>
+            Custom data for a room.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.ConsoleLog">
+      <summary>
+            Class <c>ConsoleLog</c> is an implementation of abstract class
+            <c>LogBase</c> which output all logs to the applications standard output.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ConsoleLog.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ConsoleLog.Present(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.ConsoleLogH">
+      <summary>
+            Class <c>ConsoleLogH</c> is extention of <c>ConsoleLog</c> but adds a header to the output.
+            <c>LogBase</c> which output all logs to the applications standard output.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ConsoleLogH.#ctor(System.String,System.Int32)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Log.ConsoleLogH.Header"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ConsoleLogH.LogHeadless(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ConsoleLogH.Present(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ConsoleLogH.PresentHeadless(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.ConsoleLogLogging"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ConsoleLogLogging.#ctor(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ConsoleLogLogging.Log(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ConsoleLogLogging.LogAll"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ConsoleLogLogging.LogHeadless(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.ConsoleLogT"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ConsoleLogT.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ConsoleLogT.Present(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.FilteredConsoleLog"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.FilteredConsoleLog.#ctor(System.String[])"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.FilteredConsoleLog.Log(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.FilteredConsoleLogH"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.FilteredConsoleLogH.#ctor(System.String,System.String[])"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.FilteredConsoleLogH.Log(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.FilteredConsoleLogLogging"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.FilteredConsoleLogLogging.#ctor(System.String,System.String[])"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.FilteredConsoleLogLogging.Log(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.ILogH"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Log.ILogH.Header"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ILogH.LogHeadless(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.ILogH.PresentHeadless(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.LogBase">
+      <summary>
+            Abstract class <c>LogBase</c> defines a generic interface for all
+            system logging used internally within the Trinity framework. 
+            May be extended in order to present logs in e.g a system console.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogBase.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogBase.Alert(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogBase.Debug(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogBase.Error(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogBase.Format(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogBase.Info(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogBase.Log(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Log.LogBase.LogLevel"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogBase.Present(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)">
+      <summary>
+            Method Present must be overidden by sub classes in order to customize
+            log presentation.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogBase.Warning(System.String)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.LogBase.Severity">
+      <summary>
+            Log severity grades.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.LogChild">
+      <summary>
+            Redirects logs to a parent log with header.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogChild.#ctor(Alteruna.Multiplayer.Core.Log.LogBase,System.String,System.Int32)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Log.LogChild.Header"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogChild.Log(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogChild.LogHeadless(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="F:Alteruna.Multiplayer.Core.Log.LogChild.Parent"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogChild.Present(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogChild.PresentHeadless(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.LogLayer">
+      <summary>
+            A composable logging decorator that wraps another <see cref="F:Alteruna.Multiplayer.Core.Log.LogLayer.LogBase" /> and forwards messages to it.
+            </summary>
+      <remarks>
+        <see cref="T:Alteruna.Multiplayer.Core.Log.LogLayer" /> implements the decorator pattern: subclasses override <see cref="M:Alteruna.Multiplayer.Core.Log.LogBase.Present(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)" />
+            to transform or filter log output before passing it to the inner <see cref="F:Alteruna.Multiplayer.Core.Log.LogLayer.LogBase" />.
+            Use <see cref="M:Alteruna.Multiplayer.Core.Log.LogLayer.Sort" /> after building a layer chain to ensure optimal ordering
+            (e.g. filters before formatters).
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogLayer.#ctor(Alteruna.Multiplayer.Core.Log.LogBase)">
+      <summary>
+            Initializes a new <see cref="T:Alteruna.Multiplayer.Core.Log.LogLayer" /> wrapping the supplied <paramref name="logBase" />.
+            </summary>
+      <param name="logBase">The inner log destination to forward messages to.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogLayer.GetLayer``1">
+      <summary>
+            Traverses the layer chain and returns the first layer of type <typeparamref name="T" />.
+            </summary>
+      <typeparam name="T">The layer type to search for.</typeparam>
+      <returns>The first matching layer, or <see langword="null" /> if none is found.</returns>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Log.LogLayer.LogLevel"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogLayer.Present(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)">
+      <summary>
+            Method Present must be overidden by sub classes in order to customize
+            log presentation.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogLayer.Sort">
+      <summary>
+            Reorders the layer chain so that filter layers appear before formatter layers, and merges
+            adjacent <see cref="T:Alteruna.Multiplayer.Core.Log.LogLayerFilter" /> instances.
+            </summary>
+      <returns>The optimized <see cref="F:Alteruna.Multiplayer.Core.Log.LogLayer.LogBase" /> root of the chain.</returns>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.LogLayerFilter">
+      <summary>
+            A log layer that suppresses messages whose text starts with any of the configured filter prefixes.
+            </summary>
+      <remarks>
+            Messages that match any prefix in the filter array are silently discarded before reaching
+            the inner log destination. Filtering is applied after severity gating.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogLayerFilter.#ctor(Alteruna.Multiplayer.Core.Log.LogBase,System.String[])">
+      <summary>
+            Initializes a new <see cref="T:Alteruna.Multiplayer.Core.Log.LogLayerFilter" /> with the specified prefix exclusions.
+            </summary>
+      <param name="logBase">The inner log destination.</param>
+      <param name="filter">
+            An array of string prefixes; messages starting with any of these strings will be suppressed.
+            </param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogLayerFilter.Log(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.LogLayerHeader">
+      <summary>
+            A log layer that prepends a fixed header string to every message before forwarding it.
+            </summary>
+      <remarks>
+            A trailing colon is appended to <c>header</c> automatically if it is not already present.
+            Use <see cref="M:Alteruna.Multiplayer.Core.Log.LogLayerHeader.PresentHeadless(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)" /> or <see cref="M:Alteruna.Multiplayer.Core.Log.LogLayerHeader.LogHeadless(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)" /> to bypass the header for
+            messages that should not be prefixed.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogLayerHeader.#ctor(System.String,Alteruna.Multiplayer.Core.Log.LogBase)">
+      <summary>
+            Initializes a new <see cref="T:Alteruna.Multiplayer.Core.Log.LogLayerHeader" /> that prefixes messages with <paramref name="header" />.
+            </summary>
+      <param name="header">The prefix string. A colon is appended if not already present.</param>
+      <param name="logBase">The inner log destination.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogLayerHeader.LogHeadless(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)">
+      <summary>
+            Logs a message to the inner log destination without the header prefix, applying severity filtering.
+            </summary>
+      <param name="severity">The severity of the message.</param>
+      <param name="message">The raw message text.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogLayerHeader.Present(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)">
+      <summary>
+            Method Present must be overidden by sub classes in order to customize
+            log presentation.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogLayerHeader.PresentHeadless(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)">
+      <summary>
+            Forwards a message to the inner log destination without the header prefix.
+            </summary>
+      <param name="severity">The severity of the message.</param>
+      <param name="message">The raw message text.</param>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.Log.LogLayerTimestamp">
+      <summary>
+            A log layer that prepends a UTC timestamp to every message before forwarding it.
+            </summary>
+      <remarks>
+            Use <see cref="M:Alteruna.Multiplayer.Core.Log.LogLayerTimestamp.TryAddTimestamp(Alteruna.Multiplayer.Core.Log.LogBase)" /> to safely add this layer only once to an existing chain.
+            </remarks>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogLayerTimestamp.#ctor(Alteruna.Multiplayer.Core.Log.LogBase)">
+      <summary>
+            Initializes a new <see cref="T:Alteruna.Multiplayer.Core.Log.LogLayerTimestamp" /> wrapping <paramref name="logBase" />.
+            </summary>
+      <param name="logBase">The inner log destination.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogLayerTimestamp.Present(Alteruna.Multiplayer.Core.Log.LogBase.Severity,System.String)">
+      <summary>
+            Method Present must be overidden by sub classes in order to customize
+            log presentation.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Log.LogLayerTimestamp.TryAddTimestamp(Alteruna.Multiplayer.Core.Log.LogBase)">
+      <summary>
+            Adds a <see cref="T:Alteruna.Multiplayer.Core.Log.LogLayerTimestamp" /> to <paramref name="logBase" /> only if one is not already present.
+            </summary>
+      <param name="logBase">The existing log chain to potentially augment.</param>
+      <returns>
+            The original <paramref name="logBase" /> if it already contains a timestamp layer,
+            otherwise a new <see cref="T:Alteruna.Multiplayer.Core.Log.LogLayerTimestamp" /> wrapping it.
+            </returns>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.MethodArguments.IAdaptiveSerializableInfo">
+      <summary>
+            Common interface for serialization info.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.IAdaptiveSerializableInfo.ForceSync">
+      <summary>
+            Is force sync event.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.IAdaptiveSerializableInfo.LodLevel">
+      <summary>
+            Network LOD (Level of Detail) level.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs">
+      <summary>
+            Arguments for creating a room.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.#ctor(Alteruna.Multiplayer.Core.MethodArguments.RoomArgs)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.CustomData">
+      <summary>
+            Custom data for a room.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.DisplayName">
+      <summary>
+            The name of this <c>Room</c>.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.Host">
+      <summary>
+            The host user id of a room. If set to 65535, there will be no explicit host, and instead the user with the lowest ID will be "host".
+            </summary>
+      <remarks>
+            Note that by default, the "host" is not hosting the room but is just a user that has some additional privileges.
+            </remarks>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.JoinRoom">
+      <summary>
+            Whether to join the room after creating it.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.MatchMake(System.UInt16,System.UInt16)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.MaxUsers">
+      <summary>
+            Maximum number of users allowed in the room.
+            0 for default.
+            </summary>
+      <remarks>
+            There is a global limit that is set in the controller.
+            The absolut max is 65533 users.
+            </remarks>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.OnDemand">
+      <summary>
+            Defines if this <c>Room</c> will automatically close when empty.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.PinCode">
+      <summary>
+            Pin code for the room.
+            0 means no pin code.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.Private">
+      <summary>
+            Defines if this <c>Room</c> should appear in room lists.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.RoomArgs.SceneId">
+      <summary>
+            Base room scene id.
+            -1 means no specified scene.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.MethodArguments.SerializeInfo">
+      <summary>
+            Info for serialization.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.MethodArguments.SerializeInfo.#ctor(System.Byte,System.Boolean)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.SerializeInfo.Discard">
+      <summary>
+            When true, packet will be discarded.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.SerializeInfo.ForceSync">
+      <summary>
+            Is force sync event.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.SerializeInfo.LodLevel">
+      <summary>
+            Network LOD (Level of Detail) level.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.MethodArguments.UnserializeInfo">
+      <summary>
+            Info for unserialization.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.MethodArguments.UnserializeInfo.#ctor(System.Byte,System.Boolean,System.UInt32)"></member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.UnserializeInfo.ForceSync">
+      <summary>
+            Is force sync event.
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.UnserializeInfo.Length"></member>
+    <member name="P:Alteruna.Multiplayer.Core.MethodArguments.UnserializeInfo.LodLevel">
+      <summary>
+            Network LOD (Level of Detail) level.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.PacketProcessing.CompressionMethod">
+      <summary>
+            Compression types for data compression.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.PacketProcessing.CompressionMethod.None">
+      <summary>
+            No compression.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.PacketProcessing.CompressionMethod.GZip">
+      <summary>
+            Zip compression.
+            Less effective on small amounts of data.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.PacketProcessing.CompressionMethod.RunLengthEncoding">
+      <summary>
+            Run-Length Encoding (RLE) compression.
+            Effective form compressing data with many repeating bytes.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.PacketProcessing.CompressionMethod.Base64">
+      <summary>
+            Base64 encoding.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.PacketProcessing.CompressionMethod.NibbleZeroIndicator">
+      <summary>
+            Nibble Zero Indicator (NZI) compression.
+            Inefficient for compressing data similar to ASCII and UTF8 strings.
+            Works as well on small amounts of data as it does on large amounts of data.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.PacketProcessing.EncryptionMethod"></member>
+    <member name="F:Alteruna.Multiplayer.Core.PacketProcessing.EncryptionMethod.Scramble">
+      <summary>
+            Scrambles the data based on a key unique to your project.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.PacketProcessing.Encryption.GuidHash"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Encryption.GuidHash.CreateHashGuid(System.String)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader">
+      <summary>
+            Class <c>Writer</c> is used to write data to be sent to other Users through a <c>Synchronizable</c>.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.#ctor(Alteruna.Multiplayer.Core.ITransportStreamReader)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.Decompress(Alteruna.Multiplayer.Core.PacketProcessing.CompressionMethod)">
+      <summary>
+            Compresses the data already written to the writer.
+            If StartCompress has not been called, the data will be compressed from the start of the writer.
+            </summary>
+      <param name="method">Compression method used.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.Decrypt(Alteruna.Multiplayer.Core.PacketProcessing.EncryptionMethod)">
+      <summary>
+            Decrypts the data already written to the writer.
+            </summary>
+      <param name="method">Encryption method used.</param>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.DeserializePackedString``1(System.String)">
+      <summary>
+            Unpacks a string that has been packed using <see cref="!:Writer.SerializeAndPackString&lt;T&gt;" />.
+            </summary>
+      <param name="data">string data.</param>
+      <typeparam name="T">type</typeparam>
+      <returns>Object of given type.</returns>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadBits(System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadBits(System.Int32,System.Byte@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadBits(System.Int32,System.Int32@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadBits(System.Int32,System.Int64@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadBool"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadByte"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadByteArray"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadDouble"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadFloat"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadGeneric``1"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadGuid"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadInt"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadLong"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadObject"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadObject``1"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadObject(System.Type)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadShort"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadString"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadUint"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadUlong"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadUshort"></member>
+    <member name="T:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer">
+      <summary>
+            Class <c>Reader</c> is used to read data recieved from another User.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.#ctor(Alteruna.Multiplayer.Core.ITransportStreamWriter)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.EndCompress(Alteruna.Multiplayer.Core.PacketProcessing.CompressionMethod)">
+      <summary>
+            Compresses the data already written to the writer.
+            If StartCompress has not been called, the data will be compressed from the start of the writer.
+            </summary>
+      <param name="method">Compression method used.</param>
+      <returns>Number of bytes saved by compression.</returns>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.EndEncrypt(Alteruna.Multiplayer.Core.PacketProcessing.EncryptionMethod)">
+      <summary>
+            Encrypts the data already written to the writer.
+            If StartEncrypt has not been called, the data will be encrypted from the start of the writer.
+            </summary>
+      <param name="method">Encryption method used.</param>
+      <returns>Number of bytes saved by encryption.</returns>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.SerializeAndPackString``1(``0)">
+      <summary>
+            Pack an object into a string that cane later be unpacked using <see cref="!:Reader.DeserializePackedString&lt;T&gt;" />.
+            </summary>
+      <param name="obj">Given object to pack.</param>
+      <typeparam name="T">Object Type.</typeparam>
+      <returns>Packed string.</returns>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.StartCompress">
+      <summary>
+            Sets the current position of the writer as the start of the data to be compressed.
+            Default to the start of the Writer.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.StartEncrypt">
+      <summary>
+            Sets the current position of the writer as the start of the data to be encrypted.
+            Default to the start of the Writer.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Boolean)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Byte)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Byte[])"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Byte[],System.Int32,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Guid)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Int16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Int64)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Single)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.UInt16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.UInt32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.UInt64)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteBits(System.Byte,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteBits(System.Int32,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteBits(System.Int64,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteGeneric``1(``0)">
+      <summary>
+            identical to WriteObject
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteObject(System.Object)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteObject(System.Object,System.Type)">
+      <summary>
+            Write an object of given type.
+            </summary>
+      <param name="value">object</param>
+      <param name="type">Type may be ether a value type object, implementing IFormatter, or is serializable.</param>
+      <exception cref="T:System.ArgumentNullException">Given object was null</exception>
+      <exception cref="T:System.Runtime.Serialization.SerializationException">Thrown when given object was not serializable.</exception>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteObject``1(``0)">
+      <summary>
+            Write an object of given type.
+            </summary>
+      <param name="value">object</param>
+      <typeparam name="T">Type may be ether a value type object, implementing IFormatter, or is serializable.</typeparam>
+      <exception cref="T:System.ArgumentNullException">Given object was null</exception>
+      <exception cref="T:System.Runtime.Serialization.SerializationException">Thrown when given object was not serializable.</exception>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.Packets.ISynchronizableElement">
+      <summary>
+            The interface <c>ISynchronizableElement</c> represents an identified <see cref="T:Alteruna.Multiplayer.Core.IAdaptiveSerializable" /></summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Packets.ISynchronizableElement.CodecID"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Packets.ISynchronizableElement.Synchronizable"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Packets.LifesignPacket">
+      <summary>
+             Class <c>MulticastPacket</c> defines the protocol primitive
+             sent in order to load test servers routing capabilities
+             </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Packets.LifesignPacket.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Packets.LifesignPacket.Serialize(Alteruna.Multiplayer.Core.ITransportStreamWriter)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Packets.LifesignPacket.Unserialize(Alteruna.Multiplayer.Core.ITransportStreamReader)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Packets.MulticastPacket">
+      <summary>
+            Class <c>MulticastPacket</c> defines the protocol primitive
+            sent in order to load test servers routing capabilities
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Packets.MulticastPacket.#ctor"></member>
+    <member name="F:Alteruna.Multiplayer.Core.Packets.MulticastPacket.All"></member>
+    <member name="F:Alteruna.Multiplayer.Core.Packets.MulticastPacket.AllInclusive"></member>
+    <member name="F:Alteruna.Multiplayer.Core.Packets.MulticastPacket.Packet"></member>
+    <member name="F:Alteruna.Multiplayer.Core.Packets.MulticastPacket.Recipients"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Packets.MulticastPacket.Serialize(Alteruna.Multiplayer.Core.ITransportStreamWriter)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Packets.MulticastPacket.Unserialize(Alteruna.Multiplayer.Core.ITransportStreamReader)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Packets.ProcedureCallFlags">
+      <summary>
+            Class <c>ProcedureCallFlags</c> defines the core attributes
+            if a Trinity framework procedure call
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.Packets.SynchronizableElement">
+      <summary>
+            The struct <c>SynchronizableElement</c> represents an identified <see cref="T:Alteruna.Multiplayer.Core.IAdaptiveSerializable" /></summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Packets.SynchronizableElement.CodecID"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Packets.SynchronizableElement.Synchronizable"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Transport.TransportType">
+      <summary>
+            Implemented network transportation layers.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.Transport.TransportType.Default">
+      <summary>
+            Can send unreliable or reliable.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.Transport.TransportType.TCP">
+      <summary>
+            Only send as reliable TCP.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.Transport.TransportType.TCPS">
+      <summary>
+            Secure TCP. Server only.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.Transport.TransportType.WebSocket">
+      <summary>
+            Compatible with <see cref="F:Alteruna.Multiplayer.Core.Transport.TransportType.TCP" />.
+            Only Works in browser.
+            </summary>
+    </member>
+    <member name="T:Alteruna.Multiplayer.Core.Transport.NaN.TransportLayer"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.NaN.TransportLayer.#ctor"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Transport.NaN.TransportLayer.BroadcastReceiveEnabled"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.NaN.TransportLayer.Dispose">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocDispose">
+            <parameter>Alteruna.Multiplayer.Core.Transport.NaN.TransportLayer</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Transport.NaN.TransportLayer.Log"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Transport.RUDP.TransportEndPoint">
+      <summary>
+            Class <c>TransportEndPoint</c> is an implementation of ITransportEndPoint using
+            reliable UDP. 
+            
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.RUDP.TransportEndPoint.Disconnect"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Transport.RUDP.TransportEndPoint.Id"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.RUDP.TransportEndPoint.Send(Alteruna.Multiplayer.Core.ISerializable,Alteruna.Multiplayer.Core.Reliability,Alteruna.Multiplayer.Core.Log.LogBase,System.UInt16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.RUDP.TransportEndPoint.Send(System.Byte[],System.Int32,System.Int32,Alteruna.Multiplayer.Core.Reliability,Alteruna.Multiplayer.Core.Log.LogBase)"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Transport.TCP.TransportLayer"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.TCP.TransportLayer.#ctor"></member>
+    <member name="P:Alteruna.Multiplayer.Core.Transport.TCP.TransportLayer.BroadcastReceiveEnabled"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.TCP.TransportLayer.Dispose">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocDispose">
+            <parameter>Alteruna.Multiplayer.Core.Transport.TCP.TransportLayer</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Transport.TCP.TransportLayer.Log"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Transport.TCPS.TransportLayer"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.TCPS.TransportLayer.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.TCPS.TransportLayer.LogServerCertificate(Alteruna.Multiplayer.Core.Log.LogBase)"></member>
+    <member name="F:Alteruna.Multiplayer.Core.Transport.TCPS.TransportLayer.ServerCertificate"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.TCPS.TransportLayer.SetServerCertificate"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.TCPS.TransportLayer.SetServerCertificate(System.Security.Cryptography.X509Certificates.X509Certificate2)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.TCPS.TransportLayer.SetServerCertificate(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.TCPS.TransportLayer.SetServerCertificate(System.String,System.String)"></member>
+  </members>
+</doc>

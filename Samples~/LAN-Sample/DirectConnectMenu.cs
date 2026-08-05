@@ -1,6 +1,7 @@
+using Alteruna.Multiplayer.Unity;
 using TMPro;
 
-public class DirectConnectMenu : Alteruna.Multiplayer.CommunicationBridge
+public class DirectConnectMenu : CommunicationBridge
 {
     public TMP_InputField inputField;
 

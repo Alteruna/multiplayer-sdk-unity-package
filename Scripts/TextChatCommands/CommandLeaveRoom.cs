@@ -1,10 +1,10 @@
 ﻿#if ALTERUNA
-using Alteruna.Multiplayer;
+using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandLeaveRoom : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandLeaveRoom : Multiplayer.Unity.ITextChatCommand
 	{
 		public string Command { get; } = "leaveRoom";
 		public string Description { get; } = "Leave current room.";

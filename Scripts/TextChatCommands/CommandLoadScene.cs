@@ -1,11 +1,11 @@
 ﻿#if ALTERUNA
-using Alteruna.Multiplayer;
+using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandLoadScene : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandLoadScene : Multiplayer.Unity.ITextChatCommand
 	{
 		public string Command { get; } = "loadScene";
 		public string Description { get; } = "Loads scene by name or index. (no multiplayer behavior)";

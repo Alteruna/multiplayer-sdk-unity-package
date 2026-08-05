@@ -1,8 +1,8 @@
 {
   "name": "com.alteruna.multiplayer",
-  "version": "2.0.2007",
+  "version": "2.1.0",
   "displayName": "Alteruna Multiplayer SDK",
-  "description": "Develop multiplayer applications with Alteruna's mulyiplayer SDK for Unity.",
+  "description": "Develop online applications with Alteruna Multiplayer SDK for Unity.",
   "unity": "2021.3",
   "unityRelease": "45f2",
   "documentationUrl": "https://docs.v2.alteruna.com",

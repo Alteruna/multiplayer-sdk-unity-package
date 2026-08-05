@@ -1,10 +1,10 @@
-﻿using Alteruna.Multiplayer;
-using System;
+﻿using System;
+using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandTp : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandTp : Multiplayer.Unity.ITextChatCommand
 	{
 		public string Command { get; } = "tp";
 		public string Description { get; } = "teleport avatar (use ~ for relative coordinates)";

@@ -1,9 +1,9 @@
-﻿using Alteruna.Multiplayer;
+﻿using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandMe : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandMe : Multiplayer.Unity.ITextChatCommand
 	{
 		public string Command { get; } = "me";
 		public string Description { get; } = "Get name and id of yourself. If you have a avatar, it will be set as target.";

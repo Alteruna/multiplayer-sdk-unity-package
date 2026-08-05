@@ -1,9 +1,9 @@
-﻿using Alteruna.Multiplayer;
+﻿using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandPrint : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandPrint : Multiplayer.Unity.ITextChatCommand
 	{
 		public string Command { get; } = "print";
 		public string Description { get; } = "print message to local chat.";

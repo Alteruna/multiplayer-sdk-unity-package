@@ -1,9 +1,9 @@
-﻿using Alteruna.Multiplayer;
+﻿using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandTarget : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandTarget : Multiplayer.Unity.ITextChatCommand
 	{
 		public string Command { get; } = "target";
 		public string Description { get; } = "set target and get name of object in front of main camera";

@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Alteruna
+namespace Alteruna.UnityEditor
 {
 	[CustomEditor(typeof(BaseRoomBrowser), true)]
 	public class BaseRoomBrowserEditor : Editor

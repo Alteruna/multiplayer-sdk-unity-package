@@ -1,8 +1,9 @@
 using Alteruna.Multiplayer;
 using Alteruna.Multiplayer.Core;
+using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
-public class RbMovment : Alteruna.Multiplayer.CommunicationBridge
+public class RbMovment : CommunicationBridge
 {
     public RigidbodySynchronizable _rbSync;
     

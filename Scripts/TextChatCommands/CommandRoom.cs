@@ -1,11 +1,11 @@
 ﻿#if ALTERUNA
-using Alteruna.Multiplayer;
 using Alteruna.Multiplayer.Core;
+using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandRoom : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandRoom : Multiplayer.Unity.ITextChatCommand
 	{
 		public string Command { get; } = "room";
 		public string Description { get; } = "Get information about current room.";

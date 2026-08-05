@@ -1,5 +1,6 @@
 using UnityEngine;
 using Alteruna.Multiplayer;
+using Alteruna.Multiplayer.Unity;
 
 [RequireComponent(typeof(NewInputSync))]
 public class NewInputSyncTest : MonoBehaviour

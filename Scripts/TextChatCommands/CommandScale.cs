@@ -1,9 +1,9 @@
-﻿using Alteruna.Multiplayer;
+﻿using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandScale : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandScale : Multiplayer.Unity.ITextChatCommand
 	{
 		public string Command { get; } = "scale";
 		public string Description { get; } = "scale target (get target using /target) currently looking at (use ~ for relative coordinates)";

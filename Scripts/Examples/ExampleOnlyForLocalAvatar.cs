@@ -1,6 +1,7 @@
 ﻿using Alteruna;
 using Alteruna.Multiplayer;
 using Alteruna.Multiplayer.Core;
+using Alteruna.Multiplayer.Unity;
 
 namespace Alteruna_Examples
 {

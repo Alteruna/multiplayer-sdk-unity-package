@@ -3,6 +3,7 @@ using Alteruna.Multiplayer;
 using Alteruna.Multiplayer.Core;
 using Alteruna.Multiplayer.Core.PacketProcessing.Reader;
 using Alteruna.Multiplayer.Core.PacketProcessing.Writer;
+using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna_Examples

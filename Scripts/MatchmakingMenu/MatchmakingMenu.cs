@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Alteruna.Multiplayer;
 using Alteruna.Multiplayer.Core;
-using Alteruna.Multiplayer.EventArgument;
+using Alteruna.Multiplayer.Unity;
+using Alteruna.Multiplayer.Unity.EventArgument;
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
@@ -40,7 +41,7 @@ namespace Alteruna
 		public GameObject EntryPrefab;
 
 		[FormerlySerializedAs("GameStarted"), Space]
-		public UnityEvent<Multiplayer.MultiplayerManager, int> OnGameStart;
+		public UnityEvent<MultiplayerManager, int> OnGameStart;
 
 		[HideInInspector] public List<MatchmakingEntry> PlayerEntries = new List<MatchmakingEntry>();
 		[HideInInspector] public bool IsOwner;

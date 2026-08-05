@@ -1,6 +1,7 @@
 using UnityEngine;
 using Alteruna;
 using Alteruna.Multiplayer;
+using Alteruna.Multiplayer.Unity;
 
 namespace Alteruna_Examples
 {

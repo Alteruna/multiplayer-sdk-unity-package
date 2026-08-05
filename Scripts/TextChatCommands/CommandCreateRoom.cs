@@ -1,11 +1,11 @@
 ﻿#if ALTERUNA
-using Alteruna.Multiplayer;
 using Alteruna.Multiplayer.Core.MethodArguments;
+using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandCreateRoom : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandCreateRoom : Multiplayer.Unity.ITextChatCommand
 	{
 		public string Command { get; } = "createRoom";
 		public string Description { get; } = "Create room. All arguments are optional.";

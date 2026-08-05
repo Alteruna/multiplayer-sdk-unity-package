@@ -1,11 +1,11 @@
 ﻿#if ALTERUNA
-using Alteruna.Multiplayer;
 using Alteruna.Multiplayer.Core;
+using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandJoinRoom : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandJoinRoom : Multiplayer.Unity.ITextChatCommand
 	{
 		public string Command { get; } = "joinRoom";
 		public string Description { get; } = "Join room. Any room, by name, or by ID.";

@@ -1,9 +1,9 @@
-﻿using Alteruna.Multiplayer;
+﻿using Alteruna.Multiplayer.Unity;
 using UnityEngine;
 
 namespace Alteruna.TextChatCommands
 {
-	public class CommandRotate : Alteruna.Multiplayer.ITextChatCommand
+	public class CommandRotate : Multiplayer.Unity.ITextChatCommand
 	{
 		public string Command { get; } = "rotate";
 		public string Description { get; } = "rotate target (get target using /target) currently looking at (use ~ for relative coordinates)";
