@@ -42,6 +42,7 @@ namespace Alteruna.UnityEditor
 				multiplayer = CreateMultiplayerObject();
 			}
 			
+			/*
 			// Search for an existing red material in the project
 			Material redMaterial = FindMaterial("AvatarMat");
 
@@ -52,6 +53,7 @@ namespace Alteruna.UnityEditor
 				redMaterial.color = new Color32(0, 170, 212, 255);
 				AssetDatabase.CreateAsset(redMaterial, "Assets/AvatarMat.mat");
 			}
+			*/
 			
 			// Create avatar game object.
 			GameObject go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
@@ -66,7 +68,7 @@ namespace Alteruna.UnityEditor
 			t.localRotation = Quaternion.identity;
 			
 			var mr = go.GetComponent<MeshRenderer>();
-			mr.material = redMaterial;
+			//mr.material = redMaterial;
 			
 			var avatar = go.AddComponent<Avatar>();
 			go.AddComponent<UniqueAvatarColor>().Renderers = new Renderer[] { mr };
