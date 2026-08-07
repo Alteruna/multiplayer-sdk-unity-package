@@ -391,6 +391,12 @@
             </summary>
       <param name="user">Leaving user.</param>
     </member>
+    <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnOtherUserModified(Alteruna.Multiplayer.Core.User)">
+      <summary>
+            Called when an existing user get modified.
+            </summary>
+      <param name="user">Modified user.</param>
+    </member>
     <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnRoomCreated(System.Boolean,Alteruna.Multiplayer.Core.Room,System.Int32)"></member>
     <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnRoomJoined(Alteruna.Multiplayer.Core.Room,Alteruna.Multiplayer.Core.User)"></member>
     <member name="M:Alteruna.Multiplayer.Core.IServiceEventListener.OnRoomJoinRejected(System.UInt32,System.String,System.String)"></member>

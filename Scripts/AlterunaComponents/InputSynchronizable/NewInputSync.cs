@@ -58,7 +58,7 @@ namespace Alteruna.Multiplayer.Unity
 	/// }
 	/// </code>
 	/// </example>
-	[AddComponentMenu("Alteruna/Avatar/New Input Synchronizable"), DefaultExecutionOrder(-1)]
+	[AddComponentMenu("Alteruna/Input/New Input Synchronizable"), DefaultExecutionOrder(-1)]
 	public class NewInputSync : Synchronizable
 	{
 		public InputActionAsset inputActions;

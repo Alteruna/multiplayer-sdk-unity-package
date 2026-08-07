@@ -49,7 +49,7 @@ namespace Alteruna.Multiplayer.Unity.InputSynchronizable
 	/// </example>
 	/// <seealso cref="SyncedKey"/>
 	/// <seealso cref="SyncedAxis"/>
-	[AddComponentMenu("Alteruna/Avatar/Input Synchronizable"), UnityEngine.Scripting.APIUpdating.MovedFrom(true, "Alteruna", "Alteruna.Trinity")]
+	[AddComponentMenu("Alteruna/Input/Input Synchronizable"), UnityEngine.Scripting.APIUpdating.MovedFrom(true, "Alteruna", "Alteruna.Trinity")]
 	public class InputSynchronizable : CommunicationBridge, IInput
 	{
 		/// <summary>

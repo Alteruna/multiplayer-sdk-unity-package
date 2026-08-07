@@ -52,7 +52,7 @@ namespace Alteruna.Multiplayer.Unity
 	///	}
 	/// </code>
 	/// </example>
-	[AddComponentMenu("Alteruna/AnimationSynchronizable", 0)]
+	[AddComponentMenu("Alteruna/Other/AnimationSynchronizable", 0)]
 	[MovedFrom(true, "Alteruna", "Alteruna.Trinity")]
 	public class AnimationSynchronizable : AttributesSync
 	{

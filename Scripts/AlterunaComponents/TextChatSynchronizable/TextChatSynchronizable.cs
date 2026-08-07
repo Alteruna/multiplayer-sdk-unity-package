@@ -30,7 +30,7 @@ namespace Alteruna.Multiplayer.Unity
 	/// <seealso cref="ITextChatCommand"/>
 	/// <seealso cref="Synchronizable"/>
 	// ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-	[AddComponentMenu("Alteruna/TextChatSynchronizable", 0)]
+	[AddComponentMenu("Alteruna/Other/TextChatSynchronizable", 0)]
 	public class TextChatSynchronizable : Synchronizable
 	{
 		/// <summary>
