@@ -28,7 +28,7 @@ namespace Alteruna.UnityEditor
 		private static MultiplayerManager CreateMultiplayerObject()
 		{
 			GameObject go = new GameObject("Multiplayer Manager");
-			MultiplayerManager mpm = go.AddComponent<MultiplayerManager>();
+			MultiplayerManager mpm = go.AddComponent<AlterunaComponents.MultiplayerManager>();
 			EditorUtility.SetDirty(go);
 			return mpm;
 		}
@@ -36,7 +36,7 @@ namespace Alteruna.UnityEditor
 		[MenuItem("GameObject/Alteruna/Avatar", false)]
 		private static void CreateAvatarObject(MenuCommand menuCommand)
 		{
-			var multiplayer = Object.FindObjectOfType<MultiplayerManager>(true);
+			MultiplayerManager multiplayer = Object.FindObjectOfType<MultiplayerManager>(true);
 			if (multiplayer == null)
 			{
 				multiplayer = CreateMultiplayerObject();
@@ -70,7 +70,7 @@ namespace Alteruna.UnityEditor
 			var mr = go.GetComponent<MeshRenderer>();
 			//mr.material = redMaterial;
 			
-			var avatar = go.AddComponent<Avatar>();
+			var avatar = go.AddComponent<AlterunaComponents.Avatar>();
 			go.AddComponent<UniqueAvatarColor>().Renderers = new Renderer[] { mr };
 			go.AddComponent<TransformSynchronizable>();
 			
