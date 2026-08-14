@@ -1,6 +1,6 @@
 {
   "name": "com.alteruna.multiplayer",
-  "version": "2.1.1003",
+  "version": "2.1.1005",
   "displayName": "Alteruna Multiplayer SDK",
   "description": "Develop online applications with Alteruna Multiplayer SDK for Unity.",
   "unity": "2021.3",
