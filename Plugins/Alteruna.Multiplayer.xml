@@ -18,6 +18,13 @@
             By default, this is the hash of application and Unity version.
             </remarks>
     </member>
+    <member name="M:Alteruna.VersionControl.IsNewer(System.String)">
+      <summary>
+            Check if given version is newer than the current version.
+            </summary>
+      <param name="version">version string</param>
+      <returns>True when given version string is newer than current version</returns>
+    </member>
     <member name="F:Alteruna.VersionControl.SCHEMA_VERSION">
       <summary>
             Manageable compability version. (Kick if another client has a newer SchemaVersion)
