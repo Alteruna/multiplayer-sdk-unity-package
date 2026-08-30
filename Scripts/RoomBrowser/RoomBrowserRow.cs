@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Alteruna.Multiplayer.Core;
-using Alteruna.Multiplayer.Core.PacketProcessing.Reader;
+using Alteruna.Multiplayer.Core.PacketProcessing;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

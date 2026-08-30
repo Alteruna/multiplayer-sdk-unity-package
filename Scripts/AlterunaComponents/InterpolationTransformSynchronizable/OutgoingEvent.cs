@@ -1,4 +1,4 @@
-using Alteruna.Multiplayer.Core.PacketProcessing.Writer;
+using Alteruna.Multiplayer.Core.PacketProcessing;
 using UnityEngine;
 
 namespace Alteruna.Multiplayer.Unity

@@ -1,7 +1,6 @@
 ﻿using Alteruna.Multiplayer.Core;
 using Alteruna.Multiplayer.Core.MethodArguments;
-using Alteruna.Multiplayer.Core.PacketProcessing.Reader;
-using Alteruna.Multiplayer.Core.PacketProcessing.Writer;
+using Alteruna.Multiplayer.Core.PacketProcessing;
 using UnityEngine;
 using UnityEngine.Events;
 

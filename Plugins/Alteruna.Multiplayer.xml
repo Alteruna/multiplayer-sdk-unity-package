@@ -56,13 +56,6 @@
     <member name="M:Alteruna.Exceptions.AlterunaException.#ctor"></member>
     <member name="M:Alteruna.Exceptions.AlterunaException.#ctor(System.String)"></member>
     <member name="M:Alteruna.Exceptions.AlterunaException.#ctor(System.String,System.Exception)"></member>
-    <member name="T:Alteruna.Exceptions.AlterunaServiceNotStartedException">
-      <summary>
-            The exception that is thrown when an operation is attempted within the Alteruna framework
-            but the required Alteruna service has not been started.
-            </summary>
-    </member>
-    <member name="M:Alteruna.Exceptions.AlterunaServiceNotStartedException.#ctor"></member>
     <member name="T:Alteruna.Exceptions.IAlterunaException"></member>
     <member name="P:Alteruna.Exceptions.IAlterunaException.Message"></member>
     <member name="T:Alteruna.Multiplayer.UtcTime">
@@ -363,8 +356,8 @@
             Used to validate the order of packages.
             </summary>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.IPackageOrderValidator.Append(Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.IPackageOrderValidator.Validate(Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IPackageOrderValidator.Append(Alteruna.Multiplayer.Core.PacketProcessing.Writer)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.IPackageOrderValidator.Validate(Alteruna.Multiplayer.Core.PacketProcessing.Reader)"></member>
     <member name="T:Alteruna.Multiplayer.Core.ISerializable">
       <summary>
             Interface <c>ISerializable</c> defines a generic interface for packing and
@@ -637,13 +630,13 @@
             </summary>
       <returns>Appended package id.</returns>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidator.Append(Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer)">
+    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidator.Append(Alteruna.Multiplayer.Core.PacketProcessing.Writer)">
       <summary>
             Append the package id and write it to the writer.
             </summary>
       <param name="writer">Data writer</param>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidator.Validate(Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader)">
+    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidator.Validate(Alteruna.Multiplayer.Core.PacketProcessing.Reader)">
       <summary>
             Validate that given package id is not a recent previous package id.
             </summary>
@@ -662,8 +655,8 @@
             Used instead of PackageOrderValidator when order validation is not needed and should always should be valid.
             </summary>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidatorNone.Append(Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidatorNone.Validate(Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidatorNone.Append(Alteruna.Multiplayer.Core.PacketProcessing.Writer)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PackageOrderValidatorNone.Validate(Alteruna.Multiplayer.Core.PacketProcessing.Reader)"></member>
     <member name="T:Alteruna.Multiplayer.Core.PacketBase">
       <summary>
             Class <c>PacketBase</c> is the base class for all packet types
@@ -898,7 +891,7 @@
             </summary>
       <param name="ip">The IP address of the device to add. If null or empty, the operation will proceed with default behavior for IP handling.</param>
       <param name="port">The port number associated with the device to add.</param>
-      <exception cref="T:Alteruna.Exceptions.AlterunaServiceNotStartedException">
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.AlterunaServiceNotStartedException">
             Thrown if the service has not been initialized prior to calling this method.
             </exception>
     </member>
@@ -921,7 +914,7 @@
       <summary>
             Closes the communication port and stops the device manager.
             </summary>
-      <exception cref="T:Alteruna.Exceptions.AlterunaServiceNotStartedException">
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.AlterunaServiceNotStartedException">
             Thrown if the Alteruna service has not properly been initialized and started.
             </exception>
     </member>
@@ -1014,7 +1007,7 @@
       <remarks>
             Can create a room if it does not exist and room args are given.
             </remarks>
-      <exception cref="T:Alteruna.Exceptions.AlterunaServiceNotStartedException">
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.AlterunaServiceNotStartedException">
             Thrown if the Alteruna service has not properly been initialized and started.
             </exception>
     </member>
@@ -1027,7 +1020,7 @@
       <exception cref="T:Alteruna.Exceptions.AlterunaException">
             Thrown if the given room session id is the same as the current room session id.
             </exception>
-      <exception cref="T:Alteruna.Exceptions.AlterunaServiceNotStartedException">
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.AlterunaServiceNotStartedException">
             Thrown if the Alteruna service has not properly been initialized and started.
             </exception>
     </member>
@@ -1074,7 +1067,7 @@
       <param name="port">The port number to open. If set to 0, defaults to the system-assigned port.</param>
       <param name="transportType">The transport protocol to be used for communication.</param>
       <returns>The port that was opened.</returns>
-      <exception cref="T:Alteruna.Exceptions.AlterunaServiceNotStartedException">
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.AlterunaServiceNotStartedException">
             Thrown if the Alteruna service has not properly been initialized and started.
             </exception>
     </member>
@@ -1125,6 +1118,36 @@
       <exception cref="T:System.InvalidOperationException">
             Thrown if the username is being set after the device manager has started or if there are restrictions due to active connections.
             </exception>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.SimulateLatency">
+      <summary>
+            Simulate latency by holding incoming packets for a random time. (Only takes effect with TransportType.DefaultStatistics)
+            </summary>
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.TransportException">Thrown on set if the current transport does not support network simulation.</exception>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.SimulatePacketLoss">
+      <summary>
+            Simulate packet loss by dropping random incoming packets. (Only takes effect with TransportType.DefaultStatistics)
+            </summary>
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.TransportException">Thrown on set if the current transport does not support network simulation.</exception>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.SimulationMaxLatency">
+      <summary>
+            Maximum simulated latency, in milliseconds.
+            </summary>
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.TransportException">Thrown on set if the current transport does not support network simulation.</exception>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.SimulationMinLatency">
+      <summary>
+            Minimum simulated latency, in milliseconds.
+            </summary>
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.TransportException">Thrown on set if the current transport does not support network simulation.</exception>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.SimulationPacketLossChance">
+      <summary>
+            Chance of packet loss when simulation is enabled, in percent (0 - 100).
+            </summary>
+      <exception cref="T:Alteruna.Multiplayer.Core.Exceptions.TransportException">Thrown on set if the current transport does not support network simulation.</exception>
     </member>
     <member name="M:Alteruna.Multiplayer.Core.Service.Start(Alteruna.Multiplayer.Core.IServiceEventListener,Alteruna.Multiplayer.Core.IServiceStateListener,Alteruna.Multiplayer.Core.Log.LogBase)"></member>
     <member name="M:Alteruna.Multiplayer.Core.Service.Start(Alteruna.Multiplayer.Core.IServiceEventListener,Alteruna.Multiplayer.Core.IServiceStateListener,Alteruna.Multiplayer.Core.Service.ServiceArgs)"></member>
@@ -1179,6 +1202,48 @@
       <param name="user">Target user.</param>
       <param name="reliability">Reliability used for routing.</param>
       <remarks>Sync to one or more users.</remarks>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.TransportBytesReceived">
+      <summary>
+            Total number of bytes received by the transport. 0 unless the current transport implements
+            <see cref="T:Alteruna.Multiplayer.Core.INetworkStatistics" /> (TransportType.DefaultStatistics).
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.TransportBytesSent">
+      <summary>
+            Total number of bytes sent by the transport. 0 unless the current transport implements
+            <see cref="T:Alteruna.Multiplayer.Core.INetworkStatistics" /> (TransportType.DefaultStatistics).
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.TransportPacketLoss">
+      <summary>
+            Total number of packets detected as lost. 0 unless the current transport implements
+            <see cref="T:Alteruna.Multiplayer.Core.INetworkStatistics" /> (TransportType.DefaultStatistics).
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.TransportPacketLossPercent">
+      <summary>
+            Packet loss as a percentage (0 - 100) of packets sent. 0 unless the current transport implements
+            <see cref="T:Alteruna.Multiplayer.Core.INetworkStatistics" /> (TransportType.DefaultStatistics).
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.TransportPacketsReceived">
+      <summary>
+            Total number of packets received by the transport. 0 unless the current transport implements
+            <see cref="T:Alteruna.Multiplayer.Core.INetworkStatistics" /> (TransportType.DefaultStatistics).
+            </summary>
+    </member>
+    <member name="P:Alteruna.Multiplayer.Core.Service.TransportPacketsSent">
+      <summary>
+            Total number of packets sent by the transport. 0 unless the current transport implements
+            <see cref="T:Alteruna.Multiplayer.Core.INetworkStatistics" /> (TransportType.DefaultStatistics).
+            </summary>
+    </member>
+    <member name="E:Alteruna.Multiplayer.Core.Service.TransportStarted">
+      <summary>
+            Invoked right after the transport layer has (re)started. Anything that needs to configure the
+            transport (e.g. network simulation settings) should hook this instead of racing the start sequence.
+            </summary>
     </member>
     <member name="M:Alteruna.Multiplayer.Core.Service.TryLockResource(System.Guid)">
       <summary>
@@ -1320,15 +1385,13 @@
             Use to target all users, including self.
             </summary>
     </member>
-    <member name="T:Alteruna.Multiplayer.Core.Exceptions.LicenseException">
+    <member name="T:Alteruna.Multiplayer.Core.Exceptions.AlterunaServiceNotStartedException">
       <summary>
-            Represents errors that occur during license operations.
+            The exception that is thrown when an operation is attempted within the Alteruna framework
+            but the required Alteruna service has not been started.
             </summary>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.Exceptions.LicenseException.#ctor"></member>
-    <member name="M:Alteruna.Multiplayer.Core.Exceptions.LicenseException.#ctor(System.String)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.Exceptions.LicenseException.#ctor(System.String,System.Exception)"></member>
-    <member name="P:Alteruna.Multiplayer.Core.Exceptions.LicenseException.Message"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.AlterunaServiceNotStartedException.#ctor"></member>
     <member name="T:Alteruna.Multiplayer.Core.Exceptions.NoControllerException">
       <summary>
             Represents errors that occur from missing multiplayer controller.
@@ -1358,6 +1421,14 @@
     <member name="M:Alteruna.Multiplayer.Core.Exceptions.RoomException.#ctor(System.String,System.Exception)"></member>
     <member name="P:Alteruna.Multiplayer.Core.Exceptions.RoomException.Message"></member>
     <member name="P:Alteruna.Multiplayer.Core.Exceptions.RoomException.Room"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Exceptions.TransportException">
+      <summary>
+            Represents errors that occur with the transport layer of the AlterunaMultiplayer.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.TransportException.#ctor"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.TransportException.#ctor(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.Exceptions.TransportException.#ctor(System.String,System.Exception)"></member>
     <member name="T:Alteruna.Multiplayer.Core.Exceptions.UserException">
       <summary>
             Represents errors that occur during user operations.
@@ -1749,63 +1820,61 @@
             Scrambles the data based on a key unique to your project.
             </summary>
     </member>
-    <member name="T:Alteruna.Multiplayer.Core.PacketProcessing.Encryption.GuidHash"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Encryption.GuidHash.CreateHashGuid(System.String)"></member>
-    <member name="T:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader">
+    <member name="T:Alteruna.Multiplayer.Core.PacketProcessing.Reader">
       <summary>
             Class <c>Writer</c> is used to write data to be sent to other Users through a <c>Synchronizable</c>.
             </summary>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.#ctor(Alteruna.Multiplayer.Core.ITransportStreamReader)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.Decompress(Alteruna.Multiplayer.Core.PacketProcessing.CompressionMethod)">
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.#ctor(Alteruna.Multiplayer.Core.ITransportStreamReader)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Decompress(Alteruna.Multiplayer.Core.PacketProcessing.CompressionMethod)">
       <summary>
             Compresses the data already written to the writer.
             If StartCompress has not been called, the data will be compressed from the start of the writer.
             </summary>
       <param name="method">Compression method used.</param>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.Decrypt(Alteruna.Multiplayer.Core.PacketProcessing.EncryptionMethod)">
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Decrypt(Alteruna.Multiplayer.Core.PacketProcessing.EncryptionMethod)">
       <summary>
             Decrypts the data already written to the writer.
             </summary>
       <param name="method">Encryption method used.</param>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.DeserializePackedString``1(System.String)">
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.DeserializePackedString``1(System.String)">
       <summary>
-            Unpacks a string that has been packed using <see cref="!:Writer.SerializeAndPackString&lt;T&gt;" />.
+            Unpacks a string that has been packed using <see cref="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.SerializeAndPackString``1(``0)" />.
             </summary>
       <param name="data">string data.</param>
       <typeparam name="T">type</typeparam>
       <returns>Object of given type.</returns>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadBits(System.Int32)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadBits(System.Int32,System.Byte@)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadBits(System.Int32,System.Int32@)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadBits(System.Int32,System.Int64@)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadBool"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadByte"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadByteArray"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadDouble"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadFloat"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadGeneric``1"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadGuid"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadInt"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadLong"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadObject"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadObject``1"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadObject(System.Type)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadShort"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadString"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadUint"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadUlong"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.Reader.ReadUshort"></member>
-    <member name="T:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer">
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadBits(System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadBits(System.Int32,System.Byte@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadBits(System.Int32,System.Int32@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadBits(System.Int32,System.Int64@)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadBool"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadByte"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadByteArray"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadDouble"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadFloat"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadGeneric``1"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadGuid"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadInt"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadLong"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadObject"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadObject``1"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadObject(System.Type)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadShort"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadString"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadUint"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadUlong"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.ReadUshort"></member>
+    <member name="T:Alteruna.Multiplayer.Core.PacketProcessing.Writer">
       <summary>
             Class <c>Reader</c> is used to read data recieved from another User.
             </summary>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.#ctor(Alteruna.Multiplayer.Core.ITransportStreamWriter)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.EndCompress(Alteruna.Multiplayer.Core.PacketProcessing.CompressionMethod)">
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.#ctor(Alteruna.Multiplayer.Core.ITransportStreamWriter)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.EndCompress(Alteruna.Multiplayer.Core.PacketProcessing.CompressionMethod)">
       <summary>
             Compresses the data already written to the writer.
             If StartCompress has not been called, the data will be compressed from the start of the writer.
@@ -1813,7 +1882,7 @@
       <param name="method">Compression method used.</param>
       <returns>Number of bytes saved by compression.</returns>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.EndEncrypt(Alteruna.Multiplayer.Core.PacketProcessing.EncryptionMethod)">
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.EndEncrypt(Alteruna.Multiplayer.Core.PacketProcessing.EncryptionMethod)">
       <summary>
             Encrypts the data already written to the writer.
             If StartEncrypt has not been called, the data will be encrypted from the start of the writer.
@@ -1821,49 +1890,54 @@
       <param name="method">Encryption method used.</param>
       <returns>Number of bytes saved by encryption.</returns>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.SerializeAndPackString``1(``0)">
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.SerializeAndPackString``1(``0)">
       <summary>
-            Pack an object into a string that cane later be unpacked using <see cref="!:Reader.DeserializePackedString&lt;T&gt;" />.
+            Pack an object into a string that cane later be unpacked using <see cref="M:Alteruna.Multiplayer.Core.PacketProcessing.Reader.DeserializePackedString``1(System.String)" />.
             </summary>
       <param name="obj">Given object to pack.</param>
       <typeparam name="T">Object Type.</typeparam>
       <returns>Packed string.</returns>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.StartCompress">
+    <member name="P:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Size">
+      <summary>
+            Gets the number of bytes written to the writer.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.StartCompress">
       <summary>
             Sets the current position of the writer as the start of the data to be compressed.
             Default to the start of the Writer.
             </summary>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.StartEncrypt">
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.StartEncrypt">
       <summary>
             Sets the current position of the writer as the start of the data to be encrypted.
             Default to the start of the Writer.
             </summary>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Boolean)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Byte)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Byte[])"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Byte[],System.Int32,System.Int32)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Guid)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Int16)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Int32)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Int64)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.Single)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.String)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.UInt16)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.UInt32)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.Write(System.UInt64)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteBits(System.Byte,System.Int32)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteBits(System.Int32,System.Int32)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteBits(System.Int64,System.Int32)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteGeneric``1(``0)">
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Write(System.Boolean)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Write(System.Byte)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Write(System.Byte[])"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Write(System.Byte[],System.Int32,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Write(System.Guid)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Write(System.Int16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Write(System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Write(System.Int64)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Write(System.Single)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Write(System.String)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Write(System.UInt16)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Write(System.UInt32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Write(System.UInt64)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.WriteBits(System.Byte,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.WriteBits(System.Int32,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.WriteBits(System.Int64,System.Int32)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.WriteGeneric``1(``0)">
       <summary>
             identical to WriteObject
             </summary>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteObject(System.Object)"></member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteObject(System.Object,System.Type)">
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.WriteObject(System.Object)"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.WriteObject(System.Object,System.Type)">
       <summary>
             Write an object of given type.
             </summary>
@@ -1872,7 +1946,7 @@
       <exception cref="T:System.ArgumentNullException">Given object was null</exception>
       <exception cref="T:System.Runtime.Serialization.SerializationException">Thrown when given object was not serializable.</exception>
     </member>
-    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.Writer.WriteObject``1(``0)">
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Writer.WriteObject``1(``0)">
       <summary>
             Write an object of given type.
             </summary>
@@ -1881,6 +1955,8 @@
       <exception cref="T:System.ArgumentNullException">Given object was null</exception>
       <exception cref="T:System.Runtime.Serialization.SerializationException">Thrown when given object was not serializable.</exception>
     </member>
+    <member name="T:Alteruna.Multiplayer.Core.PacketProcessing.Encryption.GuidHash"></member>
+    <member name="M:Alteruna.Multiplayer.Core.PacketProcessing.Encryption.GuidHash.CreateHashGuid(System.String)"></member>
     <member name="T:Alteruna.Multiplayer.Core.Packets.ISynchronizableElement">
       <summary>
             The interface <c>ISynchronizableElement</c> represents an identified <see cref="T:Alteruna.Multiplayer.Core.IAdaptiveSerializable" /></summary>
@@ -1921,6 +1997,21 @@
     </member>
     <member name="P:Alteruna.Multiplayer.Core.Packets.SynchronizableElement.CodecID"></member>
     <member name="P:Alteruna.Multiplayer.Core.Packets.SynchronizableElement.Synchronizable"></member>
+    <member name="T:Alteruna.Multiplayer.Core.Transport.TransportCast">
+      <summary>
+            Provides casting and conversion methods for handling different transport types.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.TransportCast.IsTcp(Alteruna.Multiplayer.Core.Transport.TransportType)">
+      <summary>
+            Determines whether the specified transport type is TCP-based.
+            </summary>
+    </member>
+    <member name="M:Alteruna.Multiplayer.Core.Transport.TransportCast.IsUdp(Alteruna.Multiplayer.Core.Transport.TransportType)">
+      <summary>
+            Determines whether the specified transport type is UDP-based.
+            </summary>
+    </member>
     <member name="T:Alteruna.Multiplayer.Core.Transport.TransportType">
       <summary>
             Implemented network transportation layers.
@@ -1945,6 +2036,11 @@
       <summary>
             Compatible with <see cref="F:Alteruna.Multiplayer.Core.Transport.TransportType.TCP" />.
             Only Works in browser.
+            </summary>
+    </member>
+    <member name="F:Alteruna.Multiplayer.Core.Transport.TransportType.DefaultStatistics">
+      <summary>
+            Default transport with statistics and data issue simulation enabled.
             </summary>
     </member>
     <member name="T:Alteruna.Multiplayer.Core.Transport.NaN.TransportLayer"></member>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Alteruna.Multiplayer.Core.PacketProcessing.Reader;
-using Alteruna.Multiplayer.Core.PacketProcessing.Writer;
+using Alteruna.Multiplayer.Core.PacketProcessing;
 
 namespace Alteruna.Multiplayer.Unity
 {
