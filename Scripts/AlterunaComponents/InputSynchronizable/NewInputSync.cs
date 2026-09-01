@@ -300,6 +300,11 @@ namespace Alteruna.Multiplayer.Unity
 
 #region Actions
 
+		/// <summary>
+		/// Base class synchronizing a single input action across users, wrapping its underlying
+		/// <see cref="UnityEngine.InputSystem.InputAction"/> value and its assemble/disassemble logic.
+		/// </summary>
+		/// <seealso cref="NewInputSync"/>
 		public abstract class InputActionSync
 		{
 			public virtual bool Updated { get; internal set; }
@@ -364,6 +369,10 @@ namespace Alteruna.Multiplayer.Unity
 				}
 			}
 
+			/// <summary>
+			/// Strongly typed <see cref="InputActionSync"/> holding a value of type <typeparamref name="T"/>.
+			/// </summary>
+			/// <typeparam name="T">Type of the value read from the input action.</typeparam>
 			public abstract class Action<T> : InputActionSync where T : struct
 			{
 				internal virtual T Value { get; set; }
@@ -427,6 +436,9 @@ namespace Alteruna.Multiplayer.Unity
 				}
 			}
 
+			/// <summary>
+			/// Implemented by local input actions to track and flush pending value changes to send.
+			/// </summary>
 			internal interface ILocalAction
 			{
 				bool Pending { get; set; }
@@ -434,6 +446,12 @@ namespace Alteruna.Multiplayer.Unity
 				void AssembleData(Writer writer);
 			}
 
+			/// <summary>
+			/// Local (owning-client) <see cref="Action{T}"/> that reads its value directly from the
+			/// underlying <see cref="UnityEngine.InputSystem.InputAction"/> and marks itself as
+			/// pending whenever the value changes.
+			/// </summary>
+			/// <typeparam name="T1">Type of the value read from the input action.</typeparam>
 			public abstract class InputActionSyncLocal<T1> : Action<T1>, ILocalAction where T1 : struct
 			{
 				internal override T1 Value => Action.ReadValue<T1>();
@@ -468,6 +486,9 @@ namespace Alteruna.Multiplayer.Unity
 				}
 			}
 
+			/// <summary>
+			/// Remote (non-owning-client) synced input action holding a <c>bool</c> (button) value.
+			/// </summary>
 			public class RemoteActionBool : Action<bool>
 			{
 				public RemoteActionBool(InputAction action) : base(action) { }
@@ -484,6 +505,9 @@ namespace Alteruna.Multiplayer.Unity
 				}
 			}
 
+			/// <summary>
+			/// Remote (non-owning-client) synced input action holding a <c>float</c> (axis) value.
+			/// </summary>
 			public class RemoteActionFloat : Action<float>
 			{
 				public RemoteActionFloat(InputAction action) : base(action) { }
@@ -500,6 +524,9 @@ namespace Alteruna.Multiplayer.Unity
 				}
 			}
 
+			/// <summary>
+			/// Remote (non-owning-client) synced input action holding a <c>Vector2</c> value.
+			/// </summary>
 			public class RemoteActionVector2 : Action<Vector2>
 			{
 				public RemoteActionVector2(InputAction action) : base(action) { }
@@ -516,6 +543,9 @@ namespace Alteruna.Multiplayer.Unity
 				}
 			}
 
+			/// <summary>
+			/// Remote (non-owning-client) synced input action holding a <c>Vector3</c> value.
+			/// </summary>
 			public class RemoteActionVector3 : Action<Vector3>
 			{
 				public RemoteActionVector3(InputAction action) : base(action) { }
@@ -532,6 +562,9 @@ namespace Alteruna.Multiplayer.Unity
 				}
 			}
 
+			/// <summary>
+			/// Remote (non-owning-client) synced input action holding a <c>Quaternion</c> value.
+			/// </summary>
 			public class RemoteActionQuaternion : Action<Quaternion>
 			{
 				public RemoteActionQuaternion(InputAction action) : base(action) { }
@@ -548,6 +581,9 @@ namespace Alteruna.Multiplayer.Unity
 				}
 			}
 
+			/// <summary>
+			/// Local (owning-client) synced input action holding a <c>bool</c> (button) value.
+			/// </summary>
 			public class LocalActionBool : InputActionSyncLocal<bool>
 			{
 				internal LocalActionBool(InputAction action) : base(action) { }
@@ -564,6 +600,9 @@ namespace Alteruna.Multiplayer.Unity
 				}
 			}
 
+			/// <summary>
+			/// Local (owning-client) synced input action holding a <c>float</c> (axis) value.
+			/// </summary>
 			public class LocalActionFloat : InputActionSyncLocal<float>
 			{
 				internal LocalActionFloat(InputAction action) : base(action) { }
@@ -580,6 +619,9 @@ namespace Alteruna.Multiplayer.Unity
 				}
 			}
 
+			/// <summary>
+			/// Local (owning-client) synced input action holding a <c>Vector2</c> value.
+			/// </summary>
 			public class LocalActionVector2 : InputActionSyncLocal<Vector2>
 			{
 				internal LocalActionVector2(InputAction action) : base(action) { }
@@ -596,6 +638,9 @@ namespace Alteruna.Multiplayer.Unity
 				}
 			}
 
+			/// <summary>
+			/// Local (owning-client) synced input action holding a <c>Vector3</c> value.
+			/// </summary>
 			public class LocalActionVector3 : InputActionSyncLocal<Vector3>
 			{
 				internal LocalActionVector3(InputAction action) : base(action) { }
@@ -612,6 +657,9 @@ namespace Alteruna.Multiplayer.Unity
 				}
 			}
 
+			/// <summary>
+			/// Local (owning-client) synced input action holding a <c>Quaternion</c> value.
+			/// </summary>
 			public class LocalActionQuaternion : InputActionSyncLocal<Quaternion>
 			{
 				internal LocalActionQuaternion(InputAction action) : base(action) { }

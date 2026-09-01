@@ -188,6 +188,7 @@ namespace Alteruna
 
 		public bool JoinRoom(string roomName, ushort password = 0)
 		{
+			_connectionMessage = TEXT_CONNECTING;
 			roomName = roomName.ToLower();
 			if (Multiplayer != null && Multiplayer.IsConnected)
 			{
@@ -244,11 +245,8 @@ namespace Alteruna
 			StartButton.interactable = true;
 			LeaveButton.interactable = false;
 
-			_connectionMessage = TEXT_RECONNECTING;
 			if (TitleText != null)
-			{
-				TitleText.text = TEXT_RECONNECTING;
-			}
+				TitleText.text = TEXT_NOT_CONNECTED;
 		}
 
 		private void RoomJoined(RoomJoinedEvent args)

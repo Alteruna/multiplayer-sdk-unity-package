@@ -3,10 +3,14 @@ using UnityEngine;
 
 namespace Alteruna.Multiplayer.Unity
 {
+	/// <summary>
+	/// Sync a UnityEvent with a <c>Guid</c> parameter.
+	/// </summary>
+	/// <seealso cref="SyncedEventBase{T}"/>
 	[AddComponentMenu("Alteruna/Event/Synced Event <Guid>"), UnityEngine.Scripting.APIUpdating.MovedFrom(true, "Alteruna", "Alteruna.Trinity")]
 	public class SyncedEventGuid : SyncedEventBase<Guid>
 	{
-		
+
 		/// <summary>
 		/// Invoke the event with the given argument.
 		/// </summary>

@@ -8,6 +8,12 @@ using UnityEngine.InputSystem.UI;
 
 namespace Alteruna.Multiplayer.Unity
 {
+	/// <summary>
+	/// Ensures the scene has an <c>EventSystem</c>, creating one with the appropriate input module if missing.
+	/// </summary>
+	/// <remarks>
+	/// As an alternative to put Event System in prefabs, this component will create an EventSystem in the scene if one is not yet present.
+	/// </remarks>
 	[ExecuteInEditMode, UnityEngine.Scripting.APIUpdating.MovedFrom(true, "Alteruna", "Alteruna.Trinity")]
 	public class EnsureEventSystem : MonoBehaviour
 	{
