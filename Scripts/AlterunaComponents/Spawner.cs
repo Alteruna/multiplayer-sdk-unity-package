@@ -86,7 +86,7 @@ namespace Alteruna.Multiplayer.Unity
     /// }
     /// </code>
     /// </example>
-    [AddComponentMenu(""), UnityEngine.Scripting.APIUpdating.MovedFrom(true, "Alteruna", "Alteruna.Trinity")]
+    [AddComponentMenu("Alteruna/Other/Spawner"), UnityEngine.Scripting.APIUpdating.MovedFrom(true, "Alteruna", "Alteruna.Trinity")]
     public class Spawner : CommunicationBridge
     {
         /// <summary>
