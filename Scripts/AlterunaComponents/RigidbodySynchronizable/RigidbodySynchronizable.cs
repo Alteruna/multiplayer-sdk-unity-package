@@ -13,7 +13,7 @@ namespace Alteruna.Multiplayer.Unity
 	/// <remarks>
 	///	<img src="../images/Alteruna.RigidbodySynchronizable.png" />
 	/// </remarks>
-	/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.html"/>
+	/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.html"/>
 	[DisallowMultipleComponent, RequireComponent(typeof(Rigidbody)), AddComponentMenu("Alteruna/Transform/Rigidbody Synchronizable"), UnityEngine.Scripting.APIUpdating.MovedFrom(true, "Alteruna", "Alteruna.Trinity")]
 	public class RigidbodySynchronizable : RigidbodySynchronizableCommon
 	{
@@ -86,10 +86,21 @@ namespace Alteruna.Multiplayer.Unity
 		/// <summary>
 		/// The velocity vector of the rigidbody. It represents the rate of change of Rigidbody position.
 		/// </summary>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody-velocity.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody-linearVelocity.html"/>
 		// ReSharper disable once InconsistentNaming
 		public Vector3 velocity
 		{
+#if UNITY_6000_0_OR_NEWER 
+			get => Rigidbody.linearVelocity;
+			set
+			{
+				float delta = Vector3.Distance(Rigidbody.linearVelocity, value);
+				Rigidbody.linearVelocity = value;
+				if (delta < 0.0271828f) { }
+				else if (delta < 0.271828f) QueForNextUpdate();
+				else ControlledForcedSync();
+			}
+#else
 			get => Rigidbody.velocity;
 			set
 			{
@@ -99,12 +110,24 @@ namespace Alteruna.Multiplayer.Unity
 				else if (delta < 0.271828f) QueForNextUpdate();
 				else ControlledForcedSync();
 			}
+#endif
+		}
+		
+		/// <summary>
+		/// TThe linear damping of the Rigidbody linear velocity.
+		/// </summary>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody-linearVelocity.html"/>
+		// ReSharper disable once InconsistentNaming
+		public Vector3 linearVelocity
+		{
+			get => velocity;
+			set => velocity = value;
 		}
 
 		/// <summary>
 		/// The angular velocity vector of the rigidbody measured in radians per second.
 		/// </summary>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody-angularVelocity.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody-angularVelocity.html"/>
 		// ReSharper disable once InconsistentNaming
 		public Vector3 angularVelocity
 		{
@@ -117,6 +140,56 @@ namespace Alteruna.Multiplayer.Unity
 				else if (delta < 0.314159f) QueForNextUpdate();
 				else ControlledForcedSync();
 			}
+		}
+		
+		/// <summary>
+		/// Coefficient of drag.
+		/// </summary>
+		// ReSharper disable once InconsistentNaming
+		public float drag
+		{
+#if UNITY_6000_0_OR_NEWER
+			get => Rigidbody.linearDamping;
+			set => Rigidbody.linearDamping = value;
+#else
+			get => Rigidbody.drag;
+			set => Rigidbody.drag = value;
+#endif
+		}
+		
+		/// <summary>
+		/// The linear damping of the Rigidbody linear velocity.
+		/// </summary>
+		// ReSharper disable once InconsistentNaming
+		public float linearDamping
+		{
+			get => drag;
+			set => drag = value;
+		}
+		
+		/// <summary>
+		/// Coefficient of angular drag.
+		/// </summary>
+		// ReSharper disable once InconsistentNaming
+		public float angularDrag
+		{
+#if UNITY_6000_0_OR_NEWER
+			get => Rigidbody.angularDamping;
+			set => Rigidbody.angularDamping = value;
+#else
+			get => Rigidbody.angularDrag;
+			set => Rigidbody.angularDrag = value;
+#endif
+		}
+		
+		/// <summary>
+		/// The angular damping of the object.
+		/// </summary>
+		// ReSharper disable once InconsistentNaming
+		public float angularDamping
+		{
+			get => angularDrag;
+			set => angularDrag = value;
 		}
 
 		/// <summary>
@@ -137,7 +210,7 @@ namespace Alteruna.Multiplayer.Unity
 			set
 			{
 				Rigidbody.position = value;
-				if (!Rigidbody.isKinematic) Rigidbody.velocity = Vector3.zero;
+				if (!Rigidbody.isKinematic) velocity = Vector3.zero;
 				ControlledForcedSync();
 			}
 		}
@@ -170,7 +243,7 @@ namespace Alteruna.Multiplayer.Unity
 		///   <para>Moves the kinematic Rigidbody towards position.</para>
 		/// </summary>
 		/// <param name="position">Provides the new position for the Rigidbody object.</param>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.MovePosition.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.MovePosition.html"/>
 		// ReSharper disable once ParameterHidesMember
 		public void MovePosition(Vector3 position)
 		{
@@ -190,7 +263,7 @@ namespace Alteruna.Multiplayer.Unity
 		///   <para>Rotates the rigidbody to rotation.</para>
 		/// </summary>
 		/// <param name="rot">The new rotation for the Rigidbody.</param>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.MoveRotation.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.MoveRotation.html"/>
 		public void MoveRotation(Quaternion rot)
 		{
 			Rigidbody.MoveRotation(rot);
@@ -227,7 +300,7 @@ namespace Alteruna.Multiplayer.Unity
 		/// <param name="y">Size of force along the world y-axis.</param>
 		/// <param name="z">Size of force along the world z-axis.</param>
 		/// <param name="mode">	Type of force to apply.</param>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.AddForce.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.AddForce.html"/>
 		public void AddForce(float x, float y, float z, ForceMode mode = ForceMode.Force) =>
 			AddForce(new Vector3(x, y, z), mode);
 
@@ -256,7 +329,7 @@ namespace Alteruna.Multiplayer.Unity
 		/// </example>
 		/// <param name="force">Force vector in world coordinates.</param>
 		/// <param name="mode">	Type of force to apply.</param>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.AddForce.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.AddForce.html"/>
 		public void AddForce(Vector3 force, ForceMode mode = ForceMode.Force)
 		{
 			switch (mode)
@@ -291,7 +364,7 @@ namespace Alteruna.Multiplayer.Unity
 		/// <param name="y">Size of torque along the world y-axis.</param>
 		/// <param name="z">Size of torque along the world z-axis.</param>
 		/// <param name="mode">The type of torque to apply.</param>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.AddTorque.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.AddTorque.html"/>
 		public void AddTorque(float x, float y, float z, ForceMode mode = ForceMode.Force) => AddTorque(new Vector3(x, y, z), mode);
 
 		/// <summary>
@@ -320,7 +393,7 @@ namespace Alteruna.Multiplayer.Unity
 		/// </example>
 		/// <param name="torque">Torque vector in world coordinates.</param>
 		/// <param name="mode">	The type of torque to apply.</param>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.AddTorque.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.AddTorque.html"/>
 		public void AddTorque(Vector3 torque, ForceMode mode = ForceMode.Force)
 		{
 			switch (mode)
@@ -348,19 +421,19 @@ namespace Alteruna.Multiplayer.Unity
 		/// Is the rigidbody sleeping?
 		/// </summary>
 		/// <returns>true when rigidbody is sleeping.</returns>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.IsSleeping.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.IsSleeping.html"/>
 		public override bool IsSleeping() => Rigidbody.IsSleeping();
 
 		/// <summary>
 		/// Forces a rigidbody to sleep at least one frame.
 		/// </summary>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.Sleep.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.Sleep.html"/>
 		public override void Sleep() => Rigidbody.Sleep();
 
 		/// <summary>
 		/// Forces a rigidbody to wake up.
 		/// </summary>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.WakeUp.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.WakeUp.html"/>
 		public override void WakeUp()
 		{
 			Rigidbody.WakeUp();
@@ -379,8 +452,8 @@ namespace Alteruna.Multiplayer.Unity
 				_constraints = ~_constraints;
 				writer.Write((byte)Rigidbody.interpolation);
 				writer.Write(Rigidbody.mass);
-				writer.Write(Rigidbody.drag);
-				writer.Write(Rigidbody.angularDrag);
+				writer.Write(drag);
+				writer.Write(angularDrag);
 				writer.Write(Rigidbody.useGravity);
 			}
 
@@ -393,19 +466,19 @@ namespace Alteruna.Multiplayer.Unity
 					if ((_constraints & RigidbodyConstraints.FreezePositionX) != 0)
 					{
 						writer.Write(Rigidbody.position.x);
-						writer.Write(Rigidbody.velocity.x);
+						writer.Write(velocity.x);
 					}
 
 					if ((_constraints & RigidbodyConstraints.FreezePositionY) != 0)
 					{
 						writer.Write(Rigidbody.position.y);
-						writer.Write(Rigidbody.velocity.y);
+						writer.Write(velocity.y);
 					}
 
 					if ((_constraints & RigidbodyConstraints.FreezePositionZ) != 0)
 					{
 						writer.Write(Rigidbody.position.z);
-						writer.Write(Rigidbody.velocity.z);
+						writer.Write(velocity.z);
 					}
 				}
 
@@ -439,17 +512,17 @@ namespace Alteruna.Multiplayer.Unity
 				{
 					if ((_constraints & RigidbodyConstraints.FreezePositionX) != 0)
 					{
-						writer.Write(Rigidbody.velocity.x);
+						writer.Write(velocity.x);
 					}
 
 					if ((_constraints & RigidbodyConstraints.FreezePositionY) != 0)
 					{
-						writer.Write(Rigidbody.velocity.y);
+						writer.Write(velocity.y);
 					}
 
 					if ((_constraints & RigidbodyConstraints.FreezePositionZ) != 0)
 					{
-						writer.Write(Rigidbody.velocity.z);
+						writer.Write(velocity.z);
 					}
 				}
 
@@ -489,8 +562,8 @@ namespace Alteruna.Multiplayer.Unity
 				_constraints = ~_constraints;
 				Rigidbody.interpolation = (RigidbodyInterpolation)reader.ReadByte();
 				Rigidbody.mass = reader.ReadFloat();
-				Rigidbody.drag = reader.ReadFloat();
-				Rigidbody.angularDrag = reader.ReadFloat();
+				drag = reader.ReadFloat();
+				angularDrag = reader.ReadFloat();
 				Rigidbody.useGravity = reader.ReadBool();
 			}
 
@@ -502,7 +575,7 @@ namespace Alteruna.Multiplayer.Unity
 				if ((_constraints & RigidbodyConstraints.FreezePosition) != 0)
 				{
 					Vector3 pos = Rigidbody.position;
-					Vector3 vel = Rigidbody.velocity;
+					Vector3 vel = velocity;
 					if ((_constraints & RigidbodyConstraints.FreezePositionX) != 0)
 					{
 						pos.x = reader.ReadFloat();
@@ -524,7 +597,7 @@ namespace Alteruna.Multiplayer.Unity
 					if (ApplyAsTransform) transform.position = pos;
 					else Rigidbody.MovePosition(pos);
 
-					Rigidbody.velocity = vel;
+					velocity = vel;
 				}
 
 				if ((_constraints & RigidbodyConstraints.FreezeRotation) != 0)
@@ -559,7 +632,7 @@ namespace Alteruna.Multiplayer.Unity
 			{
 				if ((_constraints & RigidbodyConstraints.FreezePosition) != 0)
 				{
-					Vector3 newVelocity = Rigidbody.velocity;
+					Vector3 newVelocity = velocity;
 					if ((_constraints & RigidbodyConstraints.FreezePositionX) != 0)
 					{
 						newVelocity.x = reader.ReadFloat();
@@ -575,7 +648,7 @@ namespace Alteruna.Multiplayer.Unity
 						newVelocity.z = reader.ReadFloat();
 					}
 
-					Rigidbody.velocity = newVelocity;
+					velocity = newVelocity;
 				}
 
 				if ((_constraints & RigidbodyConstraints.FreezeRotation) != 0)

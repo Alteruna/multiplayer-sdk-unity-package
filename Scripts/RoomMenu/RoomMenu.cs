@@ -56,7 +56,11 @@ namespace Alteruna
 		{
 			if (Multiplayer == null)
 			{
-				Multiplayer = FindObjectOfType<MultiplayerManager>();
+				#if UNITY_6000_0_OR_NEWER
+					Multiplayer = FindFirstObjectByType<MultiplayerManager>();
+				#else
+					Multiplayer = FindObjectOfType<MultiplayerManager>();
+				#endif
 			}
 
 			if (Multiplayer == null)

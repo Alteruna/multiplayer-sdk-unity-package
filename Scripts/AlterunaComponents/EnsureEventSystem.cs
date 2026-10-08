@@ -36,8 +36,14 @@ namespace Alteruna.Multiplayer.Unity
 				return false;
 			}
 			
+#if UNITY_6000_0_OR_NEWER
+			bool EventSystemExists = FindFirstObjectByType<EventSystem>() == null;
+#else
+			bool EventSystemExists = FindObjectOfType<EventSystem>() == null;
+#endif
+			
 			// Check if there is already an EventSystem in the scene
-			if (Object.FindObjectOfType<EventSystem>() == null)
+			if (EventSystemExists)
 			{
 				// Create a new GameObject
 				GameObject eventSystem = new GameObject("EventSystem");

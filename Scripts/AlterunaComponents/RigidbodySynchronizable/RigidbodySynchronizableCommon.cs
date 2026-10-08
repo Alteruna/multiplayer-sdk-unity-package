@@ -10,7 +10,7 @@ namespace Alteruna.Multiplayer.Unity
 	/// <summary>
 	/// Common Rigidbody synchronizable methods and.
 	/// </summary>
-	/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.html"/>
+	/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.html"/>
 	[DisallowMultipleComponent]
 	public abstract class RigidbodySynchronizableCommon : Synchronizable
 	{
@@ -63,6 +63,13 @@ namespace Alteruna.Multiplayer.Unity
 		/// Controls whether physics affects the rigidbody.
 		/// </summary>
 		public abstract bool isKinematic { get; set; }
+
+		// ReSharper disable once InconsistentNaming
+		/// <summary>
+		/// Used for unity 6 compatibility.
+		/// </summary>
+		/// <remarks>For pre-6.0.0 versions of Unity its identical to <see cref="isKinematic"/>.</remarks>
+		protected virtual bool isKinematicOrStatic => isKinematic;
 
 		// ReSharper disable once InconsistentNaming
 		/// <summary>
@@ -248,20 +255,20 @@ namespace Alteruna.Multiplayer.Unity
 		/// Is the rigidbody sleeping?
 		/// </summary>
 		/// <returns>true when rigidbody is sleeping.</returns>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.IsSleeping.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.IsSleeping.html"/>
 		// ReSharper disable once MemberCanBeProtected.Global
 		public abstract bool IsSleeping();
 
 		/// <summary>
 		/// Forces a rigidbody to sleep at least one frame.
 		/// </summary>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.Sleep.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.Sleep.html"/>
 		public abstract void Sleep();
 
 		/// <summary>
 		/// Forces a rigidbody to wake up.
 		/// </summary>
-		/// <seealso cref="https://docs.unity3d.com/ScriptReference/Rigidbody.WakeUp.html"/>
+		/// <seealso href="https://docs.unity3d.com/ScriptReference/Rigidbody.WakeUp.html"/>
 		public abstract void WakeUp();
 
 		public override void Possessed(bool isMe, User user)
@@ -278,7 +285,8 @@ namespace Alteruna.Multiplayer.Unity
 				(_fullSync | _force ? 2 : 0) +
 				(_syncSettings ? 4 : 0) +
 				(isKinematic ? 8 : 0) +
-				(useGravity ? 16 : 0)
+				(useGravity ? 16 : 0) +
+				(isKinematicOrStatic ? 32 : 0)
 			);
 
 			_force = false;
@@ -318,12 +326,16 @@ namespace Alteruna.Multiplayer.Unity
 				_lastControlledForcedSync = Time.time;
 			}
 
-			isKinematic = (flags & 8) != 0;
 			useGravity = (flags & 16) != 0;
 
+			SetBodyType(flags);
 			return false;
 		}
 
+		protected virtual void SetBodyType(byte flags)
+		{
+			isKinematic = (flags & 8) != 0;
+		}
 
 		public virtual float EstimateMinimumDataSentPerSecond() => 0f;
 
