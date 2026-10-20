@@ -13,6 +13,7 @@ namespace Alteruna
 	{
 		private const string FORMAT_USER_COUNT = " ({0}/{1})";
 		private const string TEXT_CONNECTING = "Connecting";
+		private const string TEXT_FAILED_TO_CONNECT = "Failed To Connect";
 		private const string TEXT_IN_ROOM = "In Room ";
 		private const string TEXT_MISSING_MULTIPLAYER = "Missing Multiplayer Component";
 		private const string TEXT_NOT_CONNECTED = "Not Connected";
@@ -43,6 +44,7 @@ namespace Alteruna
 		private string _connectionMessage = TEXT_CONNECTING;
 		private float _statusTextTime;
 		private int _roomI = -1;
+		private bool _textOffline;
 
 		private TMP_Text StartButtonText;
 
@@ -132,7 +134,11 @@ namespace Alteruna
 		{
 			if (!Multiplayer.Started)
 			{
-				TitleText.text = TEXT_OFFLINE;
+				if (!_textOffline)
+				{
+					TitleText.text = API.GameClientApiController.IsApiUnreachable ? TEXT_FAILED_TO_CONNECT : TEXT_OFFLINE;
+					_textOffline = true;
+				}
 			}
 			else if (Multiplayer.IsConnected)
 			{
@@ -154,7 +160,12 @@ namespace Alteruna
 			else if (!Multiplayer.IsConnecting)
 			{
 				//TitleText.text = TEXT_NOT_CONNECTED;
-				
+				if (TitleText != null && API.GameClientApiController.IsApiUnreachable)
+				{
+					TitleText.text = TEXT_FAILED_TO_CONNECT;
+					_textOffline = true;
+				}
+
 				if (!AutomaticallyRefresh || (_refreshTime += Time.fixedDeltaTime) < RefreshInterval) return;
 				_refreshTime -= RefreshInterval;
 
@@ -169,6 +180,13 @@ namespace Alteruna
 					string str = blockedReason.ToString();
 					str = string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? " " + x : x.ToString()));
 					TitleText.text = str;
+					return;
+				}
+
+				if (API.GameClientApiController.IsApiUnreachable)
+				{
+					TitleText.text = TEXT_FAILED_TO_CONNECT;
+					_textOffline = true;
 					return;
 				}
 
@@ -215,7 +233,7 @@ namespace Alteruna
 			{
 				Connected(args.Controller);
 			}
-			else if (TitleText != null && TitleText.text == TEXT_OFFLINE)
+			else if (_textOffline && TitleText != null)
 			{
 				TitleText.text = TEXT_STARTED;
 				StartButtonText.text = TEXT_BTN_START;
